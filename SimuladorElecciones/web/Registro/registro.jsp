@@ -27,7 +27,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 rect-central-fino text-center">
-                    <h2>Registro</h2>
+                    <p class="titulo-grande sep">Registro</p>
                     <form  class="interior" name="login" action="Login" method="POST">
                             Nombre de usuario:<br>
                             <input type="text" class="sep" name="usuario"  maxlength="50"><br>

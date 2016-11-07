@@ -41,3 +41,9 @@ and open the template in the editor.
     height: 100%;
     border-right: 1px solid black;
 }
+.titulo{
+    font-size:large;
+}
+.titulo-grande{
+    font-size:xx-large;
+}
