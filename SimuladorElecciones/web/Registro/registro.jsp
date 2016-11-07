@@ -38,7 +38,7 @@
                             <input type="password" class="sep" name="contrasena" maxlength="50"><br>
                             Repetir contraseña:<br>
                             <input type="password" class="sep" name="repcontrasena" maxlength="50"><br>
-                            <input class="btn btn-primary sep" type="submit" value="Registrarse"  name="enviar" />
+                            <input class="btn btn-lg btn-primary sep" type="submit" value="Registrarse"  name="enviar" />
                         </b>
                     </form>
                 </div>

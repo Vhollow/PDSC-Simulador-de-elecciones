@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 rect-central">
                     <div class="col-md-6 text-center mit-iz">
-                        <button type="button" class="btn btn-primary btn-grande interior">Version Libre</button>
+                        <button type="button" class="btn btn-primary btn-lg interior">Version Libre</button>
                         <br>
                         <br>
                         <b class="sep">*En este modo podrá realizar las simulaciones pero no podrá guardar su trabajo</b>
@@ -38,7 +38,7 @@
                         <form  class="sep" name="login" action="Login" method="POST">
                                 <input type="text" class="sep" name="usuario"  maxlength="50">
                                 <input type="password" class="sep" name="contrasena" maxlength="50"><br>
-                                <input class="btn btn-primary sep" type="submit" value="Login"  name="enviar" />
+                                <input class="btn btn-lg btn-primary sep" type="submit" value="Login"  name="enviar" />
                         </form>
                     </div>
                 </div>

@@ -41,7 +41,7 @@
                         <p class="titulo">Simulacion 3</p>
                     </div>
                     <div class="col-md-10 col-md-offset-1   ">
-                        <button type="button" class="btn btn-primary btn-grande2">Nueva simulacion</button>
+                        <button type="button" class="btn btn-primary btn-lg">Nueva simulacion</button>
                     </div>
                 </div>
             </div>
