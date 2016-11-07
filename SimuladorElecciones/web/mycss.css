@@ -21,7 +21,15 @@ and open the template in the editor.
     height: 20em;
     border-radius: 2%;
     border: 1px solid black;
-    background-color: white;
+    background-color: #ddddff;
+}
+.rect-central-fino{
+    margin-top: 5%;
+    position: relative;
+    height: 40em;
+    border-radius: 2%;
+    border: 1px solid black;
+    background-color: #ddddff;
 }
 .interior{
     margin-top: 20%;
