@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Registrate</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
 
@@ -29,6 +29,7 @@
                 <div class="col-md-4 col-md-offset-4 rect-central-fino text-center">
                     <p class="titulo-grande sep">Registro</p>
                     <form  class="interior" name="login" action="Login" method="POST">
+                        <b>
                             Nombre de usuario:<br>
                             <input type="text" class="sep" name="usuario"  maxlength="50"><br>
                             Correo electrónico:<br>
@@ -38,6 +39,7 @@
                             Repetir contraseña:<br>
                             <input type="password" class="sep" name="repcontrasena" maxlength="50"><br>
                             <input class="btn btn-primary sep" type="submit" value="Registrarse"  name="enviar" />
+                        </b>
                     </form>
                 </div>
             </div>

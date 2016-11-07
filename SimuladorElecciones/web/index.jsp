@@ -31,7 +31,7 @@
                         <button type="button" class="btn btn-primary btn-grande interior">Version Libre</button>
                         <br>
                         <br>
-                        <p class="sep">*En este modo podrá realizar las simulaciones pero no podrá guardar su trabajo</p>
+                        <b class="sep">*En este modo podrá realizar las simulaciones pero no podrá guardar su trabajo</b>
                     </div>
                     <div class="col-md-6 text-center">
                         <p class="titulo interior">Versión usuario</p>
