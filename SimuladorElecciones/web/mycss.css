@@ -66,3 +66,7 @@ and open the template in the editor.
 .l{
     font-family: Lobster;
 }
+.clearflx{
+    clear: both;
+    content: ".";
+}

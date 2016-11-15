@@ -25,7 +25,33 @@
     </head>
     <body class="container-fluid">
         <div class="row">
-            <div class="col-md-4" style="background-color: #ddf; height: 800px"></div>
+            <!-- Columna de configuración -->
+            <div class="col-md-4" style="background-color: #ddf; height: 800px">
+                <div class="sep-2"></div>
+                <!-- Cargar archivo -->
+                <p class="titulo">Cargar archivo</p>
+                <form class="form-horizontal col-md-10">
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option>Elecciones España junio 2016</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Abrir</button>
+                    </div>
+                </form>
+                <div class="clearflx">&nbsp</div>
+                <hr>
+                
+                <!-- Configurar eleccion -->
+                
+                
+                
+            </div>
         </div>
     </body>
 </html>
