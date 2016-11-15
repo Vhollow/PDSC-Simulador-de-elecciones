@@ -33,6 +33,7 @@
                 <form class="form-horizontal col-md-10">
                     <div class="form-group">
                         <select class="form-control">
+                            <option>-</option>
                             <option>Elecciones España junio 2016</option>
                             <option>2</option>
                             <option>3</option>
@@ -49,8 +50,71 @@
                 
                 <!-- Configurar eleccion -->
                 
+                <p class="titulo">Detalles elección</p>
+                <form class="form-horizontal col-md-10">
+                    <div class="form-group">
+                        <label for="tipo" class="col-sm-2 control-label">Tipo</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="tipo">
+                                <option>-</option>
+                                <option>Congreso</option>
+                                <option>Autonómicas</option>
+                                <option>Municipales</option>
+                                <option>Europeas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="año" class="col-sm-2 control-label">Año</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="año">
+                                <option>-</option>
+                                <option>2016</option>
+                                <option>2015</option>
+                                <option>2014</option>
+                                <option>2013</option>
+                            </select>
+                        </div>
+                        <label for="mes" class="col-sm-1 control-label">Mes</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="mes">
+                                <option>-</option>
+                                <option>Enero</option>
+                                <option>Febrero</option>
+                                <option>Marzo</option>
+                                <option>Abril</option>
+                                <option>Mayo</option>
+                                <option>Junio</option>
+                                <option>Julio</option>
+                                <option>Abgosto</option>
+                                <option>Septiembre</option>
+                                <option>Octubre</option>
+                                <option>Noviembre</option>
+                                <option>Diciembre</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="n_rep" class="col-sm-4">Numero de representantes</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="n_rep" placeholder="ej:1000">
+                        </div>
+                    </div>
+                </form>
+                <div class="clearflx">&nbsp</div>
+                <hr>
                 
+                <!-- Parametros simulacion -->
                 
+                <p class="titulo">Parametros simulación</p>
+                <form class="form-horizontal col-md-10">
+                    <div class="form-group">
+                        <label for="umbral" class="col-sm-2">Umbral minimo</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="umbral" placeholder="ej:1000">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </body>
