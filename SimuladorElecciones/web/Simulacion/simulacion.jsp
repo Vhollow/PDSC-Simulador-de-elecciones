@@ -104,7 +104,17 @@
                 <div class="clearflx">&nbsp</div>
                 <hr>
                 
-                <!-- Configurar eleccion -->
+                <!-- Parametros simulacion -->
+                
+                <p class="titulo">Parametros simulación</p>
+                <form class="form-horizontal col-md-10">
+                    <div class="form-group">
+                        <label for="umbral" class="col-sm-2">Umbral minimo</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="umbral" placeholder="ej:1000">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </body>
