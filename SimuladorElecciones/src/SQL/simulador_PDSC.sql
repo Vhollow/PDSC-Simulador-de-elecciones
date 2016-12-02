@@ -82,6 +82,7 @@ CREATE TABLE Usuario (
 CREATE TABLE UsuarioEleccionMap (
         id_usuario                      INTEGER not null,
         id_eleccion                     INTEGER not null,
+        nuevo                           BIT,
         PRIMARY KEY (id_usuario, id_eleccion),
         FOREIGN KEY (id_usuario)
                 REFERENCES Usuario(id)
