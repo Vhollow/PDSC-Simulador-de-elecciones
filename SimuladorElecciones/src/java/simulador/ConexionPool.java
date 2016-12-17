@@ -1,6 +1,7 @@
 package simulador;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 import javax.naming.InitialContext;
 
@@ -8,27 +9,27 @@ import javax.naming.InitialContext;
  *
  * @author daniel
  */
-public class ConnectionPool {
-    private static ConnectionPool pool = null;
+public class ConexionPool {
+    private static ConexionPool pool = null;
     private static DataSource dataSource = null;
     
-    private ConnectionPool() {
+    private ConexionPool() {
         try {
             InitialContext ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/NullPartyDB");
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/pdsc_simulador");
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static ConnectionPool getInstancia() {
+    public static ConexionPool getInstancia() {
         if (pool == null) {
-            pool = new ConnectionPool();
+            pool = new ConexionPool();
         }
         return pool;
     }
     
-    public Connection getConnection() {
+    public Connection getConexion() {
         try {
             return dataSource.getConnection();
         } catch (SQLException sqle) {
@@ -37,7 +38,7 @@ public class ConnectionPool {
         }
     }
     
-    public void freeConnection(Connection c) {
+    public void freeConexion(Connection c) {
         try {
             c.close();
         } catch (SQLException sqle) {
