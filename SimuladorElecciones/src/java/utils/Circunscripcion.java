@@ -19,8 +19,7 @@ public class Circunscripcion {
      * 
      * @param nombre el nombre de la circunscripcion
      */
-    Circunscripcion(String nombre)
-    {
+    public Circunscripcion(String nombre) {
         this.nombre = nombre;
     }
     

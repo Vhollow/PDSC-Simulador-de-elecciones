@@ -18,8 +18,20 @@ public class Usuario {
      * @param correoElectronico el correo electrónico del Usuario
      * @param clave la clave de la cuenta del usuario
      */
-    Usuario (String correoElectronico, String clave)
-    {
+    public Usuario (String correoElectronico, String clave) {
+        this.correoElectronico = correoElectronico;
+        this.clave = clave;
+    }
+    
+    /**
+     * Crea un nuevo Usuario
+     * 
+     * @param nombre el Nombre de Usuario
+     * @param correoElectronico el correo eletrónico del Usuario
+     * @param clave la clave de la cuenta del Usuario
+     */
+    public Usuario (String nombre, String correoElectronico, String clave) {
+        this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.clave = clave;
     }
@@ -30,14 +42,11 @@ public class Usuario {
      * @param id el ID del Usuario
      * @param nombre el Nombre de Usuario
      * @param correoElectronico el correo eletrónico del Usuario
-     * @param clave la clave de la cuenta del Usuario
      */
-    Usuario (int id, String nombre, String correoElectronico, String clave)
-    {
+    public Usuario (int id, String nombre, String correoElectronico) {
         this.id = id;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
-        this.clave = clave;
     }
     
 

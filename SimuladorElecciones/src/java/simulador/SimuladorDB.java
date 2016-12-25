@@ -18,46 +18,87 @@ public class SimuladorDB {
      * 
      * @param   usuario los datos del usuario que queremos introducir en la
      *          base de datos.
-     * @return  el id genererado para el nuevo usuario, o 0 en caso de error.
+     * @return  el id genererado para el nuevo usuario, o -1 en caso de error.
      */
     public static int insertUsuario(Usuario usuario) {
         
         ConexionPool pool = ConexionPool.getInstancia();
-        Connection conexion = pool.getConexion();
+        Connection conexion = pool.getConnection();
         
         String consultaString = "INSERT INTO Usuario "
                 + "(nombre, correo_electronico, clave) "
                 + "VALUES (?, ?, ?)";
         
+        int idNuevoUsuario = -1;
+        
         try {
-            PreparedStatement statement = conexion.prepareStatement(
+            PreparedStatement sentencia = conexion.prepareStatement(
                 consultaString,
                 Statement.RETURN_GENERATED_KEYS
             );
-            statement.setString(1, usuario.getNombre());
-            statement.setString(2, usuario.getCorreoElectronico());
-            statement.setString(3, usuario.getClave());
+            sentencia.setString(1, usuario.getNombre());
+            sentencia.setString(2, usuario.getCorreoElectronico());
+            sentencia.setString(3, usuario.getClave());
             
             // El id se genera automaticamente
-            int idNuevoUsuario;
-            if ((idNuevoUsuario = statement.executeUpdate()) != 0)
+            if (sentencia.executeUpdate() != 0)
             {
-                ResultSet claves = statement.getGeneratedKeys();
+                ResultSet claves = sentencia.getGeneratedKeys();
                 if (claves.next()) {
                     idNuevoUsuario = claves.getInt(1);
                 }
             }
             
-            statement.close();
-            pool.freeConexion(conexion);
-            
-            return idNuevoUsuario;
-            
+            sentencia.close();
         } catch(SQLException e) {
             e.printStackTrace();
-            return 0;
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return idNuevoUsuario;
+    }
+    
+    /**
+     * Devuelve el usuario con el mismo id que el especificado.
+     * /
+     * @param   id el id del usuario.
+     * @return  el Usuario con el mismo id que el especificado.
+     */
+    public static Usuario selectUsuario(int id) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "SELECT * "
+                + "FROM Usuario "
+                + "WHERE id=?";
+        
+        Usuario usuario = null;
+        
+        try {            
+            PreparedStatement sentencia = conexion.prepareStatement(consultaString);
+            sentencia.setInt(1, id);
+            
+            ResultSet resultado = sentencia.executeQuery();
+            
+            if( resultado.next() ) {
+                usuario = new Usuario(
+                        resultado.getInt("id"),
+                        resultado.getString("nombre"),
+                        resultado.getString("correo_electronico")
+                );
+            }
+            
+            resultado.close();
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
         
+        pool.freeConnection(conexion);
+        
+        return usuario;
     }
 
 }

@@ -22,7 +22,7 @@ CREATE TABLE TipoEleccion (
 );
 
 CREATE TABLE Eleccion (
-    id                      INTEGER not null,
+    id                      INTEGER not null AUTO_INCREMENT,
     fecha                   DATE not null,
     tipo_eleccion           INTEGER,
     PRIMARY KEY (id)
@@ -71,7 +71,7 @@ CREATE TABLE Voto (
 );
 
 CREATE TABLE Usuario (
-    id                      INTEGER not null,
+    id                      INTEGER not null AUTO_INCREMENT,
     nombre                  VARCHAR(20) not null,
     correo_electronico      VARCHAR(30) not null,
     clave                   VARCHAR(20) not null,
@@ -105,8 +105,8 @@ CREATE TRIGGER usuarioEleccionTrigger BEFORE DELETE ON UsuarioEleccionMap
             AND 1 >= ( SELECT COUNT(*)
                         FROM UsuarioEleccionMap M
                         WHERE M.id_eleccion = OLD.id_eleccion );
-    END; //
-DELIMITER;
+    END //
+DELIMITER ;
 
 -- -----------------------------------------------------
 -- Inserts de tablas

@@ -32,8 +32,7 @@ public class Eleccion {
      * @param tipoEleccion el Tipo de la Eleccion
      * @param fecha 
      */
-    Eleccion (TipoEleccion tipoEleccion, Date fecha)
-    {
+    public Eleccion (TipoEleccion tipoEleccion, Date fecha) {
         this.tipoEleccion = tipoEleccion;
         this.fecha = fecha;
     }
