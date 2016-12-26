@@ -25,7 +25,10 @@ CREATE TABLE Eleccion (
     id                      INTEGER not null AUTO_INCREMENT,
     fecha                   DATE not null,
     tipo_eleccion           INTEGER,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (tipo_eleccion)
+        REFERENCES TipoEleccion(id)
+            ON DELETE CASCADE
 );
 
 CREATE TABLE Candidatura (

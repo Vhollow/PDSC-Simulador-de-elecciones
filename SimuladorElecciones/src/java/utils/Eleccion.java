@@ -3,45 +3,52 @@ package utils;
 import java.util.Date;
 
 /**
- * El Tipo de las Elecciones
+ * Clase Eleccion, representa una eleccion en nuestra base de datos
  * 
- * @author daniel
- */
-enum TipoEleccion
-{
-    CongresoDiputados,
-    Autonomicas,
-    Municipales,
-    ParlamentoEuropeo
-}
-
-
-/**
- *
  * @author Daniel
  */
 public class Eleccion {
     
-    private TipoEleccion tipoEleccion;
+    /** El id de la Eleccion en la base de datos */
+    private int id;
+    
+    /** Fecha de creacion de la Eleccion */
     private Date fecha;
+    
+    /** Tipo de la Eleccion */
+    private TipoEleccion tipoEleccion;
     
     
     /**
      * Crea una nueva Eleccion
      * 
      * @param tipoEleccion el Tipo de la Eleccion
-     * @param fecha 
+     * @param fecha la fecha de creacion de la Eleccion
      */
-    public Eleccion (TipoEleccion tipoEleccion, Date fecha) {
+    public Eleccion (Date fecha, TipoEleccion tipoEleccion) {
+        id = -1;
         this.tipoEleccion = tipoEleccion;
         this.fecha = fecha;
     }
+    
+    /**
+     * Crea una nueva Eleccion
+     * 
+     * @param id el id de la eleccion
+     * @param tipoEleccion el Tipo de la Eleccion
+     * @param fecha la fecha de creacion de la Eleccion
+     */
+    public Eleccion (int id, Date fecha, TipoEleccion tipoEleccion) {
+        this.id = id;
+        this.fecha = fecha;
+        this.tipoEleccion = tipoEleccion;
+    }
 
     /**
-     * @return the tipoEleccion
+     * @return the id
      */
-    public TipoEleccion getTipoEleccion() {
-        return tipoEleccion;
+    public int getID() {
+        return id;
     }
 
     /**
@@ -49,6 +56,13 @@ public class Eleccion {
      */
     public Date getFecha() {
         return fecha;
+    }
+
+    /**
+     * @return the tipoEleccion
+     */
+    public TipoEleccion getTipoEleccion() {
+        return tipoEleccion;
     }
     
 }
