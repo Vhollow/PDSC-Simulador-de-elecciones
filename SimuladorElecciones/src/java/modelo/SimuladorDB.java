@@ -5,6 +5,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import utils.Eleccion;
 import utils.TipoEleccion;
 import utils.Usuario;
@@ -63,7 +65,7 @@ public class SimuladorDB {
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
-        String consultaString = "INSERT INTO Usuario "
+        String sentenciaString = "INSERT INTO Usuario "
                 + "(nombre, correo_electronico, clave) "
                 + "VALUES (?, ?, ?)";
         
@@ -71,7 +73,7 @@ public class SimuladorDB {
         
         try {
             PreparedStatement sentencia = conexion.prepareStatement(
-                consultaString,
+                sentenciaString,
                 Statement.RETURN_GENERATED_KEYS
             );
             sentencia.setString(1, usuario.getNombre());
@@ -115,10 +117,10 @@ public class SimuladorDB {
         Usuario usuario = null;
         
         try {            
-            PreparedStatement sentencia = conexion.prepareStatement(consultaString);
-            sentencia.setInt(1, id);
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setInt(1, id);
             
-            ResultSet resultado = sentencia.executeQuery();
+            ResultSet resultado = consulta.executeQuery();
             
             if( resultado.next() ) {
                 usuario = new Usuario(
@@ -129,7 +131,7 @@ public class SimuladorDB {
             }
             
             resultado.close();
-            sentencia.close();
+            consulta.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -152,7 +154,7 @@ public class SimuladorDB {
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
-        String consultaString = "INSERT INTO Eleccion "
+        String sentenciaString = "INSERT INTO Eleccion "
                 + "(fecha, tipo_eleccion) "
                 + "VALUES (?, ?)";
         
@@ -160,7 +162,7 @@ public class SimuladorDB {
         
         try {
             PreparedStatement sentencia = conexion.prepareStatement(
-                consultaString,
+                sentenciaString,
                 Statement.RETURN_GENERATED_KEYS
             );
             sentencia.setDate(1, utilDateToSQLDate(eleccion.getFecha()));
@@ -203,10 +205,10 @@ public class SimuladorDB {
         Eleccion eleccion = null;
         
         try {            
-            PreparedStatement sentencia = conexion.prepareStatement(consultaString);
-            sentencia.setInt(1, id);
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setInt(1, id);
             
-            ResultSet resultado = sentencia.executeQuery();
+            ResultSet resultado = consulta.executeQuery();
             
             if( resultado.next() ) {
                 eleccion = new Eleccion(
@@ -217,7 +219,7 @@ public class SimuladorDB {
             }
             
             resultado.close();
-            sentencia.close();
+            consulta.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -225,6 +227,52 @@ public class SimuladorDB {
         pool.freeConnection(conexion);
         
         return eleccion;
+    }
+    
+    /**
+     * Devuelve las elecciones compartidas o creadas por el Usuario con el mismo
+     * id que el especificado
+     * 
+     * @param   idUsuario el id del Usuario.
+     * @return  las Elecciones compartidas o creadas por el Usuario.
+     */
+    public static List<Eleccion> selectElecciones(int idUsuario) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "SELECT * "
+                + "FROM Eleccion E, UsuarioEleccionMap M "
+                + "WHERE M.id_usuario=? AND M.id_eleccion=E.id "
+                + "ORDER BY E.fecha";
+        
+        List<Eleccion> ret = new ArrayList<Eleccion>();
+        
+        try {            
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setInt(1, idUsuario);
+            
+            ResultSet resultado = consulta.executeQuery();
+            
+            while( resultado.next() ) {
+                ret.add(
+                    new Eleccion(
+                        resultado.getInt("id"),
+                        resultado.getDate("fecha"),
+                        idToTipoEleccion(resultado.getInt("tipo_eleccion"))
+                    )
+                );
+            }
+            
+            resultado.close();
+            consulta.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
     }
     
 // USUARIOELECCIONMAP
@@ -236,7 +284,7 @@ public class SimuladorDB {
      * @param   idEleccion el id de la eleccion que queremos mapear.
      * @param   nuevo si queremos almacenar como nuevo el par o no
      * @return  true si el par se introdujo correctamente, false en caso
-     * contrario
+     *          contrario
      */
     public static boolean insertUsuarioEleccion(
             int idUsuario, int idEleccion, boolean nuevo
@@ -244,7 +292,7 @@ public class SimuladorDB {
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
-        String consultaString = "INSERT INTO UsuarioEleccionMap "
+        String sentenciaString = "INSERT INTO UsuarioEleccionMap "
                 + "(id_usuario, id_eleccion, nuevo) "
                 + "VALUES (?, ?, ?)";
         
@@ -252,7 +300,7 @@ public class SimuladorDB {
         
         try {
             PreparedStatement sentencia = conexion.prepareStatement(
-                consultaString
+                sentenciaString
             );
             sentencia.setInt(1, idUsuario);
             sentencia.setInt(2, idEleccion);
@@ -274,9 +322,11 @@ public class SimuladorDB {
     }
     
     /**
-     * Introduce un par entre el Usuario y la Eleccion especificadas en 
+     * Elimina el par entre el Usuario y la Eleccion especificadas en 
      * la base de datos.
      * 
+     * @note    En caso de que no haya más Usuarios con la eleccion con el id
+     *          especficado, la Elección también será borrada
      * @param   idUsuario el id del usuario que queremos mapear.
      * @param   idEleccion el id de la eleccion que queremos mapear.
      * @return  true si el par se introdujo correctamente, false en caso
@@ -287,16 +337,16 @@ public class SimuladorDB {
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
-        String consultaString = "DELETE "
+        String sentenciaString = "DELETE "
                 + "FROM UsuarioEleccionMap "
                 + "WHERE id_usuario=? AND id_eleccion=?";
         
         boolean ret = false;
         
         try {            
-            PreparedStatement sentencia = conexion.prepareStatement(consultaString);
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
             sentencia.setInt(1, idUsuario);
-            sentencia.setInt(1, idEleccion);
+            sentencia.setInt(2, idEleccion);
             
             if (sentencia.executeUpdate() != 0)
             {

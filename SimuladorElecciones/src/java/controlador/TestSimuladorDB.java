@@ -26,6 +26,59 @@ import utils.Usuario;
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
 public class TestSimuladorDB extends HttpServlet {
 
+    /** 
+     * @return true si la base de datos de la aplicacion funciona correctamente
+     */
+    private boolean superaUnitTest() {
+        // Insert de Usuario
+        Usuario usuario1 = new Usuario("Usuario1", "usuario1@correo.com", "111");
+        int idUsuario1 = SimuladorDB.insertUsuario(usuario1);
+        if(idUsuario1 < 0) { return false; }
+        Usuario usuario2 = new Usuario("Usuario2", "usuario2@correo.com", "111");
+        int idUsuario2 = SimuladorDB.insertUsuario(usuario2);
+        if(idUsuario2 < 0) { return false; }
+
+        // Select de Usuario
+        Usuario usuarioSelected = SimuladorDB.selectUsuario(idUsuario1);
+        if((usuarioSelected.getId() != idUsuario1)
+            || !usuarioSelected.getNombre().equals(usuario1.getNombre())
+            || !usuarioSelected.getCorreoElectronico().equals(usuario1.getCorreoElectronico())
+        ) { return false; }
+
+        // Insert de Eleccion
+        Eleccion eleccion1 = new Eleccion(new Date(), TipoEleccion.Autonomicas);
+        int idEleccion1 = SimuladorDB.insertEleccion(eleccion1);
+        if(idEleccion1 < 0) { return false; }
+        Eleccion eleccion2 = new Eleccion(new Date(), TipoEleccion.CongresoDiputados);
+        int idEleccion2 = SimuladorDB.insertEleccion(eleccion2);
+        if(idEleccion2 < 0) { return false; }
+
+        // Select de Eleccion
+        Eleccion eleccionSelected = SimuladorDB.selectEleccion(idEleccion1);
+        if((eleccionSelected.getId() != idEleccion1)
+            || (eleccionSelected.getFecha().compareTo(eleccion1.getFecha()) == 0)
+            || (eleccionSelected.getTipoEleccion() != eleccion1.getTipoEleccion())
+        ) { return false; }
+
+        // Insert de UsuarioEleccionMap
+        if(!SimuladorDB.insertUsuarioEleccion(idUsuario1, idEleccion1, true)) { return false; }
+        if(!SimuladorDB.insertUsuarioEleccion(idUsuario1, idEleccion2, true)) { return false; }
+        if(!SimuladorDB.insertUsuarioEleccion(idUsuario2, idEleccion1, true)) { return false; }
+
+        // Select Elecciones de Usuario
+        if(SimuladorDB.selectElecciones(idUsuario1).size() != 2) { return false; }
+        if(SimuladorDB.selectElecciones(idUsuario2).size() != 1) { return false; }
+
+        // Remove de UsuarioEleccionMap
+        if(!SimuladorDB.removeUsuarioEleccion(idUsuario1, idEleccion1)) { return false; }
+        if(!SimuladorDB.removeUsuarioEleccion(idUsuario1, idEleccion2)) { return false; }
+        if(SimuladorDB.selectEleccion(idEleccion1) == null) { return false; }
+        if(SimuladorDB.selectEleccion(idEleccion2) != null) { return false; }
+
+        return true;
+    }
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,8 +92,8 @@ public class TestSimuladorDB extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -48,47 +101,9 @@ public class TestSimuladorDB extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet TestSimuladorDB at " + request.getContextPath() + "</h1>");
-            
-//____________________UNIT_TEST____________________
-            int id;
-            Usuario usuario = new Usuario("Nuevo", "nuevo@nuevo.com", "111");
-
-            // Insert de Usuario
-            id = SimuladorDB.insertUsuario(usuario);
-            assert(id > 0);
-
-            // Select de Usuario
-            Usuario usuarioSelected = SimuladorDB.selectUsuario(id);
-            assert((usuarioSelected.getId() == id)
-                    && usuarioSelected.getNombre().equals(usuario.getNombre())
-                    && usuarioSelected.getCorreoElectronico().equals(usuario.getCorreoElectronico())
-            );
-            
-            // Insert de Eleccion
-            Eleccion eleccion = new Eleccion(new Date(), TipoEleccion.Autonomicas);
-            id = SimuladorDB.insertEleccion(eleccion);
-            assert(id > 0);
-            
-            // Select de Eleccion
-            Eleccion eleccionSelected = SimuladorDB.selectEleccion(id);
-            assert((eleccionSelected.getId() == id)
-                    && eleccionSelected.getFecha().equals(eleccion.getFecha())
-                    && (eleccionSelected.getTipoEleccion() == eleccion.getTipoEleccion())
-            );
-            
-            // Insert de UsuarioEleccionMap
-            assert(SimuladorDB.insertUsuarioEleccion(usuarioSelected.getId(), eleccionSelected.getId(), true) == true);
-            
-            // Remove de UsuarioEleccionMap
-            assert(SimuladorDB.removeUsuarioEleccion(usuarioSelected.getId(), eleccionSelected.getId()) == true);
-//____________________UNIT_TEST____________________
-            
-            out.println("<p>Test Superado</p>");
+            if (superaUnitTest()) { out.println("<p>Test Superado</p>"); }
             out.println("</body>");
             out.println("</html>");
-            
-            
-            
         } finally {
             out.close();
         }
