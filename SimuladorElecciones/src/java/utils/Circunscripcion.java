@@ -7,11 +7,11 @@ package utils;
 public class Circunscripcion {
     
     private String nombre;
-    private int numero_representantes;
-    private int voto_nulo;
-    private int voto_en_blanco;
+    private int numeroRepresentantes;
+    private int votoNulo;
+    private int votoEnBlanco;
     private int abstencion;
-    private int minimo_representacion;
+    private int minimoRepresentacion;
     
     
     /**
@@ -32,45 +32,45 @@ public class Circunscripcion {
     }
 
     /**
-     * @return the numero_representantes
+     * @return the numeroRepresentantes
      */
-    public int getNumero_representantes() {
-        return numero_representantes;
+    public int getNumeroRepresentantes() {
+        return numeroRepresentantes;
     }
 
     /**
-     * @param numero_representantes the numero_representantes to set
+     * @param numeroRepresentantes the numero_representantes to set
      */
-    public void setNumero_representantes(int numero_representantes) {
-        this.numero_representantes = numero_representantes;
+    public void setNumeroRepresentantes(int numeroRepresentantes) {
+        this.numeroRepresentantes = numeroRepresentantes;
     }
 
     /**
-     * @return the voto_nulo
+     * @return the votoNulo
      */
-    public int getVoto_nulo() {
-        return voto_nulo;
+    public int getVotoNulo() {
+        return votoNulo;
     }
 
     /**
-     * @param voto_nulo the voto_nulo to set
+     * @param votoNulo the votoNulo to set
      */
-    public void setVoto_nulo(int voto_nulo) {
-        this.voto_nulo = voto_nulo;
+    public void setVotoNulo(int votoNulo) {
+        this.votoNulo = votoNulo;
     }
 
     /**
-     * @return the voto_en_blanco
+     * @return the votoEnBlanco
      */
-    public int getVoto_en_blanco() {
-        return voto_en_blanco;
+    public int getVotoEnBlanco() {
+        return votoEnBlanco;
     }
 
     /**
-     * @param voto_en_blanco the voto_en_blanco to set
+     * @param votoEnBlanco the votoEnBlanco to set
      */
-    public void setVoto_en_blanco(int voto_en_blanco) {
-        this.voto_en_blanco = voto_en_blanco;
+    public void setVotoEnBlanco(int votoEnBlanco) {
+        this.votoEnBlanco = votoEnBlanco;
     }
 
     /**
@@ -88,17 +88,17 @@ public class Circunscripcion {
     }
 
     /**
-     * @return the minimo_representacion
+     * @return the minimoRepresentacion
      */
-    public int getMinimo_representacion() {
-        return minimo_representacion;
+    public int getMinimoRepresentacion() {
+        return minimoRepresentacion;
     }
 
     /**
-     * @param minimo_representacion the minimo_representacion to set
+     * @param minimoRepresentacion the minimoRepresentacion to set
      */
-    public void setMinimo_representacion(int minimo_representacion) {
-        this.minimo_representacion = minimo_representacion;
+    public void setMinimoRepresentacion(int minimoRepresentacion) {
+            this.minimoRepresentacion = minimoRepresentacion;
     }
     
 }

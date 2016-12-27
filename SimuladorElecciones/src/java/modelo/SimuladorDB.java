@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import utils.Circunscripcion;
 import utils.Eleccion;
 import utils.TipoEleccion;
 import utils.Usuario;
@@ -332,7 +333,7 @@ public class SimuladorDB {
      * @return  true si el par se introdujo correctamente, false en caso
      * contrario
      */
-    public static boolean removeUsuarioEleccion(int idUsuario, int idEleccion) {
+    public static boolean deleteUsuarioEleccion(int idUsuario, int idEleccion) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
@@ -363,4 +364,136 @@ public class SimuladorDB {
         return ret;
     }
 
+// CIRCUNSCRIPCION
+    /**
+     * Introduce la circunscripcion especificada en la base de datos.
+     * 
+     * @param   idEleccion el id de la Eleccion al que pertenece la
+     *          Circunscripcion
+     * @param   circunscripcion los datos de la Circunscripcion que queremos
+     *          introducir en la base de datos.
+     * @return  true si se introdujeron los datos correctamente en la base de
+     *          datos, false en caso constrario
+     */
+    public static boolean insertCircunscripcion(int idEleccion, Circunscripcion circunscripcion) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String sentenciaString = "INSERT INTO Circunscripcion "
+                + "(id_eleccion, nombre, numero_representantes, voto_nulo, "
+                + "voto_en_blanco, abstencion, minimo_representacion) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
+            sentencia.setInt(1, idEleccion);
+            sentencia.setString(2, circunscripcion.getNombre());
+            sentencia.setInt(3, circunscripcion.getNumeroRepresentantes());
+            sentencia.setInt(4, circunscripcion.getVotoNulo());
+            sentencia.setInt(5, circunscripcion.getVotoEnBlanco());
+            sentencia.setInt(6, circunscripcion.getAbstencion());
+            sentencia.setInt(7, circunscripcion.getMinimoRepresentacion());
+            
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+
+    /**
+     * Devuelve la circunscripcion con el mismo nombre e id que el especificado.
+     * 
+     * @param   idEleccion el id de la eleccion.
+     * @param   nombre el nombre de la circunscripcion.
+     * @return  la Circunscripcion con el mismo nombre e id que el especificado.
+     */
+    public static Circunscripcion selectCircunscripcion(int idEleccion, String nombre) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "SELECT * "
+                + "FROM Circunscripcion "
+                + "WHERE id_eleccion=? AND nombre=?";
+        
+        Circunscripcion circunscripcion = null;
+        
+        try {            
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setInt(1, idEleccion);
+            consulta.setString(2, nombre);
+            
+            ResultSet resultado = consulta.executeQuery();
+            
+            if( resultado.next() ) {
+                circunscripcion = new Circunscripcion(resultado.getString("nombre"));
+                circunscripcion.setNumeroRepresentantes(resultado.getInt("numero_representantes"));
+                circunscripcion.setVotoNulo(resultado.getInt("voto_nulo"));
+                circunscripcion.setVotoEnBlanco(resultado.getInt("voto_en_blanco"));
+                circunscripcion.setAbstencion(resultado.getInt("abstencion"));
+                circunscripcion.setMinimoRepresentacion(resultado.getInt("minimo_representacion"));
+            }
+            
+            resultado.close();
+            consulta.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        pool.freeConnection(conexion);
+        
+        return circunscripcion;
+    }
+
+    /**
+     * Elimina la circunscripcion especificada de la base de datos.
+     * 
+     * @param   idEleccion el id de la eleccion.
+     * @param   nombre el nombre de la circunscripcion.
+     * @return  true si se eliminaron los datos correctamente de la base de
+     *          datos, false en caso constrario
+     */
+    public static boolean deleteCircunscripcion(int idEleccion, String nombre) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String sentenciaString = "DELETE "
+                + "FROM Circunscripcion "
+                + "WHERE id_eleccion=? AND nombre=?";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
+            sentencia.setInt(1, idEleccion);
+            sentencia.setString(2, nombre);
+            
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+    
 }

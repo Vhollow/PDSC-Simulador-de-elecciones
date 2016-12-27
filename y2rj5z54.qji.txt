@@ -1,0 +1,26 @@
+﻿Operaciones con circunscripcion implementadas
+
+Bug arreglado
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Tue Dec 27 17:39:33 2016 +0100
+#
+# On branch modelo
+# Your branch is ahead of 'origin/modelo' by 1 commit.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   SimuladorElecciones/src/java/controlador/TestSimuladorDB.java
+#	modified:   SimuladorElecciones/src/java/modelo/SimuladorDB.java
+#	modified:   SimuladorElecciones/src/java/utils/Circunscripcion.java
+#	modified:   SimuladorElecciones/web/META-INF/context.xml
+#
+# Changes not staged for commit:
+#	modified:   SimuladorElecciones/web/META-INF/context.xml
+#
+# Untracked files:
+#	1h5rwy3u.vus.txt
+#
+

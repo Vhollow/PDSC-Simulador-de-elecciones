@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.SimuladorDB;
+import utils.Circunscripcion;
 import utils.Eleccion;
 import utils.TipoEleccion;
 import utils.Usuario;
@@ -69,12 +70,24 @@ public class TestSimuladorDB extends HttpServlet {
         if(SimuladorDB.selectElecciones(idUsuario1).size() != 2) { return false; }
         if(SimuladorDB.selectElecciones(idUsuario2).size() != 1) { return false; }
 
-        // Remove de UsuarioEleccionMap
-        if(!SimuladorDB.removeUsuarioEleccion(idUsuario1, idEleccion1)) { return false; }
-        if(!SimuladorDB.removeUsuarioEleccion(idUsuario1, idEleccion2)) { return false; }
+        // Delete de UsuarioEleccionMap
+        if(!SimuladorDB.deleteUsuarioEleccion(idUsuario1, idEleccion1)) { return false; }
+        if(!SimuladorDB.deleteUsuarioEleccion(idUsuario1, idEleccion2)) { return false; }
         if(SimuladorDB.selectEleccion(idEleccion1) == null) { return false; }
         if(SimuladorDB.selectEleccion(idEleccion2) != null) { return false; }
 
+        // Insert Circunscripcion
+        String nombreCircunscripcion = "Valladolid";
+        Circunscripcion circunscripcion1 = new Circunscripcion(nombreCircunscripcion);
+        if(!SimuladorDB.insertCircunscripcion(idEleccion1, circunscripcion1)) { return false; };
+        
+        // Select Circunscripcion
+        Circunscripcion circunscripcionSelected = SimuladorDB.selectCircunscripcion(idEleccion1, nombreCircunscripcion);
+        if(!circunscripcionSelected.getNombre().equals(circunscripcion1.getNombre())) { return false; }
+        
+        // Delete Circunscripcion
+        if(!SimuladorDB.deleteCircunscripcion(idEleccion1, nombreCircunscripcion)) { return false; };
+        
         return true;
     }
     
