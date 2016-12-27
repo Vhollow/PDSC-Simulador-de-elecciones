@@ -1,7 +1,10 @@
 package utils;
 
 /**
- *
+ * Clase Circunscripcion, contiene los datos de una Circunscripcion obtenida
+ * de la Base de Datos. Es empleado como un DTO para facilitar el manejo de
+ * información.
+ * 
  * @author daniel
  */
 public class Circunscripcion {

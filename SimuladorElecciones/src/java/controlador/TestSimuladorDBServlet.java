@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import java.io.IOException;
@@ -14,18 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.SimuladorDB;
+import utils.Candidatura;
 import utils.Circunscripcion;
 import utils.Eleccion;
 import utils.TipoEleccion;
 import utils.Usuario;
 
 /**
- * Servlet empleado para probar la conexion con la base de datos
+ * Clase TestSimuladorDBServlet. Es un Servlet empleado para probar la conexion
+ * con la base de datos
  * 
  * @author daniel
  */
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
-public class TestSimuladorDB extends HttpServlet {
+public class TestSimuladorDBServlet extends HttpServlet {
 
     /** 
      * @return true si la base de datos de la aplicacion funciona correctamente
@@ -87,6 +84,20 @@ public class TestSimuladorDB extends HttpServlet {
         
         // Delete Circunscripcion
         if(!SimuladorDB.deleteCircunscripcion(idEleccion1, nombreCircunscripcion)) { return false; };
+        
+        // Insert Candidatura
+        String nombreCorto = "PI";
+        Candidatura candidatura1 = new Candidatura(nombreCorto, "Partido Inventado", 16777215);
+        if(!SimuladorDB.insertCandidatura(idEleccion1, candidatura1)) { return false; };
+        
+        // Select Candidatura
+        Candidatura candidaturaSelected = SimuladorDB.selectCandidatura(idEleccion1, nombreCorto);
+        if( (!candidaturaSelected.getNombreCorto().equals(candidatura1.getNombreCorto()))
+            || (!candidaturaSelected.getNombreLargo().equals(candidatura1.getNombreLargo()))
+            || (candidaturaSelected.getColor() != candidatura1.getColor()) ) { return false; }
+        
+        // Delete Candidatura
+        if(!SimuladorDB.deleteCandidatura(idEleccion1, nombreCorto)) { return false; };
         
         return true;
     }

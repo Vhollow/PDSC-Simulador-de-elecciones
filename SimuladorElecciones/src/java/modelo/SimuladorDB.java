@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import utils.Candidatura;
 import utils.Circunscripcion;
 import utils.Eleccion;
 import utils.TipoEleccion;
@@ -51,7 +52,6 @@ public class SimuladorDB {
         
         return ret;
     }    
-    
     
 // USUARIO
     /**
@@ -243,7 +243,7 @@ public class SimuladorDB {
         Connection conexion = pool.getConnection();
         
         String consultaString = "SELECT * "
-                + "FROM Eleccion E, UsuarioEleccionMap M "
+                + "FROM Eleccion E, Usuario_Eleccion_Map M "
                 + "WHERE M.id_usuario=? AND M.id_eleccion=E.id "
                 + "ORDER BY E.fecha";
         
@@ -293,7 +293,7 @@ public class SimuladorDB {
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
-        String sentenciaString = "INSERT INTO UsuarioEleccionMap "
+        String sentenciaString = "INSERT INTO Usuario_Eleccion_Map "
                 + "(id_usuario, id_eleccion, nuevo) "
                 + "VALUES (?, ?, ?)";
         
@@ -339,7 +339,7 @@ public class SimuladorDB {
         Connection conexion = pool.getConnection();
         
         String sentenciaString = "DELETE "
-                + "FROM UsuarioEleccionMap "
+                + "FROM Usuario_Eleccion_Map "
                 + "WHERE id_usuario=? AND id_eleccion=?";
         
         boolean ret = false;
@@ -480,6 +480,133 @@ public class SimuladorDB {
             PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
             sentencia.setInt(1, idEleccion);
             sentencia.setString(2, nombre);
+            
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+
+// CANDIDATURA
+    /**
+     * Introduce la candidatura especificada en la base de datos.
+     * 
+     * @param   idEleccion el id de la Eleccion al que pertenece la
+     *          Circunscripcion
+     * @param   candidatura los datos de la Candidatura que queremos
+     *          introducir en la base de datos.
+     * @return  true si se introdujeron los datos correctamente en la base de
+     *          datos, false en caso constrario
+     */
+    public static boolean insertCandidatura(int idEleccion, Candidatura candidatura) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String sentenciaString = "INSERT INTO Candidatura "
+                + "(id_eleccion, nombre_corto, nombre_largo, color) "
+                + "VALUES (?, ?, ?, ?)";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
+            sentencia.setInt(1, idEleccion);
+            sentencia.setString(2, candidatura.getNombreCorto());
+            sentencia.setString(3, candidatura.getNombreLargo());
+            sentencia.setInt(4, candidatura.getColor());
+            
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+
+    /**
+     * Devuelve la candidatura con el mismo nombre e id que el especificado.
+     * 
+     * @param   idEleccion el id de la eleccion.
+     * @param   nombreCorto el nombre corto de la candatura.
+     * @return  la Candidatura con el mismo nombre e id que el especificado.
+     */
+    public static Candidatura selectCandidatura(int idEleccion, String nombreCorto) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "SELECT * "
+                + "FROM Candidatura "
+                + "WHERE id_eleccion=? AND nombre_corto=?";
+        
+        Candidatura candidatura = null;
+        
+        try {            
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setInt(1, idEleccion);
+            consulta.setString(2, nombreCorto);
+            
+            ResultSet resultado = consulta.executeQuery();
+            
+            if( resultado.next() ) {
+                candidatura = new Candidatura(
+                        resultado.getString("nombre_corto"),
+                        resultado.getString("nombre_largo"),
+                        resultado.getInt("color")
+                );
+            }
+            
+            resultado.close();
+            consulta.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        pool.freeConnection(conexion);
+        
+        return candidatura;
+    }
+
+    /**
+     * Elimina la candidatura especificada de la base de datos.
+     * 
+     * @param   idEleccion el id de la eleccion.
+     * @param   nombreCorto el nombre de la candidatura.
+     * @return  true si se eliminaron los datos correctamente de la base de
+     *          datos, false en caso constrario
+     */
+    public static boolean deleteCandidatura(int idEleccion, String nombreCorto) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String sentenciaString = "DELETE "
+                + "FROM Candidatura "
+                + "WHERE id_eleccion=? AND nombre_corto=?";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
+            sentencia.setInt(1, idEleccion);
+            sentencia.setString(2, nombreCorto);
             
             if (sentencia.executeUpdate() != 0)
             {
