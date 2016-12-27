@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import simulador.SimuladorDB;
+import modelo.SimuladorDB;
 import utils.Eleccion;
 import utils.TipoEleccion;
 import utils.Usuario;
@@ -64,15 +64,23 @@ public class TestSimuladorDB extends HttpServlet {
                     && usuarioSelected.getCorreoElectronico().equals(usuario.getCorreoElectronico())
             );
             
-            
+            // Insert de Eleccion
             Eleccion eleccion = new Eleccion(new Date(), TipoEleccion.Autonomicas);
             id = SimuladorDB.insertEleccion(eleccion);
             assert(id > 0);
+            
+            // Select de Eleccion
             Eleccion eleccionSelected = SimuladorDB.selectEleccion(id);
-            assert((eleccionSelected.getID() == id)
+            assert((eleccionSelected.getId() == id)
                     && eleccionSelected.getFecha().equals(eleccion.getFecha())
                     && (eleccionSelected.getTipoEleccion() == eleccion.getTipoEleccion())
             );
+            
+            // Insert de UsuarioEleccionMap
+            assert(SimuladorDB.insertUsuarioEleccion(usuarioSelected.getId(), eleccionSelected.getId(), true) == true);
+            
+            // Remove de UsuarioEleccionMap
+            assert(SimuladorDB.removeUsuarioEleccion(usuarioSelected.getId(), eleccionSelected.getId()) == true);
 //____________________UNIT_TEST____________________
             
             out.println("<p>Test Superado</p>");

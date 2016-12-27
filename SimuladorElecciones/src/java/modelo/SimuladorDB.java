@@ -1,4 +1,4 @@
-package simulador;
+package modelo;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -10,7 +10,9 @@ import utils.TipoEleccion;
 import utils.Usuario;
 
 /**
- *
+ * Clase SimuladorDB, es la clase empleada para acceder (introducir y obtener
+ * datos) a la Base de Datos de la Aplicación
+ * 
  * @author daniel
  */
 public class SimuladorDB {
@@ -139,7 +141,7 @@ public class SimuladorDB {
     
 // ELECCION
     /**
-     * Introduce el usuario especificado en la base de datos.
+     * Introduce la eleccion especificado en la base de datos.
      * 
      * @param   eleccion los datos de la eleccion que queremos introducir en la
      *          base de datos.
@@ -223,6 +225,92 @@ public class SimuladorDB {
         pool.freeConnection(conexion);
         
         return eleccion;
+    }
+    
+// USUARIOELECCIONMAP
+    /**
+     * Introduce un par entre el Usuario y la Eleccion especificadas en 
+     * la base de datos.
+     * 
+     * @param   idUsuario el id del usuario que queremos mapear.
+     * @param   idEleccion el id de la eleccion que queremos mapear.
+     * @param   nuevo si queremos almacenar como nuevo el par o no
+     * @return  true si el par se introdujo correctamente, false en caso
+     * contrario
+     */
+    public static boolean insertUsuarioEleccion(
+            int idUsuario, int idEleccion, boolean nuevo
+    ) {        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "INSERT INTO UsuarioEleccionMap "
+                + "(id_usuario, id_eleccion, nuevo) "
+                + "VALUES (?, ?, ?)";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement sentencia = conexion.prepareStatement(
+                consultaString
+            );
+            sentencia.setInt(1, idUsuario);
+            sentencia.setInt(2, idEleccion);
+            sentencia.setBoolean(3, nuevo);
+            
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+    
+    /**
+     * Introduce un par entre el Usuario y la Eleccion especificadas en 
+     * la base de datos.
+     * 
+     * @param   idUsuario el id del usuario que queremos mapear.
+     * @param   idEleccion el id de la eleccion que queremos mapear.
+     * @return  true si el par se introdujo correctamente, false en caso
+     * contrario
+     */
+    public static boolean removeUsuarioEleccion(int idUsuario, int idEleccion) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "DELETE "
+                + "FROM UsuarioEleccionMap "
+                + "WHERE id_usuario=? AND id_eleccion=?";
+        
+        boolean ret = false;
+        
+        try {            
+            PreparedStatement sentencia = conexion.prepareStatement(consultaString);
+            sentencia.setInt(1, idUsuario);
+            sentencia.setInt(1, idEleccion);
+            
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
     }
 
 }

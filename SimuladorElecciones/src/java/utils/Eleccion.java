@@ -47,7 +47,7 @@ public class Eleccion {
     /**
      * @return the id
      */
-    public int getID() {
+    public int getId() {
         return id;
     }
 
