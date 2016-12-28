@@ -7,10 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import utils.Usuario;
 import utils.Eleccion;
-import modelo.UsuarioDAO;
-import modelo.UsuarioDAOImpl;
 import modelo.EleccionDAO;
 import modelo.EleccionDAOImpl;
 
@@ -35,15 +34,15 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // 1. Obtenemos el usuario del parametro id de la URL
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        Usuario usuarioActual = usuarioDAO.selectUsuario( Integer.parseInt(request.getParameter("id")) );
+        HttpSession session = request.getSession();
+        Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
         
         if (usuarioActual != null) {
             
             // 2. Obtenemos las Elecciones creadas o compartidas con el usuario
             EleccionDAO eleccionDAO = new EleccionDAOImpl();
             List<Eleccion> eleccionesUsuario = eleccionDAO.selectElecciones(usuarioActual.getId());
-            
+                        
             // 3. Pasamos los datos obtenidos de la base de datos a la página
             // del usuario de la vista
             request.setAttribute("usuarioActual", usuarioActual);
@@ -52,8 +51,11 @@ public class UsuarioServlet extends HttpServlet {
             String url = "/Usuario/usuario.jsp";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
+        } else {
+            String url = "/index";
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+            dispatcher.forward(request, response);
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -20,11 +20,12 @@ public interface UsuarioDAO {
     public int insertUsuario(Usuario usuario);
     
     /**
-     * Devuelve el usuario con el mismo id que el especificado.
+     * Devuelve el usuario con el mismo correo y clave que las especificadas.
      * 
-     * @param   id el id del usuario.
+     * @param   correoElectronico el correo electronico de la cuenta del Usuario
+     * @param   clave la contraseña de la cuenta del Usuario
      * @return  el Usuario con el mismo id que el especificado.
      */
-    public Usuario selectUsuario(int id);
+    public Usuario selectUsuario(String correoElectronico, String clave);
     
 }

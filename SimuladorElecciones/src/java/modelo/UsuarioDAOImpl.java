@@ -68,20 +68,21 @@ public class UsuarioDAOImpl implements UsuarioDAO {
      * @inheritDoc
      */
     @Override
-    public Usuario selectUsuario(int id) {
+    public Usuario selectUsuario(String correoElectronico, String clave) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
         String consultaString = "SELECT * "
                 + "FROM Usuario "
-                + "WHERE id=?";
+                + "WHERE correo_electronico=? AND clave=?";
         
         Usuario usuario = null;
         
         try {            
             PreparedStatement consulta = conexion.prepareStatement(consultaString);
-            consulta.setInt(1, id);
+            consulta.setString(1, correoElectronico);
+            consulta.setString(2, clave);
             
             ResultSet resultado = consulta.executeQuery();
             

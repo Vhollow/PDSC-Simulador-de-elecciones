@@ -53,7 +53,7 @@ public class TestSimuladorDBServlet extends HttpServlet {
         if(idUsuario2 < 0) { return false; }
 
         // Select de Usuario
-        Usuario usuarioSelected = usuarioDAO.selectUsuario(idUsuario1);
+        Usuario usuarioSelected = usuarioDAO.selectUsuario(usuario1.getCorreoElectronico(), usuario1.getClave());
         if((usuarioSelected.getId() != idUsuario1)
             || !usuarioSelected.getNombre().equals(usuario1.getNombre())
             || !usuarioSelected.getCorreoElectronico().equals(usuario1.getCorreoElectronico())
