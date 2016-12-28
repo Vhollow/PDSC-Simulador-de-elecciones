@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    <session-config>
+    <session-config>    
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <!-- Servlets -->
     <servlet>
-        <servlet-name>TestSimuladorDB</servlet-name>
+        <servlet-name>TestSimuladorDBServlet</servlet-name>
         <servlet-class>controlador.TestSimuladorDBServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TestSimuladorDB</servlet-name>
+        <servlet-name>TestSimuladorDBServlet</servlet-name>
         <url-pattern>/testSimuladorDB</url-pattern>
-        <url-pattern/>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>UsuarioServlet</servlet-name>
+        <servlet-class>controlador.UsuarioServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsuarioServlet</servlet-name>
+        <url-pattern>/usuario</url-pattern>
     </servlet-mapping>
 </web-app>
