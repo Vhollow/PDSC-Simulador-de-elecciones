@@ -1,4 +1,3 @@
-
 /*
  * Retorna un array con las candidaturas dadas que superan el umbral minimo de
  * representacion
@@ -72,27 +71,4 @@ function calculaDHondt(candidaturas, numEscaños) {
 	}
 
 	return escañosAsignados;
-}
-
-
-function calcula() {
-
-	var numEscaños		= 50;
-	var abstencion		= 20;
-	var votosNulos		= 5;
-	var votosBlanco		= 10;
-	var propMinimoRepresentacion = 0.03;
-	var candidaturas	= [ {nombre: "PSOE", votosValidos: 15}, {nombre: "PP", votosValidos: 20},
-							{nombre: "ERC", votosValidos: 5}, {nombre: "Unidos Podemos", votosValidos: 15},
-							{nombre: "Ciudadanos", votosValidos: 10} ];
-
-	var totalVotosValidos = votosBlanco;
-	for (var i = 0; i < candidaturas.length; i++) {
-		totalVotosValidos += candidaturas[i].votosValidos;
-	}
-
-	var candidaturasFiltradas = filtraMinimo(candidaturas, totalVotosValidos, propMinimoRepresentacion);
-	var res = calculaDHondt(candidaturasFiltradas, numEscaños);
-	console.log(res);
-
 }
