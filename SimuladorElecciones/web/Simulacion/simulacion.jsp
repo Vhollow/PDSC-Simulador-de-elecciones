@@ -304,6 +304,12 @@
                         
                     </table>
                 </div>
+                
+                <div class="sep">
+                    <p class="titulo"> Simulacion </p>
+                    <div class="clearflx"></div>
+                        <!-- Aquí aparecen los gráficos de la simulación -->
+                </div>
             </div>
         </div> 
     </body>
