@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * El Tipo de las Elecciones
+ * Enum TipoEleccion, representa el Tipo de una Eleccion
  * 
  * @author daniel
  */

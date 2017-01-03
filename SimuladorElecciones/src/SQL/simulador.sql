@@ -1,20 +1,25 @@
 -- -----------------------------------------------------
+-- Script SQL para la base de datos del simulador
+-- Autor: Daniel González Alonso
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
 -- Drop de tablas
 -- -----------------------------------------------------
-DROP TRIGGER usuarioEleccionTrigger;
-DROP TABLE UsuarioEleccionMap;
+DROP TRIGGER Usuario_Eleccion_Trigger;
+DROP TABLE Usuario_Eleccion_Map;
 DROP TABLE Usuario;
 DROP TABLE Voto;
 DROP TABLE Circunscripcion;
 DROP TABLE Candidatura;
 DROP TABLE Eleccion;
-DROP TABLE TipoEleccion;
+DROP TABLE Tipo_Eleccion;
 
 
 -- -----------------------------------------------------
 -- Creacion de tablas
 -- -----------------------------------------------------
-CREATE TABLE TipoEleccion (
+CREATE TABLE Tipo_Eleccion (
     id                      INTEGER not null,
     nombre                  VARCHAR(20) not null,
     PRIMARY KEY (id),
@@ -27,7 +32,7 @@ CREATE TABLE Eleccion (
     tipo_eleccion           INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (tipo_eleccion)
-        REFERENCES TipoEleccion(id)
+        REFERENCES Tipo_Eleccion(id)
             ON DELETE CASCADE
 );
 
@@ -83,7 +88,7 @@ CREATE TABLE Usuario (
     UNIQUE(correo_electronico)
 );
 
-CREATE TABLE UsuarioEleccionMap (
+CREATE TABLE Usuario_Eleccion_Map (
     id_usuario              INTEGER not null,
     id_eleccion             INTEGER not null,
     nuevo                   BIT,
@@ -100,13 +105,13 @@ CREATE TABLE UsuarioEleccionMap (
 -- Triggers
 -- -----------------------------------------------------
 DELIMITER //
-CREATE TRIGGER usuarioEleccionTrigger BEFORE DELETE ON UsuarioEleccionMap
+CREATE TRIGGER Usuario_Eleccion_Trigger BEFORE DELETE ON Usuario_Eleccion_Map
     FOR EACH ROW BEGIN
         DELETE
         FROM Eleccion
         WHERE id = OLD.id_eleccion
             AND 1 >= ( SELECT COUNT(*)
-                        FROM UsuarioEleccionMap M
+                        FROM Usuario_Eleccion_Map M
                         WHERE M.id_eleccion = OLD.id_eleccion );
     END //
 DELIMITER ;
@@ -114,7 +119,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- Inserts de tablas
 -- -----------------------------------------------------
-INSERT INTO TipoEleccion(id, nombre) VALUES (1, "CongresoDiputados");
-INSERT INTO TipoEleccion(id, nombre) VALUES (2, "Autonomicas");
-INSERT INTO TipoEleccion(id, nombre) VALUES (3, "Municipales");
-INSERT INTO TipoEleccion(id, nombre) VALUES (4, "ParlamentoEuropeo");
+INSERT INTO Tipo_Eleccion(id, nombre) VALUES (1, "Congreso Diputados");
+INSERT INTO Tipo_Eleccion(id, nombre) VALUES (2, "Autonomicas");
+INSERT INTO Tipo_Eleccion(id, nombre) VALUES (3, "Municipales");
+INSERT INTO Tipo_Eleccion(id, nombre) VALUES (4, "Parlamento Europeo");

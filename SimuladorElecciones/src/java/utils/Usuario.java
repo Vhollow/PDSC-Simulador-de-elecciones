@@ -1,7 +1,9 @@
 package utils;
 
 /**
- *
+ * Clase Usuario, contiene los datos de un Usuario obtenido de la Base de Datos 
+ * Es empleado como un DTO para facilitar el manejo de información.
+ * 
  * @author daniel
  */
 public class Usuario {
