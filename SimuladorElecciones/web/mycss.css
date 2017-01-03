@@ -70,3 +70,12 @@ and open the template in the editor.
     clear: both;
     content: ".";
 }
+
+.circuns{
+    border: 1px solid black;
+    padding: 2%;
+    margin: 1%;
+    background-color: white;
+    display: inline-block;
+    position: relative;
+}
