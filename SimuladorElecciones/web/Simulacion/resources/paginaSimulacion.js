@@ -6,10 +6,10 @@ var propMinRepresentacion   = 0,
     datos                   = [];
 
 /* FUNCIONES */
-function actualizaGraficos() {
-    var tabla   = document.getElementById("tabla-votos");
+function cambioPropMinRepresentacion() {
+    propMinRepresentacion = document.getElementById("umbral").value;
     
-    
+    dibujaGrafico(circunscripciones, candidaturas, votosACandidatura, propMinRepresentacion);
 }
 
 
@@ -125,6 +125,9 @@ function nuevaCircunscripcion(){
 
     añadirTablaCircunscripcion();
     actualizarTablaVotos();
+    
+    // Reset del texto por defecto en los botones para añadir una circunscripcion
+    document.getElementById("circunscripcion").value = "";
 }
 
 
@@ -145,4 +148,8 @@ function nuevoPartido(){
     document.getElementById("elemPartido").appendChild(div);
 
     actualizarTablaVotos();
+
+    // Reset del texto por defecto en los botones para añadir un partido
+    document.getElementById("partido").value = "";
+    document.getElementById("color").value = "FFFFFF"
 }

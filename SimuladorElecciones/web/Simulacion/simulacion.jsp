@@ -23,156 +23,14 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
         
-        <!-- Selector de color -->
+        <!-- D3 para graficos -->
+        <script type="text/javascript" src="./resources/d3.min.js"></script>
         
-        <script src="resources/jscolor.js"></script>
-        
-        <!-- Javascript propio -->
-        
-        <script type="text/javascript">
-            var circunscripciones = [];
-            var votos_circunscripcion = [];
-            var repre_circunscripcion = [];
-            var partidos = [];
-            var color_partidos = [];
-            var datos = [];
-            
-            function inicio(){
-                circunscripciones = new Array();
-                votos_circunscripcion = new Array();
-                repre_circunscripcion = new Array();
-                partidos = new Array();
-                color_partidos = new Array();
-                datos = new Array();
-                console.log(partidos);
-                actualizarTablaVotos();
-            }
-            
-            function actualizarTablaVotos(){
-                console.log(partidos);
-                var tabla = document.getElementById("tabla-votos");
-                while(tabla.hasChildNodes()){
-                    tabla.removeChild(tabla.firstChild);	
-                }
-                
-                var head = document.createElement("thead");
-                var row;
-                row = document.createElement("tr");
-                row.appendChild(document.createElement("td"));
-                var th;
-                for (j=0 ; j<partidos.length ; j++){
-                    th = document.createElement("th");
-                    th.style = "background-color: #"+color_partidos[j];
-                    th.innerHTML = partidos[j];
-                    row.appendChild(th);
-                }
-                head.appendChild(row);
-                
-                
-                var body = document.createElement("tbody");
-                var td;
-                for (i=0;i<circunscripciones.length;i++){
-                    row = document.createElement("tr");
-                    th = document.createElement("th");
-                    th.innerHTML = circunscripciones[i];
-                    row.appendChild(th);
-                    for (j=0;j<partidos.length;j++){
-                        td = document.createElement("td");
-                        var v = document.createElement("input");
-                        v.name = "votos"+i+j;
-                        v.type = "text";
-                        v.value = 0;
-                        td.appendChild(v);
-                        row.appendChild(td);
-                    }
-                    body.appendChild(row);
-                }
-                tabla.appendChild(head);
-                tabla.appendChild(body);
-            }
-            
-            function añadirTablaCircunscripcion(){
-                var tabla = document.getElementById("tabla-circunscripciones-body");
-                
-                var row = document.createElement("tr");
-                var c = document.createElement("th");
-                c.innerHTML = circunscripciones[circunscripciones.length-1];
-                var col1 = document.createElement("td");
-                var v = document.createElement("input");
-                v.name = "votos"+(circunscripciones.length-1);
-                v.type = "text";
-                v.value = 0;
-                v.class = "form-control";
-                var col2 = document.createElement("td");
-                var r = document.createElement("input");
-                r.name = "repre"+(circunscripciones.length-1);
-                r.type = "text";
-                r.value = 0;
-                r.class = "form-control";
-                
-                col1.appendChild(v);
-                col2.appendChild(r);
-                row.appendChild(c);
-                row.appendChild(col1);
-                row.appendChild(col2);
-                
-                tabla.appendChild(row);
-            }
-            
-            
-            function nuevaCircunscripcion(){
-                var circunscripcion = document.getElementById("circunscripcion").value;
-                if(circunscripciones.lenght === 0){
-                    circunscripciones = [circunscripcion];
-                }
-                else circunscripciones.push(circunscripcion);
-                votos_circunscripcion.push(0);
-                repre_circunscripcion.push(0);
-                
-                var div = document.createElement("div");
-                div.className = "circuns";
-                div.innerHTML = circunscripcion + "  ";
-                var icon = document.createElement("span");
-                icon.className = "glyphicon glyphicon-remove";
-                div.appendChild(icon);
-                
-                document.getElementById("elemCirc").appendChild(div);
-                
-                añadirTablaCircunscripcion();
-                actualizarTablaVotos();
-                
-                document.getElementById("circunscripcion").value = "";
-            }
-            
-            function nuevoPartido(){
-                var partido = document.getElementById("partido").value;
-                var color = document.getElementById("color").value;
-                if(partidos.lenght === 0){
-                    partidos = [partido];
-                }
-                else partidos.push(partido);
-                if(color_partidos.lenght === 0){
-                    color_partidos = [color];
-                }
-                else color_partidos.push(color);
-                
-                var div = document.createElement("div");
-                div.className = "circuns";
-                div.innerHTML = partido + "  ";
-                div.style = "background-color: #"+color;
-                var icon = document.createElement("span");
-                icon.className = "glyphicon glyphicon-remove";
-                div.appendChild(icon);
-                
-                document.getElementById("elemPartido").appendChild(div);
-                
-                actualizarTablaVotos();
-                
-                document.getElementById("partido").value = "";
-                document.getElementById("color").value = "FFFFFF"
-            }
-            
-        </script>
+        <!-- Javascript propios -->
+	<script type="text/javascript" src="./resources/leyDHondt.js"></script>
+        <script type="text/javascript" src="./resources/paginaSimulacion.js"></script>
+	<script type="text/javascript" src="./resources/grafico.js"></script>
+        <script type="text/javascript" src="./resources/jscolor.js"></script>
     </head>
     <body class="container-fluid" onload="inicio()">
         <div class="row">
@@ -200,7 +58,6 @@
                 <hr>
                 
                 <!-- Configurar eleccion -->
-                
                 <p class="titulo">Detalles elección</p>
                 <form class="form-horizontal col-md-10">
                     <div class="form-group">
@@ -256,13 +113,12 @@
                 <hr>
                 
                 <!-- Parametros simulacion -->
-                
                 <p class="titulo">Parametros simulación</p>
                 <form class="form-horizontal col-md-10">
                     <div class="form-group">
                         <label for="umbral" class="col-sm-2">Umbral minimo</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="umbral" placeholder="ej:1000">
+                            <input type="text" class="form-control" id="umbral" onchange="cambioPropMinRepresentacion()" placeholder="ej:1000">
                         </div>
                     </div>
                 </form>
@@ -303,8 +159,8 @@
                 <div class="clearflx">&nbsp</div>
                 
             </div>
-            <!-- Zona principal -->
 
+            <!-- Zona principal -->
             <div class="col-md-8">
                 <div class="sep">
                     <p class="titulo"> Circunscripciones </p>
@@ -334,6 +190,7 @@
                     <p class="titulo"> Simulacion </p>
                     <div class="clearflx"></div>
                         <!-- Aquí aparecen los gráficos de la simulación -->
+                        <div class="charts"></div>
                 </div>
             </div>
         </div> 

@@ -13,12 +13,12 @@ var margen          = { superior: 75, derecho: 50, inferior: 75, izquierdo: 50 }
  * Dibuja el grafico de sectores con los escaños de cada candidatura en cada una
  * de las circunscripciones dadas
  */
-function dibuja(circunscripciones, candidaturas, votosACandidatura, propMinRepresentacion) {
+function dibujaGrafico(circunscripciones, candidaturas, votosACandidatura, propMinRepresentacion) {
 
     for (var i in circunscripciones) {
 	var datos = calculaEscaños(circunscripciones[i], candidaturas, votosACandidatura, propMinRepresentacion);
 
-	var svg = d3.select(".chart").append("svg")
+	var svg = d3.select(".charts").append("svg")
             .attr("width", ancho)
             .attr("height", alto);
 	var groupArcos = svg.append("g")
