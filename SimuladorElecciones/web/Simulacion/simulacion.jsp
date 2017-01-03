@@ -23,6 +23,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
         
+        <!-- Selector de color -->
+        
+        <script src="resources/jscolor.js"></script>
         
         <!-- Javascript propio -->
         
@@ -31,6 +34,7 @@
             var votos_circunscripcion = [];
             var repre_circunscripcion = [];
             var partidos = [];
+            var color_partidos = [];
             var datos = [];
             
             function inicio(){
@@ -38,6 +42,7 @@
                 votos_circunscripcion = new Array();
                 repre_circunscripcion = new Array();
                 partidos = new Array();
+                color_partidos = new Array();
                 datos = new Array();
                 console.log(partidos);
                 actualizarTablaVotos();
@@ -49,6 +54,7 @@
                 while(tabla.hasChildNodes()){
                     tabla.removeChild(tabla.firstChild);	
                 }
+                
                 var head = document.createElement("thead");
                 var row;
                 row = document.createElement("tr");
@@ -56,6 +62,7 @@
                 var th;
                 for (j=0 ; j<partidos.length ; j++){
                     th = document.createElement("th");
+                    th.style = "background-color: #"+color_partidos[j];
                     th.innerHTML = partidos[j];
                     row.appendChild(th);
                 }
@@ -133,18 +140,26 @@
                 
                 añadirTablaCircunscripcion();
                 actualizarTablaVotos();
+                
+                document.getElementById("circunscripcion").value = "";
             }
             
             function nuevoPartido(){
                 var partido = document.getElementById("partido").value;
+                var color = document.getElementById("color").value;
                 if(partidos.lenght === 0){
                     partidos = [partido];
                 }
                 else partidos.push(partido);
+                if(color_partidos.lenght === 0){
+                    color_partidos = [color];
+                }
+                else color_partidos.push(color);
                 
                 var div = document.createElement("div");
                 div.className = "circuns";
                 div.innerHTML = partido + "  ";
+                div.style = "background-color: #"+color;
                 var icon = document.createElement("span");
                 icon.className = "glyphicon glyphicon-remove";
                 div.appendChild(icon);
@@ -152,6 +167,8 @@
                 document.getElementById("elemPartido").appendChild(div);
                 
                 actualizarTablaVotos();
+                
+                document.getElementById("partido").value = "";
             }
             
         </script>
@@ -251,7 +268,7 @@
                 
                 <form class="form-horizontal col-sm-11">
                     <div class="form-group">
-                        <label for="umbral" class="col-sm-4">Nueva circunscripción</label>
+                        <label for="circunscripcion" class="col-sm-4">Nueva circunscripción</label>
                         <div class="col-sm-5">
                             <input type="text" class="form-control" id="circunscripcion" placeholder="ej:Madrid">
                         </div>
@@ -261,15 +278,22 @@
                 
                 <div class="clearflx"></div>
                 <div id="elemCirc"></div>
-                <div class="clearflx"></div>
+                <div class="sep-2"></div>
                 
                 <form class="form-horizontal col-sm-11">
                     <div class="form-group">
-                        <label for="umbral" class="col-sm-4">Nuevo partido</label>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="partido" placeholder="ej:Madrid">
+                        <label for="partido" class="col-sm-4">Nuevo partido</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="partido" placeholder="ej:Partido x">
                         </div>
-                    <button type="button" class="btn btn-primary col-sm-2" onclick="nuevoPartido()">Añadir</button>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input class="jscolor" id="color" value="">
+                        </div>
+                        <div class="col-sm-2 col-sm-offset-2">
+                            <button type="button" class="btn btn-primary" onclick="nuevoPartido()">Añadir</button>
+                        </div>
                     </div>
                 </form>
                 
