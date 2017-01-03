@@ -27,17 +27,17 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 rect-central">
                     <div class="col-md-6 text-center mit-iz">
-                        <button type="button" class="btn btn-primary btn-lg interior">Version Libre</button>
+                        <button type="button" class="btn btn-primary btn-lg interior">VersiÛn Libre</button>
                         <br>
                         <br>
-                        <b class="sep">*En este modo podr√° realizar las simulaciones pero no podr√° guardar su trabajo</b>
+                        <b class="sep">*En este modo podr· realizar las simulaciones pero no podr· guardar su trabajo</b>
                     </div>
                     <div class="col-md-6 text-center">
-                        <p class="titulo interior">Versi√≥n usuario</p>
-                        <form  class="sep" name="login" action="Login" method="POST">
-                                <input type="text" class="sep" name="usuario"  maxlength="50">
-                                <input type="password" class="sep" name="contrasena" maxlength="50"><br>
-                                <input class="btn btn-lg btn-primary sep" type="submit" value="Login"  name="enviar" />
+                        <p class="titulo interior">VersiÛn usuario</p>
+                        <form  class="sep" name="login" action="index" method="POST">
+                            <input type="text" class="sep" name="correoElectronico" maxlength="50">
+                            <input type="password" class="sep" name="clave" maxlength="50"><br>
+                            <input class="btn btn-lg btn-primary sep" type="submit" value="Login" name="enviar"/>
                         </form>
                     </div>
                 </div>
@@ -45,4 +45,3 @@
         </div>
     </body>
 </html>
-

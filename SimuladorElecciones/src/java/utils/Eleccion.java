@@ -3,7 +3,8 @@ package utils;
 import java.util.Date;
 
 /**
- * Clase Eleccion, representa una eleccion en nuestra base de datos
+ * Clase Eleccion, contiene los datos de una Eleccion obtenida de la Base de
+ * Datos. Es empleado como un DTO para facilitar el manejo de información.
  * 
  * @author Daniel
  */
@@ -47,7 +48,7 @@ public class Eleccion {
     /**
      * @return the id
      */
-    public int getID() {
+    public int getId() {
         return id;
     }
 
