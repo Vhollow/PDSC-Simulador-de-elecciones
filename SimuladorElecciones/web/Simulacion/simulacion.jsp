@@ -26,38 +26,50 @@
         
         <!-- Javascript propio -->
         
-        <script>
+        <script type="text/javascript">
+            var circunscripciones = [];
+            var votos_circunscripcion = [];
+            var repre_circunscripcion = [];
+            var partidos = [];
+            var datos = [];
             
             function inicio(){
-                circunscripciones = ["Prueba"];
-                votos_circunscripcion = [];
-                repre_circunscripcion = [];
-                partidos = ["Prueba"];
-                datos = [];
+                circunscripciones = new Array();
+                votos_circunscripcion = new Array();
+                repre_circunscripcion = new Array();
+                partidos = new Array();
+                datos = new Array();
+                console.log(partidos);
                 actualizarTablaVotos();
             }
             
             function actualizarTablaVotos(){
+                console.log(partidos);
                 var tabla = document.getElementById("tabla-votos");
                 while(tabla.hasChildNodes()){
                     tabla.removeChild(tabla.firstChild);	
                 }
                 var head = document.createElement("thead");
-                head.appendChild(document.createElement("td"));
-                var th;
-                for (j=0 ; j<partidos.lenght ; j++){
-                    th = document.createElement("th");
-                    th.innerHTML = partido[j];
-                }
-                var body = document.createElement("tbody");
                 var row;
+                row = document.createElement("tr");
+                row.appendChild(document.createElement("td"));
+                var th;
+                for (j=0 ; j<partidos.length ; j++){
+                    th = document.createElement("th");
+                    th.innerHTML = partidos[j];
+                    row.appendChild(th);
+                }
+                head.appendChild(row);
+                
+                
+                var body = document.createElement("tbody");
                 var td;
-                for (i=0;i<circunscripciones.lenght;i++){
-                    row = document.createElement("row");
+                for (i=0;i<circunscripciones.length;i++){
+                    row = document.createElement("tr");
                     th = document.createElement("th");
                     th.innerHTML = circunscripciones[i];
                     row.appendChild(th);
-                    for (j=0;j<partidos.lenght;j++){
+                    for (j=0;j<partidos.length;j++){
                         td = document.createElement("td");
                         var v = document.createElement("input");
                         v.name = "votos"+i+j;
@@ -83,11 +95,13 @@
                 v.name = "votos"+(circunscripciones.length-1);
                 v.type = "text";
                 v.value = 0;
+                v.class = "form-control";
                 var col2 = document.createElement("td");
                 var r = document.createElement("input");
                 r.name = "repre"+(circunscripciones.length-1);
                 r.type = "text";
                 r.value = 0;
+                r.class = "form-control";
                 
                 col1.appendChild(v);
                 col2.appendChild(r);
@@ -118,6 +132,7 @@
                 document.getElementById("elemCirc").appendChild(div);
                 
                 añadirTablaCircunscripcion();
+                actualizarTablaVotos();
             }
             
             function nuevoPartido(){
@@ -285,7 +300,7 @@
                 <div class="sep">
                     <p class="titulo"> Votos </p>
                     <div class="clearflx"></div>
-                    <table id="tabla-votos">
+                    <table class="table table-bordered table-responsive" id="tabla-votos">
                         
                     </table>
                 </div>
