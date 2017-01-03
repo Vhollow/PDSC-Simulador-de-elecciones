@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/SimuladorElecciones"/>
+<Context path="/SimuladorElecciones">
+    <Resource
+        auth="Container"
+        name="jdbc/SimuladorDB"
+        type="javax.sql.DataSource"
+        url="jdbc:mysql://localhost:3306/pdsc_simulador"
+        username="root"
+        password="password"
+        driverClassName="com.mysql.jdbc.Driver"
+        maxActive="100"
+        maxIdle="30"
+        maxWait="10000"
+        />
+</Context>
