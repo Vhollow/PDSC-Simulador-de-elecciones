@@ -22,11 +22,144 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+        
+        
+        <!-- Javascript propio -->
+        
+        <script type="text/javascript">
+            var circunscripciones = [];
+            var votos_circunscripcion = [];
+            var repre_circunscripcion = [];
+            var partidos = [];
+            var datos = [];
+            
+            function inicio(){
+                circunscripciones = new Array();
+                votos_circunscripcion = new Array();
+                repre_circunscripcion = new Array();
+                partidos = new Array();
+                datos = new Array();
+                console.log(partidos);
+                actualizarTablaVotos();
+            }
+            
+            function actualizarTablaVotos(){
+                console.log(partidos);
+                var tabla = document.getElementById("tabla-votos");
+                while(tabla.hasChildNodes()){
+                    tabla.removeChild(tabla.firstChild);	
+                }
+                var head = document.createElement("thead");
+                var row;
+                row = document.createElement("tr");
+                row.appendChild(document.createElement("td"));
+                var th;
+                for (j=0 ; j<partidos.length ; j++){
+                    th = document.createElement("th");
+                    th.innerHTML = partidos[j];
+                    row.appendChild(th);
+                }
+                head.appendChild(row);
+                
+                
+                var body = document.createElement("tbody");
+                var td;
+                for (i=0;i<circunscripciones.length;i++){
+                    row = document.createElement("tr");
+                    th = document.createElement("th");
+                    th.innerHTML = circunscripciones[i];
+                    row.appendChild(th);
+                    for (j=0;j<partidos.length;j++){
+                        td = document.createElement("td");
+                        var v = document.createElement("input");
+                        v.name = "votos"+i+j;
+                        v.type = "text";
+                        v.value = 0;
+                        td.appendChild(v);
+                        row.appendChild(td);
+                    }
+                    body.appendChild(row);
+                }
+                tabla.appendChild(head);
+                tabla.appendChild(body);
+            }
+            
+            function añadirTablaCircunscripcion(){
+                var tabla = document.getElementById("tabla-circunscripciones-body");
+                
+                var row = document.createElement("tr");
+                var c = document.createElement("th");
+                c.innerHTML = circunscripciones[circunscripciones.length-1];
+                var col1 = document.createElement("td");
+                var v = document.createElement("input");
+                v.name = "votos"+(circunscripciones.length-1);
+                v.type = "text";
+                v.value = 0;
+                v.class = "form-control";
+                var col2 = document.createElement("td");
+                var r = document.createElement("input");
+                r.name = "repre"+(circunscripciones.length-1);
+                r.type = "text";
+                r.value = 0;
+                r.class = "form-control";
+                
+                col1.appendChild(v);
+                col2.appendChild(r);
+                row.appendChild(c);
+                row.appendChild(col1);
+                row.appendChild(col2);
+                
+                tabla.appendChild(row);
+            }
+            
+            
+            function nuevaCircunscripcion(){
+                var circunscripcion = document.getElementById("circunscripcion").value;
+                if(circunscripciones.lenght === 0){
+                    circunscripciones = [circunscripcion];
+                }
+                else circunscripciones.push(circunscripcion);
+                votos_circunscripcion.push(0);
+                repre_circunscripcion.push(0);
+                
+                var div = document.createElement("div");
+                div.className = "circuns";
+                div.innerHTML = circunscripcion + "  ";
+                var icon = document.createElement("span");
+                icon.className = "glyphicon glyphicon-remove";
+                div.appendChild(icon);
+                
+                document.getElementById("elemCirc").appendChild(div);
+                
+                añadirTablaCircunscripcion();
+                actualizarTablaVotos();
+            }
+            
+            function nuevoPartido(){
+                var partido = document.getElementById("partido").value;
+                if(partidos.lenght === 0){
+                    partidos = [partido];
+                }
+                else partidos.push(partido);
+                
+                var div = document.createElement("div");
+                div.className = "circuns";
+                div.innerHTML = partido + "  ";
+                var icon = document.createElement("span");
+                icon.className = "glyphicon glyphicon-remove";
+                div.appendChild(icon);
+                
+                document.getElementById("elemPartido").appendChild(div);
+                
+                actualizarTablaVotos();
+            }
+            
+        </script>
     </head>
-    <body class="container-fluid">
+    <body class="container-fluid" onload="inicio()">
         <div class="row">
             <!-- Columna de configuración -->
-            <div class="col-md-4" style="background-color: #ddf; height: 800px">
+            <div class="col-md-4" style="background-color: #ddf">
                 <div class="sep-2"></div>
                 <!-- Cargar archivo -->
                 <p class="titulo">Cargar archivo</p>
@@ -115,7 +248,63 @@
                         </div>
                     </div>
                 </form>
+                
+                <form class="form-horizontal col-sm-11">
+                    <div class="form-group">
+                        <label for="umbral" class="col-sm-4">Nueva circunscripción</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="circunscripcion" placeholder="ej:Madrid">
+                        </div>
+                    <button type="button" class="btn btn-primary col-sm-2" onclick="nuevaCircunscripcion()">Añadir</button>
+                    </div>
+                </form>
+                
+                <div class="clearflx"></div>
+                <div id="elemCirc"></div>
+                <div class="clearflx"></div>
+                
+                <form class="form-horizontal col-sm-11">
+                    <div class="form-group">
+                        <label for="umbral" class="col-sm-4">Nuevo partido</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="partido" placeholder="ej:Madrid">
+                        </div>
+                    <button type="button" class="btn btn-primary col-sm-2" onclick="nuevoPartido()">Añadir</button>
+                    </div>
+                </form>
+                
+                <div class="clearflx"></div>
+                <div id="elemPartido"></div>
+                <div class="clearflx">&nbsp</div>
+                
             </div>
-        </div>
+            <!-- Zona principal -->
+
+            <div class="col-md-8">
+                <div class="sep">
+                    <p class="titulo"> Circunscripciones </p>
+                    <div class="clearflx"></div>
+                    <table class="table table-bordered" id="tabla-circunscripciones">
+                        <thead>
+                            <tr>
+                                <th> Circunscripcion </th>
+                                <th> Total votos </th>
+                                <th> Numero representantes </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-circunscripciones-body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sep">
+                    <p class="titulo"> Votos </p>
+                    <div class="clearflx"></div>
+                    <table class="table table-bordered table-responsive" id="tabla-votos">
+                        
+                    </table>
+                </div>
+            </div>
+        </div> 
     </body>
 </html>
