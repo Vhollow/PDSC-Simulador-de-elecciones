@@ -169,6 +169,7 @@
                 actualizarTablaVotos();
                 
                 document.getElementById("partido").value = "";
+                document.getElementById("color").value = "FFFFFF"
             }
             
         </script>
