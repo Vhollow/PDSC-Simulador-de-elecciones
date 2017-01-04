@@ -21,6 +21,7 @@ function actualizarTablaVotos(){
     for (var j = 0 ; j < candidaturas.length ; j++){
         var th = document.createElement("th");
         th.innerHTML = candidaturas[j].nombreCorto;
+        th.style = "background-color: #"+candidaturas[j].color;
         row.appendChild(th);
     }
     head.appendChild(row);
@@ -183,6 +184,7 @@ function nuevaCandidatura(){
     var div = document.createElement("div");
     div.className = "circuns";
     div.innerHTML = candidatura.nombreCorto + "  ";
+    div.style = "background-color: #"+candidatura.color;
     var icon = document.createElement("span");
     icon.className = "glyphicon glyphicon-remove";
     div.appendChild(icon);
