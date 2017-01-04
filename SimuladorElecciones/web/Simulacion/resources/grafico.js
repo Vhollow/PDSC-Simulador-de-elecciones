@@ -13,10 +13,11 @@ var margen          = { superior: 75, derecho: 50, inferior: 75, izquierdo: 50 }
  * Dibuja el grafico de sectores con los escaños de cada candidatura en cada una
  * de las circunscripciones dadas
  */
-function dibujaGrafico(circunscripciones, candidaturas, votosACandidatura, propMinRepresentacion) {
+function dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion) {
 
     for (var i in circunscripciones) {
-	var datos = calculaEscaños(circunscripciones[i], candidaturas, votosACandidatura, propMinRepresentacion);
+	var datos = calculaEscaños(circunscripciones[i], candidaturas, votosCircunscripciones[i], propMinRepresentacion);
+        if (datos === null) { continue; }
 
 	var svg = d3.select(".charts").append("svg")
             .attr("width", ancho)
@@ -41,4 +42,5 @@ function dibujaGrafico(circunscripciones, candidaturas, votosACandidatura, propM
             ultimoAngulo = anguloFinal;
 	}
     }
+    
 }

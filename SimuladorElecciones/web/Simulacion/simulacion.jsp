@@ -118,7 +118,7 @@
                     <div class="form-group">
                         <label for="umbral" class="col-sm-2">Umbral minimo</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="umbral" onchange="cambioPropMinRepresentacion()" placeholder="ej:1000">
+                            <input type="text" class="form-control" id="umbral" onchange="cambioPropMinRepresentacion(this)" placeholder="ej:1000">
                         </div>
                     </div>
                 </form>
@@ -127,21 +127,21 @@
                     <div class="form-group">
                         <label for="circunscripcion" class="col-sm-4">Nueva circunscripción</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="circunscripcion" placeholder="ej:Madrid">
+                            <input type="text" class="form-control" id="nombre-circunscripcion" placeholder="ej:Madrid">
                         </div>
                     <button type="button" class="btn btn-primary col-sm-2" onclick="nuevaCircunscripcion()">Añadir</button>
                     </div>
                 </form>
                 
                 <div class="clearflx"></div>
-                <div id="elemCirc"></div>
+                <div id="cuadrados-circunscripciones"></div>
                 <div class="sep-2"></div>
                 
                 <form class="form-horizontal col-sm-11">
                     <div class="form-group">
-                        <label for="partido" class="col-sm-4">Nuevo partido</label>
+                        <label for="candidatura" class="col-sm-4">Nueva candidatura</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="partido" placeholder="ej:Partido x">
+                            <input type="text" class="form-control" id="candidatura" placeholder="ej:Candidatura x">
                         </div>
                     </div>
                     <div class="form-group">
@@ -149,13 +149,13 @@
                             <input class="jscolor" id="color" value="">
                         </div>
                         <div class="col-sm-2 col-sm-offset-2">
-                            <button type="button" class="btn btn-primary" onclick="nuevoPartido()">Añadir</button>
+                            <button type="button" class="btn btn-primary" onclick="nuevaCandidatura()">Añadir</button>
                         </div>
                     </div>
                 </form>
                 
                 <div class="clearflx"></div>
-                <div id="elemPartido"></div>
+                <div id="elemCandidatura"></div>
                 <div class="clearflx">&nbsp</div>
                 
             </div>
@@ -168,9 +168,10 @@
                     <table class="table table-bordered" id="tabla-circunscripciones">
                         <thead>
                             <tr>
-                                <th> Circunscripcion </th>
-                                <th> Total votos </th>
-                                <th> Numero representantes </th>
+                                <th> Circunscripción </th>
+                                <th> Total votos nulos </th>
+                                <th> Total votos en blanco </th>
+                                <th> Número de representantes </th>
                             </tr>
                         </thead>
                         <tbody id="tabla-circunscripciones-body">
@@ -187,7 +188,7 @@
                 </div>
                 
                 <div class="sep">
-                    <p class="titulo"> Simulacion </p>
+                    <p class="titulo"> Simulación </p>
                     <div class="clearflx"></div>
                         <!-- Aquí aparecen los gráficos de la simulación -->
                         <div class="charts"></div>

@@ -4,7 +4,7 @@
  */
 function filtraCandidaturas(circunscripcion, candidaturas, votosACandidatura, propMinRepresentacion) {
 
-    var totalVotosValidos = circunscripcion.votosBlanco;
+    var totalVotosValidos = circunscripcion.votoEnBlanco;
     for (var i = 0; i < votosACandidatura.length; i++) {
         totalVotosValidos += votosACandidatura[i];
     }
@@ -100,6 +100,8 @@ function calculaDHondt(candidaturas, votosACandidatura, numeroEscaños) {
  * escaños asignado a cada candidatura de mayor a menor
  */
 function ordenaPorEscaños(escañosAsignados) {
+
+    if (escañosAsignados === null) { return null; }
 
     escañosAsignados.sort(function(a, b){
         if (a.numEscaños < b.numEscaños)

@@ -1,48 +1,53 @@
 /* VARIABLES */
 var propMinRepresentacion   = 0,
     circunscripciones       = [],
-    votosACandidatura       = [],
+    votosCircunscripciones  = [],
     candidaturas            = [],
     datos                   = [];
 
 /* FUNCIONES */
-function cambioPropMinRepresentacion() {
-    propMinRepresentacion = document.getElementById("umbral").value;
-    
-    dibujaGrafico(circunscripciones, candidaturas, votosACandidatura, propMinRepresentacion);
+function cambioPropMinRepresentacion(elemento) {
+    propMinRepresentacion = elemento.value;
+    dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
 }
 
 
 function actualizarTablaVotos(){
     
     // Header
-    var head    = document.createElement("thead");
-    var row     = document.createElement("tr");
+    var head = document.createElement("thead");
+    var row = document.createElement("tr");
     row.appendChild(document.createElement("td"));
     for (var j = 0 ; j < candidaturas.length ; j++){
         var th = document.createElement("th");
-        th.innerHTML = candidaturas[j];
+        th.innerHTML = candidaturas[j].nombreCorto;
         row.appendChild(th);
     }
     head.appendChild(row);
 
     // Body
-    var body    = document.createElement("tbody");
+    var body = document.createElement("tbody");
     for (var i = 0; i < circunscripciones.length; i++){
         row = document.createElement("tr");
         
         var th = document.createElement("th");
-        th.innerHTML = circunscripciones[i];
+        th.innerHTML = circunscripciones[i].nombre;
         row.appendChild(th);
         
         for (j = 0; j < candidaturas.length; j++){
-            var v   = document.createElement("input");
-            v.name  = "votos" + i + j;
-            v.type  = "text";
-            v.value = 0;
+            var input_v = document.createElement("input");
+            input_v.name  = "votos" + i + j;
+            input_v.type  = "text";
+            input_v.value = votosCircunscripciones[i][j];
+            input_v.setAttribute("indiceCircunscripcion", i);
+            input_v.setAttribute("indiceCandidatura", j);
+            input_v.onchange = function(){
+                votosCircunscripciones[this.getAttribute("indiceCircunscripcion")][this.getAttribute("indiceCandidatura")] = this.value;
+                dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+            };
             
             var td  = document.createElement("td");
-            td.appendChild(v);
+            td.appendChild(input_v);
             
             row.appendChild(td);
         }
@@ -51,7 +56,7 @@ function actualizarTablaVotos(){
     }
     
     // Table
-    var tabla   = document.getElementById("tabla-votos");
+    var tabla = document.getElementById("tabla-votos");
     while(tabla.hasChildNodes()){
         tabla.removeChild(tabla.firstChild);	
     }
@@ -60,33 +65,60 @@ function actualizarTablaVotos(){
 }
 
 
-function añadirTablaCircunscripcion(){
+function añadirFilaCircunscripcion(){
     
-    var c   = document.createElement("th");
-    c.innerHTML = circunscripciones[circunscripciones.length - 1];
+    var indiceCircunscripcion = circunscripciones.length - 1;
+    
+    var nombre = document.createElement("th");
+    nombre.innerHTML = circunscripciones[indiceCircunscripcion].nombre;
 
-    var v   = document.createElement("input");
-    v.name  = "votos" + (circunscripciones.length - 1);
-    v.type  = "text";
-    v.value = 0;
-    v.class = "form-control";
+    var input_vn = document.createElement("input");
+    input_vn.name  = "votos-nulo" + (indiceCircunscripcion);
+    input_vn.type  = "text";
+    input_vn.value = 0;
+    input_vn.class = "form-control";
+    input_vn.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
+    input_vn.onchange = function(){
+        circunscripciones[this.getAttribute("indiceCircunscripcion")].votoNulo = this.value;
+        dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+    };
     
     var col1 = document.createElement("td");
-    col1.appendChild(v);
+    col1.appendChild(input_vn);
     
-    var r   = document.createElement("input");
-    r.name  = "repre" + (circunscripciones.length - 1);
-    r.type  = "text";
-    r.value = 0;
-    r.class = "form-control";
+    var input_vb = document.createElement("input");
+    input_vb.name  = "votos-en-blanco" + indiceCircunscripcion;
+    input_vb.type  = "text";
+    input_vb.value = 0;
+    input_vb.class = "form-control";
+    input_vb.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
+    input_vb.onchange = function(){
+        circunscripciones[this.getAttribute("indiceCircunscripcion")].votoEnBlanco = this.value;
+        dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+    };
     
     var col2 = document.createElement("td");
-    col2.appendChild(r);
+    col2.appendChild(input_vb);
+    
+    var input_nr = document.createElement("input");
+    input_nr.name  = "n-representacion" + indiceCircunscripcion;
+    input_nr.type  = "text";
+    input_nr.value = 0;
+    input_nr.class = "form-control";
+    input_nr.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
+    input_nr.onchange = function(){
+        circunscripciones[this.getAttribute("indiceCircunscripcion")].numeroRepresentantes = this.value;
+        dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+    };
+    
+    var col3 = document.createElement("td");
+    col3.appendChild(input_nr);
     
     var row = document.createElement("tr");
-    row.appendChild(c);
+    row.appendChild(nombre);
     row.appendChild(col1);
     row.appendChild(col2);
+    row.appendChild(col3);
 
     var tabla = document.getElementById("tabla-circunscripciones-body");
     tabla.appendChild(row);
@@ -95,7 +127,7 @@ function añadirTablaCircunscripcion(){
 
 function inicio(){
     circunscripciones       = new Array();
-    votosACandidatura       = new Array();
+    votosCircunscripciones  = new Array();
     repreCircunscripcion    = new Array();
     candidaturas            = new Array();
     datos                   = new Array();
@@ -105,51 +137,53 @@ function inicio(){
 
 
 function nuevaCircunscripcion(){
-    var circunscripcion = document.getElementById("circunscripcion").value;
-    if(circunscripciones.lenght === 0){
-        circunscripciones = [circunscripcion];
-    } else {
-        circunscripciones.push(circunscripcion);
-    }
-    votosACandidatura.push(0);
-    repreCircunscripcion.push(0);
+    var circunscripcion = {
+        nombre: document.getElementById("nombre-circunscripcion").value,
+        numeroRepresentantes: 0,
+        votoNulo: 0,
+        votoEnBlanco: 0
+    };
+    circunscripciones.push(circunscripcion);
+    votosCircunscripciones.push(new Array(candidaturas.length).fill(0));
 
+    // Recuadro para eliminar circunscripcion
     var div = document.createElement("div");
     div.className = "circuns";
-    div.innerHTML = circunscripcion + "  ";
+    div.innerHTML = circunscripcion.nombre + "  ";
     var icon = document.createElement("span");
     icon.className = "glyphicon glyphicon-remove";
     div.appendChild(icon);
+    document.getElementById("cuadrados-circunscripciones").appendChild(div);
 
-    document.getElementById("elemCirc").appendChild(div);
-
-    añadirTablaCircunscripcion();
+    añadirFilaCircunscripcion();
     actualizarTablaVotos();
     
     // Reset del texto por defecto en los botones para añadir una circunscripcion
-    document.getElementById("circunscripcion").value = "";
+    document.getElementById("nombre-circunscripcion").value = "";
 }
 
 
-function nuevoPartido(){
-    var partido = document.getElementById("partido").value;
-    if(candidaturas.lenght === 0){
-        candidaturas = [partido];
+function nuevaCandidatura(){
+    var candidatura = {
+        nombreCorto: document.getElementById("candidatura").value,
+        nombreLargo: "",
+        color: document.getElementById("color").value
     }
-    else candidaturas.push(partido);
+    candidaturas.push(candidatura);
+    for (var i in votosCircunscripciones) { votosCircunscripciones[i].push(0); }
 
     var div = document.createElement("div");
     div.className = "circuns";
-    div.innerHTML = partido + "  ";
+    div.innerHTML = candidatura.nombreCorto + "  ";
     var icon = document.createElement("span");
     icon.className = "glyphicon glyphicon-remove";
     div.appendChild(icon);
 
-    document.getElementById("elemPartido").appendChild(div);
+    document.getElementById("elemCandidatura").appendChild(div);
 
     actualizarTablaVotos();
 
-    // Reset del texto por defecto en los botones para añadir un partido
-    document.getElementById("partido").value = "";
+    // Reset del texto por defecto en los botones para añadir una candidatura
+    document.getElementById("candidatura").value = "";
     document.getElementById("color").value = "FFFFFF"
 }
