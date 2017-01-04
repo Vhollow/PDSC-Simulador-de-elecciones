@@ -91,32 +91,37 @@
                 tabla.appendChild(body);
             }
             
-            function añadirTablaCircunscripcion(){
+            function actualizarTablaCircunscripcion(){
                 var tabla = document.getElementById("tabla-circunscripciones-body");
+                while(tabla.hasChildNodes()){
+                    tabla.removeChild(tabla.firstChild);	
+                }
                 
-                var row = document.createElement("tr");
-                var c = document.createElement("th");
-                c.innerHTML = circunscripciones[circunscripciones.length-1];
-                var col1 = document.createElement("td");
-                var v = document.createElement("input");
-                v.name = "votos"+(circunscripciones.length-1);
-                v.type = "text";
-                v.value = 0;
-                v.class = "form-control";
-                var col2 = document.createElement("td");
-                var r = document.createElement("input");
-                r.name = "repre"+(circunscripciones.length-1);
-                r.type = "text";
-                r.value = 0;
-                r.class = "form-control";
-                
-                col1.appendChild(v);
-                col2.appendChild(r);
-                row.appendChild(c);
-                row.appendChild(col1);
-                row.appendChild(col2);
-                
-                tabla.appendChild(row);
+                for(i=0;i<circunscripciones.length;i++){
+                    var row = document.createElement("tr");
+                    var c = document.createElement("th");
+                    c.innerHTML = circunscripciones[i];
+                    var col1 = document.createElement("td");
+                    var v = document.createElement("input");
+                    v.name = "votos"+(i);
+                    v.type = "text";
+                    v.value = 0;
+                    v.class = "form-control";
+                    var col2 = document.createElement("td");
+                    var r = document.createElement("input");
+                    r.name = "repre"+(i);
+                    r.type = "text";
+                    r.value = 0;
+                    r.class = "form-control";
+
+                    col1.appendChild(v);
+                    col2.appendChild(r);
+                    row.appendChild(c);
+                    row.appendChild(col1);
+                    row.appendChild(col2);
+
+                    tabla.appendChild(row);
+                }
             }
             
             
@@ -134,11 +139,12 @@
                 div.innerHTML = circunscripcion + "  ";
                 var icon = document.createElement("span");
                 icon.className = "glyphicon glyphicon-remove";
+                icon.onclick = "eliminarCircunscripcion("+circunscripciones.length+")";
                 div.appendChild(icon);
                 
                 document.getElementById("elemCirc").appendChild(div);
                 
-                añadirTablaCircunscripcion();
+                actualizarTablaCircunscripcion();
                 actualizarTablaVotos();
                 
                 document.getElementById("circunscripcion").value = "";
@@ -162,6 +168,7 @@
                 div.style = "background-color: #"+color;
                 var icon = document.createElement("span");
                 icon.className = "glyphicon glyphicon-remove";
+                icon.onclick = "eliminarPartido("+partidos.length+")";
                 div.appendChild(icon);
                 
                 document.getElementById("elemPartido").appendChild(div);
@@ -169,7 +176,17 @@
                 actualizarTablaVotos();
                 
                 document.getElementById("partido").value = "";
-                document.getElementById("color").value = "FFFFFF"
+                document.getElementById("color").value = "FFFFFF";
+                document.getElementById("color").style = "background-color: white";
+            }
+            
+            function eliminarCircunscripcion(num){
+                
+                
+            }
+            
+            function eliminarPartido(num){
+                
             }
             
         </script>
@@ -202,7 +219,7 @@
                 <!-- Configurar eleccion -->
                 
                 <p class="titulo">Detalles elección</p>
-                <form class="form-horizontal col-md-10">
+                <form class="form-horizontal col-md-11">
                     <div class="form-group">
                         <label for="tipo" class="col-sm-2 control-label">Tipo</label>
                         <div class="col-sm-10">
@@ -258,7 +275,7 @@
                 <!-- Parametros simulacion -->
                 
                 <p class="titulo">Parametros simulación</p>
-                <form class="form-horizontal col-md-10">
+                <form class="form-horizontal col-md-11">
                     <div class="form-group">
                         <label for="umbral" class="col-sm-2">Umbral minimo</label>
                         <div class="col-sm-10">
