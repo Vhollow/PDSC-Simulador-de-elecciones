@@ -31,6 +31,8 @@
         <script type="text/javascript" src="./resources/paginaSimulacion.js"></script>
 	<script type="text/javascript" src="./resources/grafico.js"></script>
         <script type="text/javascript" src="./resources/jscolor.js"></script>
+      
+
     </head>
     <body class="container-fluid" onload="inicio()">
         <div class="row">
@@ -59,7 +61,7 @@
                 
                 <!-- Configurar eleccion -->
                 <p class="titulo">Detalles elección</p>
-                <form class="form-horizontal col-md-10">
+                <form class="form-horizontal col-md-11">
                     <div class="form-group">
                         <label for="tipo" class="col-sm-2 control-label">Tipo</label>
                         <div class="col-sm-10">
@@ -114,7 +116,7 @@
                 
                 <!-- Parametros simulacion -->
                 <p class="titulo">Parametros simulación</p>
-                <form class="form-horizontal col-md-10">
+                <form class="form-horizontal col-md-11">
                     <div class="form-group">
                         <label for="umbral" class="col-sm-2">Umbral minimo</label>
                         <div class="col-sm-10">
