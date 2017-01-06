@@ -2,10 +2,27 @@
 var propMinRepresentacion   = 0,
     circunscripciones       = [],
     votosCircunscripciones  = [],
-    candidaturas            = [],
-    datos                   = [];
+    candidaturas            = [];
 
 /* FUNCIONES */
+function doSave() {
+    
+    function addHidden(theForm, key, value) {
+        var input = document.createElement('input');
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        theForm.appendChild(input);
+    }
+    
+    var almacen = document.getElementById("almacen");
+    
+    addHidden(almacen, "propMinRepresentacion", propMinRepresentacion);
+    addHidden(almacen, "candidatura0", candidaturas[0]);
+
+}
+
+
 function cambioPropMinRepresentacion(elemento) {
     propMinRepresentacion = elemento.value;
     dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
@@ -13,7 +30,6 @@ function cambioPropMinRepresentacion(elemento) {
 
 
 function actualizarTablaVotos(){
-    
     // Header
     var head = document.createElement("thead");
     var row = document.createElement("tr");
@@ -21,7 +37,7 @@ function actualizarTablaVotos(){
     for (var j = 0 ; j < candidaturas.length ; j++){
         var th = document.createElement("th");
         th.innerHTML = candidaturas[j].nombreCorto;
-        th.style = "background-color: #"+candidaturas[j].color;
+        th.style = "background-color: #" + candidaturas[j].color;
         row.appendChild(th);
     }
     head.appendChild(row);
@@ -68,9 +84,7 @@ function actualizarTablaVotos(){
 
 function actualizarTablaCircunscripcion(){
     
-    
     var tabla = document.getElementById("tabla-circunscripciones-body");
-    
     while(tabla.hasChildNodes()){
         tabla.removeChild(tabla.firstChild);
     }
@@ -131,17 +145,6 @@ function actualizarTablaCircunscripcion(){
 
         tabla.appendChild(row);
     }
-}
-
-
-function inicio(){
-    circunscripciones       = new Array();
-    votosCircunscripciones  = new Array();
-    repreCircunscripcion    = new Array();
-    candidaturas            = new Array();
-    datos                   = new Array();
-    
-    actualizarTablaVotos();
 }
 
 

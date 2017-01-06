@@ -4,6 +4,7 @@
     Author     : Vicente
 --%>
 
+<%@page import="utils.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,17 +12,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Simulador de elecciones</title>
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
         <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" >
-        <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
 
         <link rel="stylesheet" href="../mycss.css">
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
         <!-- D3 para graficos -->
         <script type="text/javascript" src="./resources/d3.min.js"></script>
@@ -31,10 +32,10 @@
         <script type="text/javascript" src="./resources/paginaSimulacion.js"></script>
 	<script type="text/javascript" src="./resources/grafico.js"></script>
         <script type="text/javascript" src="./resources/jscolor.js"></script>
-      
-
     </head>
-    <body class="container-fluid" onload="inicio()">
+    <body class="container-fluid">
+        <% Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual"); %>
+        
         <div class="row">
             <!-- Columna de configuración -->
             <div class="col-md-4" style="background-color: #ddf">
@@ -58,7 +59,7 @@
                 </form>
                 <div class="clearflx">&nbsp</div>
                 <hr>
-                
+
                 <!-- Configurar eleccion -->
                 <p class="titulo">Detalles elección</p>
                 <form class="form-horizontal col-md-11">
@@ -113,7 +114,7 @@
                 </form>
                 <div class="clearflx">&nbsp</div>
                 <hr>
-                
+
                 <!-- Parametros simulacion -->
                 <p class="titulo">Parametros simulación</p>
                 <form class="form-horizontal col-md-11">
@@ -124,7 +125,7 @@
                         </div>
                     </div>
                 </form>
-                
+
                 <form class="form-horizontal col-sm-11">
                     <div class="form-group">
                         <label for="circunscripcion" class="col-sm-4">Nueva circunscripción</label>
@@ -134,11 +135,11 @@
                     <button type="button" class="btn btn-primary col-sm-2" onclick="nuevaCircunscripcion()">Añadir</button>
                     </div>
                 </form>
-                
+
                 <div class="clearflx"></div>
                 <div id="cuadrados-circunscripciones"></div>
                 <div class="sep-2"></div>
-                
+
                 <form class="form-horizontal col-sm-11">
                     <div class="form-group">
                         <label for="candidatura" class="col-sm-4">Nueva candidatura</label>
@@ -155,11 +156,10 @@
                         </div>
                     </div>
                 </form>
-                
+
                 <div class="clearflx"></div>
                 <div id="elemCandidatura"></div>
                 <div class="clearflx">&nbsp</div>
-                
             </div>
 
             <!-- Zona principal -->
@@ -177,7 +177,7 @@
                             </tr>
                         </thead>
                         <tbody id="tabla-circunscripciones-body">
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -185,10 +185,10 @@
                     <p class="titulo"> Votos </p>
                     <div class="clearflx"></div>
                     <table class="table table-bordered table-responsive" id="tabla-votos">
-                        
+
                     </table>
                 </div>
-                
+
                 <div class="sep">
                     <p class="titulo"> Simulación </p>
                     <div class="clearflx"></div>
@@ -196,6 +196,15 @@
                         <div class="charts"></div>
                 </div>
             </div>
-        </div> 
+            
+            <!-- Botón Amacenar en servidor -->
+            <% if (usuarioActual != null) { %>
+            <form id="simulacion" action="simulacion" onsubmit="doSave()" method="post" enctype="multipart/form-data">
+                <div id="almacen">
+                    <input type="submit" id="input-submit" value="Almacenar datos"/>
+                </div>
+            </form>
+            <% } %>
+        </div>
     </body>
 </html>

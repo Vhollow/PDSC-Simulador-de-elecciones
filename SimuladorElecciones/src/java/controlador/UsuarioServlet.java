@@ -6,8 +6,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import utils.Usuario;
 import utils.Eleccion;
 import modelo.EleccionDAO;
@@ -19,6 +20,7 @@ import modelo.EleccionDAOImpl;
  *
  * @author daniel
  */
+@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
 public class UsuarioServlet extends HttpServlet {
 
     /**
@@ -38,7 +40,6 @@ public class UsuarioServlet extends HttpServlet {
         Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
         
         if (usuarioActual != null) {
-            
             // 2. Obtenemos las Elecciones creadas o compartidas con el usuario
             EleccionDAO eleccionDAO = new EleccionDAOImpl();
             List<Eleccion> eleccionesUsuario = eleccionDAO.selectElecciones(usuarioActual.getId());
@@ -52,7 +53,7 @@ public class UsuarioServlet extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } else {
-            String url = "/index";
+            String url = "/";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         }

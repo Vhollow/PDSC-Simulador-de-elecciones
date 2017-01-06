@@ -1,25 +1,23 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import modelo.UsuarioDAO;
-import modelo.UsuarioDAOImpl;
-import utils.Usuario;
 
 /**
- * Clase IndexServlet, es el Servlet encargado de las peticiones así como del
- * login en la página de índice
- * 
+ * Clase SimulacionServlet, es el servlet encargado de recibir las peticiones de
+ * datos de la página de simulacion así como de almacenar simulacion en la base
+ * de datos
+ *
  * @author daniel
  */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
-public class IndexServlet extends HttpServlet {
+@WebServlet(name = "SimulacionServlet", urlPatterns = {"/SimulacionServlet"})
+public class SimulacionServlet extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -33,7 +31,7 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String url = "/index.jsp";
+        String url = "/Simulacion/simulacion.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
@@ -50,26 +48,10 @@ public class IndexServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Obtenemos la información de la peticion
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        Usuario usuarioActual = usuarioDAO.selectUsuario(
-                request.getParameter("correoElectronico"),
-                request.getParameter("clave")
-        );
+        Enumeration<String> names = request.getParameterNames();
         
-        if (usuarioActual != null) {
-            // 2. Iniciamos los datos de la sesion
-            HttpSession session = request.getSession();
-            session.setAttribute("usuarioActual", usuarioActual);
-            
-            // 3. Vamos a la pagina de usuario
-            String url = "/usuario";
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-            dispatcher.forward(request, response);
-        } else {
-            String url = "/index.jsp";
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-            dispatcher.forward(request, response);
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
         }
     }
 

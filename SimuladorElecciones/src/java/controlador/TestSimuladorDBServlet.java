@@ -30,7 +30,7 @@ import modelo.CandidaturaDAOImpl;
  * 
  * @author daniel
  */
-@WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
+@WebServlet(name = "TestSimuladorDBServlet", urlPatterns = {"/TestSimuladorDBServlet"})
 public class TestSimuladorDBServlet extends HttpServlet {
 
     /** 
