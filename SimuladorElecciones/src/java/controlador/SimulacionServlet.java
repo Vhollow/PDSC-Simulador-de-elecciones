@@ -48,13 +48,12 @@ public class SimulacionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String propMinRepresentacion = request.getParameter("input-prop-min-representacion");
+        String votos = request.getParameter("input-votos00");
+        String nombre = request.getParameter("hidden-numero-candidaturas");
+        
         Enumeration<String> names = request.getParameterNames();
         
-        String propMinRepresentacion = request.getParameter("hidden-propMinRepresentacion");
-        
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-        }
     }
 
     /**

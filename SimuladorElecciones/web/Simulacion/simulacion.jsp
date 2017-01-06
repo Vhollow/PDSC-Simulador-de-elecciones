@@ -36,7 +36,7 @@
     <body class="container-fluid">
         <% Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual"); %>
         
-        <form id="form-simulacion" action="simulacion" method="post" enctype="multipart/form-data" onsubmit="return doSave();" class="row">
+        <form id="form-simulacion" action="simulacion" method="post" onsubmit="return doSave();" class="row">
             <!-- Columna de configuración -->
             <div class="col-md-4" style="background-color: #ddf">
                 <div class="sep-2"></div>
@@ -122,7 +122,7 @@
                     <div class="form-group">
                         <label for="umbral" class="col-sm-2">Porcentaje de mínima representacion</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" nombre="input-min-representacion" onchange="actualizaPropMinRepresentacion(this)" placeholder="ej:5">
+                            <input type="text" class="form-control" name="input-prop-min-representacion" onchange="actualizaPropMinRepresentacion(this)" value="0">
                         </div>
                     </div>
                 </div>
