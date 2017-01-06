@@ -18,31 +18,31 @@
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
 
-        <link rel="stylesheet" href="../mycss.css">
+        <link rel="stylesheet" href="./mycss.css">
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
         <!-- D3 para graficos -->
-        <script type="text/javascript" src="./resources/d3.min.js"></script>
+        <script type="text/javascript" src="./simulacion/resources/d3.min.js"></script>
         
         <!-- Javascript propios -->
-	<script type="text/javascript" src="./resources/leyDHondt.js"></script>
-        <script type="text/javascript" src="./resources/paginaSimulacion.js"></script>
-	<script type="text/javascript" src="./resources/grafico.js"></script>
-        <script type="text/javascript" src="./resources/jscolor.js"></script>
+	<script type="text/javascript" src="./simulacion/resources/leyDHondt.js"></script>
+        <script type="text/javascript" src="./simulacion/resources/paginaSimulacion.js"></script>
+	<script type="text/javascript" src="./simulacion/resources/grafico.js"></script>
+        <script type="text/javascript" src="./simulacion/resources/jscolor.js"></script>
     </head>
     <body class="container-fluid">
         <% Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual"); %>
         
-        <div class="row">
+        <form id="form-simulacion" action="simulacion" method="post" enctype="multipart/form-data" onsubmit="return doSave();" class="row">
             <!-- Columna de configuración -->
             <div class="col-md-4" style="background-color: #ddf">
                 <div class="sep-2"></div>
                 <!-- Cargar archivo -->
                 <p class="titulo">Cargar archivo</p>
-                <form class="form-horizontal col-md-10">
+                <div class="form-horizontal col-md-10">
                     <div class="form-group">
                         <select class="form-control">
                             <option>-</option>
@@ -54,19 +54,19 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Abrir</button>
+                        <button type="button" class="btn btn-primary">Abrir</button>
                     </div>
-                </form>
+                </div>
                 <div class="clearflx">&nbsp</div>
                 <hr>
 
                 <!-- Configurar eleccion -->
                 <p class="titulo">Detalles elección</p>
-                <form class="form-horizontal col-md-11">
+                <div class="form-horizontal col-md-11">
                     <div class="form-group">
                         <label for="tipo" class="col-sm-2 control-label">Tipo</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="tipo">
+                            <select class="form-control" name="input-tipo">
                                 <option>-</option>
                                 <option>Congreso</option>
                                 <option>Autonómicas</option>
@@ -78,7 +78,7 @@
                     <div class="form-group">
                         <label for="año" class="col-sm-2 control-label">Año</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="año">
+                            <select class="form-control" name="input-año">
                                 <option>-</option>
                                 <option>2016</option>
                                 <option>2015</option>
@@ -88,7 +88,7 @@
                         </div>
                         <label for="mes" class="col-sm-1 control-label">Mes</label>
                         <div class="col-sm-5">
-                            <select class="form-control" id="mes">
+                            <select class="form-control" name="input-mes">
                                 <option>-</option>
                                 <option>Enero</option>
                                 <option>Febrero</option>
@@ -111,54 +111,55 @@
                             <input type="text" class="form-control" id="n_rep" placeholder="ej:1000">
                         </div>
                     </div>
-                </form>
+                </div>
+                
                 <div class="clearflx">&nbsp</div>
                 <hr>
 
                 <!-- Parametros simulacion -->
                 <p class="titulo">Parametros simulación</p>
-                <form class="form-horizontal col-md-11">
+                <div class="form-horizontal col-md-11">
                     <div class="form-group">
-                        <label for="umbral" class="col-sm-2">Umbral minimo</label>
+                        <label for="umbral" class="col-sm-2">Porcentaje de mínima representacion</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="umbral" onchange="cambioPropMinRepresentacion(this)" placeholder="ej:1000">
+                            <input type="text" class="form-control" nombre="input-min-representacion" onchange="actualizaPropMinRepresentacion(this)" placeholder="ej:5">
                         </div>
                     </div>
-                </form>
+                </div>
 
-                <form class="form-horizontal col-sm-11">
+                <div class="form-horizontal col-sm-11">
                     <div class="form-group">
                         <label for="circunscripcion" class="col-sm-4">Nueva circunscripción</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="nombre-circunscripcion" placeholder="ej:Madrid">
+                            <input type="text" class="form-control" name="input-nombre-circunscripcion" placeholder="ej: Madrid">
                         </div>
-                    <button type="button" class="btn btn-primary col-sm-2" onclick="nuevaCircunscripcion()">Añadir</button>
+                        <button type="button" class="btn btn-primary col-sm-2" onclick="nuevaCircunscripcion()">Añadir</button>
                     </div>
-                </form>
+                </div>
 
                 <div class="clearflx"></div>
                 <div id="cuadrados-circunscripciones"></div>
                 <div class="sep-2"></div>
 
-                <form class="form-horizontal col-sm-11">
+                <div class="form-horizontal col-sm-11">
                     <div class="form-group">
                         <label for="candidatura" class="col-sm-4">Nueva candidatura</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="candidatura" placeholder="ej:Candidatura x">
+                            <input type="text" class="form-control" name="input-nombre-candidatura" placeholder="ej: Candidatura x">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-5">
-                            <input class="jscolor" id="color" value="">
+                            <input class="jscolor" name="input-color" value="">
                         </div>
                         <div class="col-sm-2 col-sm-offset-2">
                             <button type="button" class="btn btn-primary" onclick="nuevaCandidatura()">Añadir</button>
                         </div>
                     </div>
-                </form>
+                </div>
 
                 <div class="clearflx"></div>
-                <div id="elemCandidatura"></div>
+                <div id="cuadrados-candidaturas"></div>
                 <div class="clearflx">&nbsp</div>
             </div>
 
@@ -184,9 +185,7 @@
                 <div class="sep">
                     <p class="titulo"> Votos </p>
                     <div class="clearflx"></div>
-                    <table class="table table-bordered table-responsive" id="tabla-votos">
-
-                    </table>
+                    <table class="table table-bordered table-responsive" id="tabla-votos"></table>
                 </div>
 
                 <div class="sep">
@@ -197,14 +196,10 @@
                 </div>
             </div>
             
-            <!-- Botón Amacenar en servidor -->
             <% if (usuarioActual != null) { %>
-            <form id="simulacion" action="simulacion" onsubmit="doSave()" method="post" enctype="multipart/form-data">
-                <div id="almacen">
-                    <input type="submit" id="input-submit" value="Almacenar datos"/>
-                </div>
-            </form>
+            <!-- Botón Amacenar en servidor -->
+                <input type="submit" id="boton-submit" value="Almacenar datos"/>
             <% } %>
-        </div>
+        </form>
     </body>
 </html>
