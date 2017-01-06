@@ -31,7 +31,7 @@ public class SimulacionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String url = "/Simulacion/simulacion.jsp";
+        String url = "/simulacion/simulacion.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
@@ -49,6 +49,8 @@ public class SimulacionServlet extends HttpServlet {
             throws ServletException, IOException {
         
         Enumeration<String> names = request.getParameterNames();
+        
+        String propMinRepresentacion = request.getParameter("hidden-propMinRepresentacion");
         
         while (names.hasMoreElements()) {
             String name = names.nextElement();

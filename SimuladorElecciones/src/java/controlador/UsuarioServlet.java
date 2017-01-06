@@ -49,11 +49,11 @@ public class UsuarioServlet extends HttpServlet {
             request.setAttribute("usuarioActual", usuarioActual);
             request.setAttribute("eleccionesUsuario", eleccionesUsuario);
             
-            String url = "/Usuario/usuario.jsp";
+            String url = "/usuario/usuario.jsp";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } else {
-            String url = "/";
+            String url = "/index";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         }
