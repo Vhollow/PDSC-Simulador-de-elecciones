@@ -1,13 +1,29 @@
 package controlador;
 
+import java.util.Date;
 import java.io.IOException;
-import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelo.CandidaturaDAO;
+import modelo.CandidaturaDAOImpl;
+import modelo.CircunscripcionDAO;
+import modelo.CircunscripcionDAOImpl;
+import modelo.EleccionDAO;
+import modelo.EleccionDAOImpl;
+import modelo.UsuarioEleccionDAO;
+import modelo.UsuarioEleccionDAOImpl;
+import modelo.VotoDAO;
+import modelo.VotoDAOImpl;
+import utils.Candidatura;
+import utils.Circunscripcion;
+import utils.Eleccion;
+import utils.TipoEleccion;
+import utils.Usuario;
 
 /**
  * Clase SimulacionServlet, es el servlet encargado de recibir las peticiones de
@@ -19,6 +35,21 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SimulacionServlet", urlPatterns = {"/SimulacionServlet"})
 public class SimulacionServlet extends HttpServlet {
 
+    private TipoEleccion parseTipoEleccion(String nombreTipo) {
+        if (nombreTipo.equals("Autonomicas")) {
+            return TipoEleccion.Autonomicas;
+        } else if (nombreTipo.equals("Congreso Diputados")) {
+            return TipoEleccion.CongresoDiputados;
+        } else if (nombreTipo.equals("Municipales")) {
+            return TipoEleccion.Municipales;
+        } else if (nombreTipo.equals("Parlamento Europeo")) {
+            return TipoEleccion.ParlamentoEuropeo;
+        } else {
+            return null;
+        }
+    }
+    
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -47,13 +78,70 @@ public class SimulacionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // 1. Obtenemos el Usuario de la sesión actual
+        HttpSession session = request.getSession();
+        Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
         
-        String propMinRepresentacion = request.getParameter("input-prop-min-representacion");
-        String votos = request.getParameter("input-votos00");
-        String nombre = request.getParameter("hidden-numero-candidaturas");
-        
-        Enumeration<String> names = request.getParameterNames();
-        
+        if (usuarioActual != null) {
+            
+            // Insert de la nueva Eleccion
+            EleccionDAO eleccionDAO = new EleccionDAOImpl();
+            Eleccion eleccion = new Eleccion(
+                    new Date(),
+                    parseTipoEleccion(request.getParameter("input-tipo-eleccion"))
+            );
+            int idEleccion = eleccionDAO.insertEleccion(eleccion);
+            
+            // Insert del par UsuarioEleccion
+            UsuarioEleccionDAO usuarioEleccionDAO = new UsuarioEleccionDAOImpl();
+            usuarioEleccionDAO.insertUsuarioEleccion(usuarioActual.getId(), idEleccion, true);
+
+            // Insert de Candidaturas
+            CandidaturaDAO candidaturaDAO = new CandidaturaDAOImpl();
+            int numeroCandidaturas = Integer.parseInt(request.getParameter("hidden-numero-candidaturas"));
+            for(int i = 0; i < numeroCandidaturas; i++) {
+                Candidatura candidatura = new Candidatura(
+                    request.getParameter("hidden-candidatura-nombre-corto" + i),
+                    request.getParameter("hidden-candidatura-nombre-largo" + i),
+                    Integer.parseInt(request.getParameter("hidden-candidatura-color" + i))
+                );
+                
+                candidaturaDAO.insertCandidatura(idEleccion, candidatura);
+            }
+
+            // Insert de Circunscripciones
+            CircunscripcionDAO circunscripcionDAO = new CircunscripcionDAOImpl();
+            int numeroCircunscripciones = Integer.parseInt(request.getParameter("hidden-numero-circunscripciones"));
+            for(int i = 0; i < numeroCircunscripciones; i++) {
+                Circunscripcion circunscripcion = new Circunscripcion(
+                    request.getParameter("hidden-circunscripcion-nombre" + i)
+                );
+                circunscripcion.setNumeroRepresentantes(
+                        Integer.parseInt(request.getParameter("input-circunscripcion-numero-representantes" + i))
+                );
+                circunscripcion.setVotoEnBlanco(
+                        Integer.parseInt(request.getParameter("input-circunscripcion-voto-en-blanco" + i))
+                );
+                circunscripcion.setVotoNulo(
+                        Integer.parseInt(request.getParameter("input-circunscripcion-voto-nulo" + i))
+                );
+                
+                circunscripcionDAO.insertCircunscripcion(idEleccion, circunscripcion);
+            }
+            
+            // Insert de Votos
+            VotoDAO votoDAO = new VotoDAOImpl();
+            for (int i = 0; i < numeroCircunscripciones; i++) {
+                String nombreCircunscripcion = request.getParameter("hidden-circunscripcion-nombre" + i);
+                for (int j = 0; j < numeroCandidaturas; j++) {
+                    String nombreCandidatura = request.getParameter("hidden-candidatura-nombre-corto" + j);
+                    int conteoVotos = Integer.parseInt(request.getParameter("input-votos" + i + "" + j));
+                    votoDAO.insertVoto(idEleccion, nombreCandidatura, nombreCircunscripcion, conteoVotos);
+                }
+            }
+            
+        }
     }
 
     /**

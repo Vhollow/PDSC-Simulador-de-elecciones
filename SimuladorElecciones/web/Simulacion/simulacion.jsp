@@ -66,12 +66,12 @@
                     <div class="form-group">
                         <label for="tipo" class="col-sm-2 control-label">Tipo</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="input-tipo">
+                            <select class="form-control" name="input-tipo-eleccion">
                                 <option>-</option>
-                                <option>Congreso</option>
-                                <option>Autonómicas</option>
+                                <option>Congreso Diputados</option>
+                                <option>Autonomicas</option>
                                 <option>Municipales</option>
-                                <option>Europeas</option>
+                                <option>Parlamento Europeo</option>
                             </select>
                         </div>
                     </div>

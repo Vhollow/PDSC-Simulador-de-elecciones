@@ -35,7 +35,7 @@ public class UsuarioServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Obtenemos el usuario del parametro id de la URL
+        // 1. Obtenemos el Usuario de la sesión actual
         HttpSession session = request.getSession();
         Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
         

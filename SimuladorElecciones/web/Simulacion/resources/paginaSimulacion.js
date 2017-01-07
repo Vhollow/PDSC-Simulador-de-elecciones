@@ -25,7 +25,7 @@ function actualizaTablaCircunscripcion(){
         nombre.innerHTML = circunscripciones[indiceCircunscripcion].nombre;
 
         var input_vn = document.createElement("input");
-        input_vn.name  = "input-voto-nulo" + (indiceCircunscripcion);
+        input_vn.name  = "input-circunscripcion-voto-nulo" + (indiceCircunscripcion);
         input_vn.type  = "text";
         input_vn.value = circunscripciones[indiceCircunscripcion].votoNulo;
         input_vn.class = "form-control";
@@ -39,7 +39,7 @@ function actualizaTablaCircunscripcion(){
         col1.appendChild(input_vn);
 
         var input_vb = document.createElement("input");
-        input_vb.name  = "input-voto-en-blanco" + indiceCircunscripcion;
+        input_vb.name  = "input-circunscripcion-voto-en-blanco" + indiceCircunscripcion;
         input_vb.type  = "text";
         input_vb.value = circunscripciones[indiceCircunscripcion].votoEnBlanco;
         input_vb.class = "form-control";
@@ -53,7 +53,7 @@ function actualizaTablaCircunscripcion(){
         col2.appendChild(input_vb);
 
         var input_nr = document.createElement("input");
-        input_nr.name  = "input-numero-representantes" + indiceCircunscripcion;
+        input_nr.name  = "input-circunscripcion-numero-representantes" + indiceCircunscripcion;
         input_nr.type  = "text";
         input_nr.value = circunscripciones[indiceCircunscripcion].numeroRepresentantes;
         input_nr.class = "form-control";
