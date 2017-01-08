@@ -28,4 +28,14 @@ public interface UsuarioDAO {
      */
     public Usuario selectUsuario(String correoElectronico, String clave);
     
+    /**
+     * Elimina el usuario especificado de la base de datos.
+     * 
+     * @param   idUsuario el id del usuario que queremos eliminar de la base de
+     *          datos.
+     * @return  true si el usuario fue eliminado correctamente, false en caso
+     *          contrario.
+     */
+    public boolean deleteUsuario(int idUsuario);
+    
 }

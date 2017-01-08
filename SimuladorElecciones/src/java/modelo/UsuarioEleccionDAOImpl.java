@@ -2,6 +2,7 @@ package modelo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -51,6 +52,44 @@ public class UsuarioEleccionDAOImpl implements UsuarioEleccionDAO {
         } catch(SQLException e) {
             e.printStackTrace();
         }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public boolean existsUsuarioEleccion(int idUsuario, int idEleccion) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "SELECT * "
+                + "FROM Usuario_Eleccion_Map "
+                + "WHERE id_usuario=? AND id_eleccion=?";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setInt(1, idUsuario);
+            consulta.setInt(2, idEleccion);
+            
+            ResultSet resultado = consulta.executeQuery();
+            
+            if ( resultado.next() )
+            {
+                ret = true;
+            }
+            
+            resultado.close();
+            consulta.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
         
         pool.freeConnection(conexion);
         

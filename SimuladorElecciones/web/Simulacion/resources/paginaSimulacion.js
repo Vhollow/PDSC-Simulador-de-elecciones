@@ -1,13 +1,13 @@
 /* VARIABLES */
 var propMinRepresentacion   = 0,
     circunscripciones       = [],
-    votosCircunscripciones  = [],
+    votos  = [],
     candidaturas            = [];
 
 /* FUNCIONES */
 function actualizaPropMinRepresentacion(elemento) {
     propMinRepresentacion = elemento.value / 100;
-    dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 
@@ -18,7 +18,7 @@ function actualizaTablaCircunscripcion(){
         tabla.removeChild(tabla.firstChild);
     }
     
-    for (i=0; i<circunscripciones.length; i++){
+    for (var i = 0; i < circunscripciones.length; i++){
         var indiceCircunscripcion = i;
 
         var nombre = document.createElement("th");
@@ -32,7 +32,7 @@ function actualizaTablaCircunscripcion(){
         input_vn.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_vn.onchange = function(){
             circunscripciones[this.getAttribute("indiceCircunscripcion")].votoNulo = this.value;
-            dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+            dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
         };
 
         var col1 = document.createElement("td");
@@ -46,7 +46,7 @@ function actualizaTablaCircunscripcion(){
         input_vb.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_vb.onchange = function(){
             circunscripciones[this.getAttribute("indiceCircunscripcion")].votoEnBlanco = this.value;
-            dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+            dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
         };
 
         var col2 = document.createElement("td");
@@ -60,7 +60,7 @@ function actualizaTablaCircunscripcion(){
         input_nr.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_nr.onchange = function(){
             circunscripciones[this.getAttribute("indiceCircunscripcion")].numeroRepresentantes = this.value;
-            dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+            dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
         };
 
         var col3 = document.createElement("td");
@@ -101,14 +101,14 @@ function actualizaTablaVotos(){
         
         for (j = 0; j < candidaturas.length; j++){
             var input_v = document.createElement("input");
-            input_v.name  = "input-votos" + i + j;
+            input_v.name  = "input-votos" + i + "" + j;
             input_v.type  = "text";
-            input_v.value = votosCircunscripciones[i][j];
+            input_v.value = votos[i][j];
             input_v.setAttribute("indiceCircunscripcion", i);
             input_v.setAttribute("indiceCandidatura", j);
             input_v.onchange = function(){
-                votosCircunscripciones[this.getAttribute("indiceCircunscripcion")][this.getAttribute("indiceCandidatura")] = this.value;
-                dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion);
+                votos[this.getAttribute("indiceCircunscripcion")][this.getAttribute("indiceCandidatura")] = this.value;
+                dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
             };
             
             var td  = document.createElement("td");
@@ -134,13 +134,13 @@ function nuevaCircunscripcion(){
     var formSimulacion = document.getElementById("form-simulacion");
     
     var circunscripcion = {
-        nombre: formSimulacion.elements["input-nombre-circunscripcion"].value,
+        nombre: formSimulacion.elements["input-circunscripcion-nombre"].value,
         numeroRepresentantes: 0,
         votoNulo: 0,
         votoEnBlanco: 0
     };
     circunscripciones.push(circunscripcion);
-    votosCircunscripciones.push(new Array(candidaturas.length).fill(0));
+    votos.push(new Array(candidaturas.length).fill(0));
 
     // Recuadro para eliminar circunscripcion
     var div = document.createElement("div");
@@ -153,9 +153,10 @@ function nuevaCircunscripcion(){
 
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
+    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
     
     // Reset del texto por defecto en los botones para añadir una circunscripcion
-    formSimulacion.elements["input-nombre-circunscripcion"].value = "";
+    formSimulacion.elements["input-circunscripcion-nombre"].value = "";
 }
 
 
@@ -163,12 +164,12 @@ function nuevaCandidatura(){
     var formSimulacion = document.getElementById("form-simulacion");
     
     var candidatura = {
-        nombreCorto: formSimulacion.elements["input-nombre-candidatura"].value,
+        nombreCorto: formSimulacion.elements["input-candidatura-nombre"].value,
         nombreLargo: "",
-        color: formSimulacion.elements["input-color"].value
+        color: formSimulacion.elements["input-candidatura-color"].value
     };
     candidaturas.push(candidatura);
-    for (var i in votosCircunscripciones) { votosCircunscripciones[i].push(0); }
+    for (var i in votos) { votos[i].push(0); }
 
     var div = document.createElement("div");
     div.className = "circuns";
@@ -181,10 +182,11 @@ function nuevaCandidatura(){
     document.getElementById("cuadrados-candidaturas").appendChild(div);
 
     actualizaTablaVotos();
+    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
     
     // Reset del texto por defecto en los botones para añadir una candidatura
-    formSimulacion.elements["input-nombre-candidatura"].value = "";
-    formSimulacion.elements["input-color"].value = "FFFFFF";
+    formSimulacion.elements["input-candidatura-nombre"].value = "";
+    formSimulacion.elements["input-candidatura-color"].value = "FFFFFF";
 }
 
 
@@ -194,29 +196,84 @@ function nuevaCandidatura(){
  */
 function doSave() {
     
-    function addHidden(theForm, key, value) {
+    function addHidden(element, key, value) {
         var input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
         input.value = value;
-        theForm.appendChild(input);
+        element.appendChild(input);
     }
     
     var formSimulacion = document.getElementById("form-simulacion");
     
-    addHidden(formSimulacion, "hidden-numero-candidaturas", candidaturas.length);
+    // Añadimos un div al form donde introduciremos todos los datos
+    var almacen = document.createElement("div");
+    almacen.id = "almacen";
+    formSimulacion.appendChild(almacen);
+    
+    // Añadimos los hidden al div
+    addHidden(almacen, "hidden-numero-candidaturas", candidaturas.length);
     for (var i in candidaturas) {
-        addHidden(formSimulacion, "hidden-candidatura-nombre-corto" + i, candidaturas[i].nombreCorto);
-        addHidden(formSimulacion, "hidden-candidatura-nombre-largo" + i, candidaturas[i].nombreLargo);
-        addHidden(formSimulacion, "hidden-candidatura-color" + i, parseInt(candidaturas[i].color, 16));
+        addHidden(almacen, "hidden-candidatura-nombre-corto" + i, candidaturas[i].nombreCorto);
+        addHidden(almacen, "hidden-candidatura-nombre-largo" + i, candidaturas[i].nombreLargo);
+        addHidden(almacen, "hidden-candidatura-color" + i, parseInt(candidaturas[i].color, 16));
     }
     
-    addHidden(formSimulacion, "hidden-numero-circunscripciones", circunscripciones.length);
+    addHidden(almacen, "hidden-numero-circunscripciones", circunscripciones.length);
     for (var i in candidaturas) {
-        addHidden(formSimulacion, "hidden-circunscripcion-nombre" + i, circunscripciones[i].nombre);
+        addHidden(almacen, "hidden-circunscripcion-nombre" + i, circunscripciones[i].nombre);
     }
 
     // El resto de datos ya estan en los inputs
 
     return true;
+}
+
+
+/*
+ * Carga los datos javascript que estan en la pagina almacenados en hiddens en
+ * sus correspondientes variables
+ */
+function doLoad() {
+    
+    var formSimulacion = document.getElementById("form-simulacion");
+    
+    // Actualizamos los datos del Javascript
+    propMinRepresentacion = formSimulacion.elements["hidden-prop-min-representacion"].value;
+    
+    var numeroCircunscripciones = formSimulacion.elements["hidden-numero-circunscripciones"].value;
+    for (var i = 0; i < numeroCircunscripciones; i++) {
+        var circunscripcion = {
+            nombre: formSimulacion.elements["hidden-circunscripcion-nombre" + i].value,
+            numeroRepresentantes: formSimulacion.elements["hidden-circunscripcion-numero-representantes" + i].value,
+            votoNulo: formSimulacion.elements["hidden-circunscripcion-voto-nulo" + i].value,
+            votoEnBlanco: formSimulacion.elements["hidden-circunscripcion-voto-en-blanco" + i].value
+        };
+        circunscripciones.push(circunscripcion);
+    }
+    
+    var numeroCandidaturas = formSimulacion.elements["hidden-numero-candidaturas"].value;
+    for (var i = 0; i < numeroCandidaturas; i++) {
+        var candidatura = {
+            nombreCorto: formSimulacion.elements["hidden-candidatura-nombre-corto" + i].value,
+            nombreLargo: formSimulacion.elements["hidden-candidatura-nombre-largo" + i].value,
+            color: formSimulacion.elements["hidden-candidatura-color" + i].value
+        };
+        candidaturas.push(candidatura);
+    }
+
+    votos = new Array(numeroCircunscripciones);
+    for (var i = 0; i < numeroCircunscripciones; i++) {
+        var fila = new Array(numeroCandidaturas);
+        for (var j = 0; j < numeroCandidaturas; j++) {
+            fila[j] = formSimulacion.elements["hidden-votos" + i + "" + j].value;
+        }
+        votos[i] = fila;
+    }
+    
+    // Actualizamos la vista
+    formSimulacion.elements["input-prop-min-representacion"].value = propMinRepresentacion * 100;
+    actualizaTablaCircunscripcion();
+    actualizaTablaVotos();
+    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
 }

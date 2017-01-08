@@ -1,6 +1,7 @@
 package controlador;
 
 import java.util.Date;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -62,6 +63,48 @@ public class SimulacionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        // 1. Obtenemos el id de la eleccion pedida
+        String idEleccionString = request.getParameter("id");
+        
+        // 2. Obtenemos el Usuario de la sesión actual
+        HttpSession session = request.getSession();
+        Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
+        
+        if (idEleccionString != null && usuarioActual != null) {
+            int idEleccion = Integer.parseInt(idEleccionString);
+            
+            // 3. Comprobamos si existe alguna relacion entre el usuario y la
+            // eleccion pedida
+            UsuarioEleccionDAO usuarioEleccionDAO = new UsuarioEleccionDAOImpl();
+            if (usuarioEleccionDAO.existsUsuarioEleccion(usuarioActual.getId(), idEleccion)) {
+                
+                EleccionDAO eleccionDAO = new EleccionDAOImpl();
+                CandidaturaDAO candidaturaDAO = new CandidaturaDAOImpl();
+                CircunscripcionDAO circunscripcionDAO = new CircunscripcionDAOImpl();
+                VotoDAO votoDAO = new VotoDAOImpl();
+                
+                // 4. Obtenemos los datos de la simulacion
+                Eleccion eleccion = eleccionDAO.selectEleccion(idEleccion);
+                List<Circunscripcion> circunscripciones = circunscripcionDAO.selectCircunscripciones(idEleccion);
+                List<Candidatura> candidaturas = candidaturaDAO.selectCandidaturas(idEleccion);
+                int[][] votos = new int[circunscripciones.size()][candidaturas.size()];
+                for (int i = 0; i < circunscripciones.size(); i++) {
+                    String nombreCircunscripcion = circunscripciones.get(i).getNombre();
+                    for (int j = 0; j < candidaturas.size(); j++) {
+                        int conteo = votoDAO.selectVoto(idEleccion, candidaturas.get(j).getNombreCorto(), nombreCircunscripcion);
+                        votos[i][j] = (conteo >= 0)? conteo : 0;
+                    }
+                }
+                
+                // 5. Almacenamos los datos como parametros de la peticion
+                request.setAttribute("eleccion", eleccion);
+                request.setAttribute("circunscripciones", circunscripciones);
+                request.setAttribute("candidaturas", candidaturas);
+                request.setAttribute("votos", votos);
+            }
+        }
+        
+        // Pagina para simulacion
         String url = "/simulacion/simulacion.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
@@ -85,8 +128,12 @@ public class SimulacionServlet extends HttpServlet {
         
         if (usuarioActual != null) {
             
-            // Insert de la nueva Eleccion
             EleccionDAO eleccionDAO = new EleccionDAOImpl();
+            CandidaturaDAO candidaturaDAO = new CandidaturaDAOImpl();
+            CircunscripcionDAO circunscripcionDAO = new CircunscripcionDAOImpl();
+            VotoDAO votoDAO = new VotoDAOImpl();
+            
+            // Insert de la nueva Eleccion
             Eleccion eleccion = new Eleccion(
                     new Date(),
                     parseTipoEleccion(request.getParameter("input-tipo-eleccion"))
@@ -98,7 +145,6 @@ public class SimulacionServlet extends HttpServlet {
             usuarioEleccionDAO.insertUsuarioEleccion(usuarioActual.getId(), idEleccion, true);
 
             // Insert de Candidaturas
-            CandidaturaDAO candidaturaDAO = new CandidaturaDAOImpl();
             int numeroCandidaturas = Integer.parseInt(request.getParameter("hidden-numero-candidaturas"));
             for(int i = 0; i < numeroCandidaturas; i++) {
                 Candidatura candidatura = new Candidatura(
@@ -111,7 +157,6 @@ public class SimulacionServlet extends HttpServlet {
             }
 
             // Insert de Circunscripciones
-            CircunscripcionDAO circunscripcionDAO = new CircunscripcionDAOImpl();
             int numeroCircunscripciones = Integer.parseInt(request.getParameter("hidden-numero-circunscripciones"));
             for(int i = 0; i < numeroCircunscripciones; i++) {
                 Circunscripcion circunscripcion = new Circunscripcion(
@@ -131,7 +176,6 @@ public class SimulacionServlet extends HttpServlet {
             }
             
             // Insert de Votos
-            VotoDAO votoDAO = new VotoDAOImpl();
             for (int i = 0; i < numeroCircunscripciones; i++) {
                 String nombreCircunscripcion = request.getParameter("hidden-circunscripcion-nombre" + i);
                 for (int j = 0; j < numeroCandidaturas; j++) {
