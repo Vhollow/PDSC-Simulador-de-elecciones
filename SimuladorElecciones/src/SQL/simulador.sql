@@ -70,7 +70,7 @@ CREATE TABLE Voto (
     FOREIGN KEY (id_eleccion)
         REFERENCES Eleccion(id)
             ON DELETE CASCADE,
-    FOREIGN KEY (id_eleccion, nombre_circunscripcion)
+    FOREIGN KEY (id_eleccion, nombre_candidatura)
         REFERENCES Candidatura(id_eleccion, nombre_corto)
             ON DELETE CASCADE,
     FOREIGN KEY (id_eleccion, nombre_circunscripcion)

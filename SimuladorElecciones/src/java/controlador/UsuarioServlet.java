@@ -6,8 +6,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import utils.Usuario;
 import utils.Eleccion;
 import modelo.EleccionDAO;
@@ -19,6 +20,7 @@ import modelo.EleccionDAOImpl;
  *
  * @author daniel
  */
+@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
 public class UsuarioServlet extends HttpServlet {
 
     /**
@@ -33,12 +35,11 @@ public class UsuarioServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Obtenemos el usuario del parametro id de la URL
+        // 1. Obtenemos el Usuario de la sesión actual
         HttpSession session = request.getSession();
         Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
         
         if (usuarioActual != null) {
-            
             // 2. Obtenemos las Elecciones creadas o compartidas con el usuario
             EleccionDAO eleccionDAO = new EleccionDAOImpl();
             List<Eleccion> eleccionesUsuario = eleccionDAO.selectElecciones(usuarioActual.getId());
@@ -48,7 +49,7 @@ public class UsuarioServlet extends HttpServlet {
             request.setAttribute("usuarioActual", usuarioActual);
             request.setAttribute("eleccionesUsuario", eleccionesUsuario);
             
-            String url = "/Usuario/usuario.jsp";
+            String url = "/usuario/usuario.jsp";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } else {

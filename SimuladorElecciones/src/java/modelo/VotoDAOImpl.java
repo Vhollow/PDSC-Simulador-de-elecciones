@@ -6,42 +6,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Clase UsuarioEleccionDAO, es la clase empleada para acceder a la Base de
- * Datos de la Aplicación para introducir o borrar pares UsuarioEleccionMap.
- * Implementa la interfaz UsuarioEleccionDAO
+ * Clase VotoDAOImpl, es la clase empleada para acceder a la Base de
+ * Datos de la Aplicación para introducir, obtener o borrar datos de
+ * Votos.
+ * Implementa la interfaz VotoDAO
  * 
  * @author daniel
  */
-public class UsuarioEleccionDAOImpl implements UsuarioEleccionDAO {
+public class VotoDAOImpl implements VotoDAO {
     
     /**
-     * Crea un nuevo UsuarioEleccionDAOImpl
+     * Crea un nuevo VotoDAOImpl
      */
-    public UsuarioEleccionDAOImpl() {}
+    public VotoDAOImpl() {}
     
     /**
      * @inheritDoc
      */
     @Override
-    public boolean insertUsuarioEleccion(
-            int idUsuario, int idEleccion, boolean nuevo
-    ) {        
+    public boolean insertVoto(int idEleccion, String nombreCandidatura,
+            String nombreCircunscripcion, int conteoVotos) {
+        
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
-        String sentenciaString = "INSERT INTO Usuario_Eleccion_Map "
-                + "(id_usuario, id_eleccion, nuevo) "
-                + "VALUES (?, ?, ?)";
+        String sentenciaString = "INSERT INTO Voto "
+                + "(id_eleccion, nombre_candidatura, nombre_circunscripcion, "
+                + "conteo) "
+                + "VALUES (?, ?, ?, ?)";
         
         boolean ret = false;
         
         try {
-            PreparedStatement sentencia = conexion.prepareStatement(
-                sentenciaString
-            );
-            sentencia.setInt(1, idUsuario);
-            sentencia.setInt(2, idEleccion);
-            sentencia.setBoolean(3, nuevo);
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
+            sentencia.setInt(1, idEleccion);
+            sentencia.setString(2, nombreCandidatura);
+            sentencia.setString(3, nombreCircunscripcion);
+            sentencia.setInt(4, conteoVotos);
             
             if (sentencia.executeUpdate() != 0)
             {
@@ -57,32 +58,34 @@ public class UsuarioEleccionDAOImpl implements UsuarioEleccionDAO {
         
         return ret;
     }
-    
+
     /**
      * @inheritDoc
      */
     @Override
-    public boolean existsUsuarioEleccion(int idUsuario, int idEleccion) {
+    public int selectVoto(int idEleccion, String nombreCandidatura,
+            String nombreCircunscripcion) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
         String consultaString = "SELECT * "
-                + "FROM Usuario_Eleccion_Map "
-                + "WHERE id_usuario=? AND id_eleccion=?";
+                + "FROM Voto "
+                + "WHERE id_eleccion=? "
+                + "AND nombre_candidatura=? AND nombre_circunscripcion=?";
         
-        boolean ret = false;
+        int conteo = -1;
         
-        try {
+        try {            
             PreparedStatement consulta = conexion.prepareStatement(consultaString);
-            consulta.setInt(1, idUsuario);
-            consulta.setInt(2, idEleccion);
+            consulta.setInt(1, idEleccion);
+            consulta.setString(2, nombreCandidatura);
+            consulta.setString(3, nombreCircunscripcion);
             
             ResultSet resultado = consulta.executeQuery();
             
-            if ( resultado.next() )
-            {
-                ret = true;
+            if( resultado.next() ) {
+                conteo = resultado.getInt("conteo");
             }
             
             resultado.close();
@@ -93,28 +96,31 @@ public class UsuarioEleccionDAOImpl implements UsuarioEleccionDAO {
         
         pool.freeConnection(conexion);
         
-        return ret;
+        return conteo;
     }
-    
+
     /**
      * @inheritDoc
      */
     @Override
-    public boolean deleteUsuarioEleccion(int idUsuario, int idEleccion) {
+    public boolean deleteVoto(int idEleccion, String nombreCandidatura,
+            String nombreCircunscripcion) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
         String sentenciaString = "DELETE "
-                + "FROM Usuario_Eleccion_Map "
-                + "WHERE id_usuario=? AND id_eleccion=?";
+                + "FROM Voto "
+                + "WHERE id_eleccion=? "
+                + "AND nombre_candidatura=? AND nombre_circunscripcion=?";
         
         boolean ret = false;
         
-        try {            
+        try {
             PreparedStatement sentencia = conexion.prepareStatement(sentenciaString);
-            sentencia.setInt(1, idUsuario);
-            sentencia.setInt(2, idEleccion);
+            sentencia.setInt(1, idEleccion);
+            sentencia.setString(2, nombreCandidatura);
+            sentencia.setString(3, nombreCircunscripcion);
             
             if (sentencia.executeUpdate() != 0)
             {
@@ -124,7 +130,7 @@ public class UsuarioEleccionDAOImpl implements UsuarioEleccionDAO {
             sentencia.close();
         } catch(SQLException e) {
             e.printStackTrace();
-        }
+        }        
         
         pool.freeConnection(conexion);
         

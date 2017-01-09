@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import utils.Circunscripcion;
 
 /**
@@ -66,31 +68,32 @@ public class CircunscripcionDAOImpl implements CircunscripcionDAO {
      * @inheritDoc
      */
     @Override
-    public Circunscripcion selectCircunscripcion(int idEleccion, String nombre) {
+    public List<Circunscripcion> selectCircunscripciones(int idEleccion) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
         String consultaString = "SELECT * "
                 + "FROM Circunscripcion "
-                + "WHERE id_eleccion=? AND nombre=?";
+                + "WHERE id_eleccion=?";
         
-        Circunscripcion circunscripcion = null;
+        List<Circunscripcion> circunscripciones = new ArrayList<Circunscripcion>();
         
         try {            
             PreparedStatement consulta = conexion.prepareStatement(consultaString);
             consulta.setInt(1, idEleccion);
-            consulta.setString(2, nombre);
             
             ResultSet resultado = consulta.executeQuery();
             
-            if( resultado.next() ) {
-                circunscripcion = new Circunscripcion(resultado.getString("nombre"));
-                circunscripcion.setNumeroRepresentantes(resultado.getInt("numero_representantes"));
-                circunscripcion.setVotoNulo(resultado.getInt("voto_nulo"));
-                circunscripcion.setVotoEnBlanco(resultado.getInt("voto_en_blanco"));
-                circunscripcion.setAbstencion(resultado.getInt("abstencion"));
-                circunscripcion.setMinimoRepresentacion(resultado.getInt("minimo_representacion"));
+            while( resultado.next() ) {
+                Circunscripcion c = new Circunscripcion(resultado.getString("nombre"));
+                c.setNumeroRepresentantes(resultado.getInt("numero_representantes"));
+                c.setVotoNulo(resultado.getInt("voto_nulo"));
+                c.setVotoEnBlanco(resultado.getInt("voto_en_blanco"));
+                c.setAbstencion(resultado.getInt("abstencion"));
+                c.setMinimoRepresentacion(resultado.getInt("minimo_representacion"));
+                
+                circunscripciones.add(c);
             }
             
             resultado.close();
@@ -101,7 +104,7 @@ public class CircunscripcionDAOImpl implements CircunscripcionDAO {
         
         pool.freeConnection(conexion);
         
-        return circunscripcion;
+        return circunscripciones;
     }
 
     /**

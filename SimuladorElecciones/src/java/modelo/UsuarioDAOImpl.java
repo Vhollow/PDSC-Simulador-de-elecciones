@@ -105,4 +105,41 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         return usuario;
     }
     
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public boolean deleteUsuario(int idUsuario) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String sentenciaString = "DELETE "
+                + "FROM Usuario "
+                + "WHERE id=?";
+        
+        boolean ret = false;
+        
+        try {
+            PreparedStatement sentencia = conexion.prepareStatement(
+                sentenciaString
+            );
+            sentencia.setInt(1, idUsuario);
+            
+            // El id se genera automaticamente
+            if (sentencia.executeUpdate() != 0)
+            {
+                ret = true;
+            }
+            
+            sentencia.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }        
+        
+        pool.freeConnection(conexion);
+        
+        return ret;
+    }
+    
 }
