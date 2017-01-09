@@ -285,6 +285,7 @@ function doLoad() {
  */
 
 function inicioSimulacion(){
+    document.getElementById("boton-inicio").style.display = "none";
     dibujarGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
     dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }

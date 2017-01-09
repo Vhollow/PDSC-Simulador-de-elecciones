@@ -196,12 +196,13 @@
                         <!-- Aquí aparecen los gráficos de la simulación -->
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-md-4 charts1"></div>
+                                <div class="col-md-4" id="charts1"></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-8 col-md-offset-4 charts2"></div>
+                                <div class="col-md-8 col-md-offset-4" id="charts2"></div>
                             </div>
                         </div>
+                        <button class="btn btn-primary" id="boton-inicio" onclick="inicioSimulacion()"> Iniciar </button>
                 </div>
             </div>
             

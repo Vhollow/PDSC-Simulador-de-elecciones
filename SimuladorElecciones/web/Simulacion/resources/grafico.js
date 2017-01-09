@@ -54,7 +54,7 @@ function dibujarGraficoPequeño(circunscripcion, candidaturas, votosCircunscripc
         contenedor.removeChild(contenedor.firstChild);
     }
     
-    var svg = d3.select(".charts1").append("svg")
+    var svg = d3.select("#charts1").append("svg")
         .attr("width", ancho/2)
         .attr("height", alto/2);
     var groupArcos = svg.append("g")
@@ -99,7 +99,7 @@ function dibujarGraficoGrande(indice, circunscripciones, candidaturas, votosCirc
         }
     }
     
-    var svg = d3.select(".charts1").append("svg")
+    var svg = d3.select("#charts2").append("svg")
         .attr("width", ancho)
         .attr("height", alto);
     var groupArcos = svg.append("g")
