@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.List;
 import utils.Candidatura;
 
 /**
@@ -24,13 +25,12 @@ public interface CandidaturaDAO {
     public boolean insertCandidatura(int idEleccion, Candidatura candidatura);
 
     /**
-     * Devuelve la candidatura con el mismo nombre e id que el especificado.
+     * Devuelve las candidaturas de la eleccion especificada.
      * 
      * @param   idEleccion el id de la eleccion.
-     * @param   nombreCorto el nombre corto de la candatura.
-     * @return  la Candidatura con el mismo nombre e id que el especificado.
+     * @return  una lista con las candidaturas de la eleccion especificada.
      */
-    public Candidatura selectCandidatura(int idEleccion, String nombreCorto);
+    public List<Candidatura> selectCandidaturas(int idEleccion);
 
     /**
      * Elimina la candidatura especificada de la base de datos.

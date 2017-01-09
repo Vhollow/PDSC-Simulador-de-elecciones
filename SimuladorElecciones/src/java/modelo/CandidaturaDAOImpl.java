@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import utils.Candidatura;
 
 /**
@@ -61,29 +63,30 @@ public class CandidaturaDAOImpl implements CandidaturaDAO{
      * @inheritDoc
      */
     @Override
-    public Candidatura selectCandidatura(int idEleccion, String nombreCorto) {
+    public List<Candidatura> selectCandidaturas(int idEleccion) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
         String consultaString = "SELECT * "
                 + "FROM Candidatura "
-                + "WHERE id_eleccion=? AND nombre_corto=?";
+                + "WHERE id_eleccion=?";
         
-        Candidatura candidatura = null;
+        List<Candidatura> candidaturas = new ArrayList<Candidatura>();
         
         try {            
             PreparedStatement consulta = conexion.prepareStatement(consultaString);
             consulta.setInt(1, idEleccion);
-            consulta.setString(2, nombreCorto);
             
             ResultSet resultado = consulta.executeQuery();
             
-            if( resultado.next() ) {
-                candidatura = new Candidatura(
+            while( resultado.next() ) {
+                candidaturas.add(
+                    new Candidatura(
                         resultado.getString("nombre_corto"),
                         resultado.getString("nombre_largo"),
                         resultado.getInt("color")
+                    )
                 );
             }
             
@@ -95,7 +98,7 @@ public class CandidaturaDAOImpl implements CandidaturaDAO{
         
         pool.freeConnection(conexion);
         
-        return candidatura;
+        return candidaturas;
     }
 
     /**

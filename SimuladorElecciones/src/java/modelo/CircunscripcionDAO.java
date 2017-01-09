@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.List;
 import utils.Circunscripcion;
 
 /**
@@ -26,13 +27,12 @@ public interface CircunscripcionDAO {
     );
 
     /**
-     * Devuelve la circunscripcion con el mismo nombre e id que el especificado.
+     * Devuelve las circunscripcions de la eleccion especificada.
      * 
      * @param   idEleccion el id de la eleccion.
-     * @param   nombre el nombre de la circunscripcion.
-     * @return  la Circunscripcion con el mismo nombre e id que el especificado.
+     * @return  una lista con las circunscripciones de la eleccion especificada.
      */
-    public Circunscripcion selectCircunscripcion(int idEleccion, String nombre);
+    public List<Circunscripcion> selectCircunscripciones(int idEleccion);
 
     /**
      * Elimina la circunscripcion especificada de la base de datos.
