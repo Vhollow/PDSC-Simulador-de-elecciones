@@ -302,8 +302,14 @@ function retrocederSimulacion(){
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
-function finSimulacion(){
+function avanzarFinSimulacion(){
     indiceSimulacion=circunscripciones.length-1;
     dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function finalizarSimulacion (){
+    document.getElementById("boton-inicio").style.display = "block";
+    document.getElementById("chars1").style.display = "block";
+    document.getElementById("chars2").style.display = "block";
 }
