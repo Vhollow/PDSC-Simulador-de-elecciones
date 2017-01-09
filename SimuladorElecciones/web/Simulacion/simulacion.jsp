@@ -194,7 +194,20 @@
                     <p class="titulo"> Simulación </p>
                     <div class="clearflx"></div>
                         <!-- Aquí aparecen los gráficos de la simulación -->
-                        <div class="charts"></div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4" id="charts1"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-4" id="charts2"></div>
+                            </div>
+                            <button class="btn btn-primary" id="boton-inicio" onclick="inicioSimulacion()"> Iniciar </button>
+                            <button class="btn btn-primary" id="boton-retroceso" onclick="retrocederSimulacion()" style="display:none"> < Anterior </button>
+                            <button class="btn btn-primary" id="boton-avance" onclick="avanzarSimulacion()" style="display:none"> Siguiente > </button>
+                            <button class="btn btn-primary" id="boton-avance-Fin" onclick="avanzarFinSimulacion()" style="display:none"> Fin >> </button>
+                            
+                            <button class="btn btn-primary" id="boton-Dentener" onclick="finSimulacion()" style="position: absolute; right: 0px; display:none"> Detener </button>
+                        </div>
                 </div>
             </div>
             

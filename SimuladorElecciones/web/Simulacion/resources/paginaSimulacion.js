@@ -2,7 +2,8 @@
 var propMinRepresentacion   = 0,
     circunscripciones       = [],
     votos  = [],
-    candidaturas            = [];
+    candidaturas            = [],
+    indiceSimulacion        = 0;
 
 /* FUNCIONES */
 function actualizaPropMinRepresentacion(elemento) {
@@ -276,4 +277,57 @@ function doLoad() {
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
     dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+
+/*
+ * Funciones para controlar el flujo de la simulación: iniciar, avanzar ...
+ */
+
+function inicioSimulacion(){
+    document.getElementById("boton-inicio").style.display = "none";
+    document.getElementById("boton-avance").style.display = "block";
+    document.getElementById("boton-avance").disabled = "false";
+    document.getElementById("boton-retroceso").style.display = "block";
+    document.getElementById("boton-retroceso").disabled = "true";
+    document.getElementById("boton-avance-Fin").style.display = "block";
+    document.getElementById("boton-Detener").style.display = "block";
+    dibujarGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
+    dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function avanzarSimulacion(){
+    indiceSimulacion++;
+    document.getElementById("boton-retroceso").disabled = "false";
+    if(indiceSimulacion === circunscripciones.length-1){
+       document.getElementById("boton-avance").disabled = "true";
+    }
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function retrocederSimulacion(){
+    indiceSimulacion--;
+    document.getElementById("boton-avance").disabled = "false";
+    if(indiceSimulacion === 0){
+       document.getElementById("boton-retroceso").disabled = "true";
+    }
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function avanzarFinSimulacion(){
+    indiceSimulacion=circunscripciones.length-1;
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function finalizarSimulacion (){
+    document.getElementById("boton-inicio").style.display = "block";
+    document.getElementById("boton-avance").style.display = "none";
+    document.getElementById("boton-retroceso").style.display = "none";
+    document.getElementById("boton-avance-Fin").style.display = "none";
+    document.getElementById("boton-Detener").style.display = "none";
+    document.getElementById("chars1").style.display = "none";
+    document.getElementById("chars2").style.display = "none";
 }

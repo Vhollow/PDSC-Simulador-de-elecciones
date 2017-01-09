@@ -44,3 +44,81 @@ function dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, 
     }
     
 }
+
+function dibujarGraficoPequeño(circunscripcion, candidaturas, votosCircunscripcion, propMinRepresentacion){
+    
+    var datos = calculaEscaños(circunscripcion, candidaturas, votosCircunscripcion, propMinRepresentacion);
+    
+    var contenedor = document.getElementById("charts1");
+    while(contenedor.hasChildNodes()){
+        contenedor.removeChild(contenedor.firstChild);
+    }
+    
+    var svg = d3.select("#charts1").append("svg")
+        .attr("width", ancho/2)
+        .attr("height", alto/2);
+    var groupArcos = svg.append("g")
+        .attr("transform", "translate(" + ancho/4 + ", " + alto/4 + ")");
+
+    ultimoAngulo = -Math.PI/2;
+    for (var j in datos) {
+        var anguloFinal = ultimoAngulo + datos[j].numeroEscaños * Math.PI / circunscripcion.numeroRepresentantes;
+
+        var arco = d3.svg.arc()
+            .outerRadius(radioExterior)
+            .innerRadius(radioInterior)
+            .startAngle(ultimoAngulo)
+            .endAngle(anguloFinal);
+
+        groupArcos.append("path")
+            .style("fill", datos[j].candidatura.color)
+            .attr("d", arco);
+    
+        ultimoAngulo = anguloFinal;
+    }
+}
+
+function dibujarGraficoGrande(indice, circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion){
+    
+    var contenedor = document.getElementById("charts2");
+    while(contenedor.hasChildNodes()){
+        contenedor.removeChild(contenedor.firstChild);
+    }
+    
+    var datos = [];
+    var numRepresentantes = 0;
+    
+    for(var i in circunscripciones){
+        numRepresentantes += circunscripciones[i].numeroRepresentantes;
+    }
+    
+    for(var i = 0 ; i <= indice ; i++){
+        var datosTemp = calculaEscaños(circunscripciones[i], candidaturas, votosCircunscripciones[i], propMinRepresentacion);
+        for(var j = 1 ; j <= datosTemp.length ; j++){
+            datos[j] += datosTemp[j];
+        }
+    }
+    
+    var svg = d3.select("#charts2").append("svg")
+        .attr("width", ancho)
+        .attr("height", alto);
+    var groupArcos = svg.append("g")
+        .attr("transform", "translate(" + ancho/2 + ", " + alto/2 + ")");
+
+    ultimoAngulo = -Math.PI/2;
+    for (var j in datos) {
+        var anguloFinal = ultimoAngulo + datos[j].numeroEscaños * Math.PI / numRepresentantes;
+
+        var arco = d3.svg.arc()
+            .outerRadius(radioExterior)
+            .innerRadius(radioInterior)
+            .startAngle(ultimoAngulo)
+            .endAngle(anguloFinal);
+
+        groupArcos.append("path")
+            .style("fill", datos[j].candidatura.color)
+            .attr("d", arco);
+    
+        ultimoAngulo = anguloFinal;
+    }
+}
