@@ -194,7 +194,14 @@
                     <p class="titulo"> Simulación </p>
                     <div class="clearflx"></div>
                         <!-- Aquí aparecen los gráficos de la simulación -->
-                        <div class="charts"></div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4 charts1"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-4 charts2"></div>
+                            </div>
+                        </div>
                 </div>
             </div>
             

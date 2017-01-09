@@ -2,7 +2,8 @@
 var propMinRepresentacion   = 0,
     circunscripciones       = [],
     votos  = [],
-    candidaturas            = [];
+    candidaturas            = [],
+    indiceSimulacion        = 0;
 
 /* FUNCIONES */
 function actualizaPropMinRepresentacion(elemento) {
@@ -276,4 +277,32 @@ function doLoad() {
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
     dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+
+/*
+ * Funciones para controlar el flujo de la simulación: iniciar, avanzar ...
+ */
+
+function inicioSimulacion(){
+    dibujarGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
+    dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function avanzarSimulacion(){
+    indiceSimulacion++;
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function retrocederSimulacion(){
+    indiceSimulacion++;
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function finSimulacion(){
+    indiceSimulacion=circunscripciones.length-1;
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
