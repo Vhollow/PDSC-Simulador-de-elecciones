@@ -29,13 +29,13 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
         <!-- D3 para graficos -->
-        <script type="text/javascript" src="./Simulacion/resources/d3.min.js"></script>
+        <script type="text/javascript" src="./simulacion/resources/d3.min.js"></script>
         
         <!-- Javascript propios -->
-	<script type="text/javascript" src="./Simulacion/resources/leyDHondt.js"></script>
-        <script type="text/javascript" src="./Simulacion/resources/paginaSimulacion.js"></script>
-	<script type="text/javascript" src="./Simulacion/resources/grafico.js"></script>
-        <script type="text/javascript" src="./Simulacion/resources/jscolor.js"></script>
+	<script type="text/javascript" src="./simulacion/resources/leyDHondt.js"></script>
+        <script type="text/javascript" src="./simulacion/resources/paginaSimulacion.js"></script>
+	<script type="text/javascript" src="./simulacion/resources/grafico.js"></script>
+        <script type="text/javascript" src="./simulacion/resources/jscolor.js"></script>
     </head>
     <body class="container-fluid" onload="doLoad();">
         <form id="form-simulacion" action="simulacion" method="post" onsubmit="return doSave();" class="row">

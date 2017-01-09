@@ -46,7 +46,7 @@ public class RegistroServlet extends HttpServlet {
             usuarioDAO.insertUsuario(newUser);
             
         }catch(Exception e){
-            String url = "/Registro/registro.jsp";
+            String url = "/registro/registro.jsp";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         }
