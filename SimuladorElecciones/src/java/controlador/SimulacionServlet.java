@@ -105,7 +105,7 @@ public class SimulacionServlet extends HttpServlet {
         }
         
         // Pagina para simulacion
-        String url = "/simulacion/simulacion.jsp";
+        String url = "/Simulacion/simulacion.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
