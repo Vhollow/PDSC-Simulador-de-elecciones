@@ -6,7 +6,7 @@
         type="javax.sql.DataSource"
         url="jdbc:mysql://localhost:3306/pdsc_simulador"
         username="root"
-        password="password"
+        password="simEg02DB"
         driverClassName="com.mysql.jdbc.Driver"
         maxActive="100"
         maxIdle="30"
