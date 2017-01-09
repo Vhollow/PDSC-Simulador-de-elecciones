@@ -202,11 +202,11 @@
                                 <div class="col-md-8 col-md-offset-4" id="charts2"></div>
                             </div>
                             <button class="btn btn-primary" id="boton-inicio" onclick="inicioSimulacion()"> Iniciar </button>
-                            <button class="btn btn-primary" id="boton-retroceso" onclick="retrocederSimulacion()" diplay="none"> < Anterior </button>
-                            <button class="btn btn-primary" id="boton-avance" onclick="avanzarSimulacion()" diplay="none"> Siguiente > </button>
-                            <button class="btn btn-primary" id="boton-avance-Fin" onclick="avanzarFinSimulacion()" diplay="none"> Fin >> </button>
+                            <button class="btn btn-primary" id="boton-retroceso" onclick="retrocederSimulacion()" style="display:none"> < Anterior </button>
+                            <button class="btn btn-primary" id="boton-avance" onclick="avanzarSimulacion()" style="display:none"> Siguiente > </button>
+                            <button class="btn btn-primary" id="boton-avance-Fin" onclick="avanzarFinSimulacion()" style="display:none"> Fin >> </button>
                             
-                            <button class="btn btn-primary" id="boton-Dentener" onclick="finSimulacion()" style="position: absolute; right: 0px" diplay="none"> Detener </button>
+                            <button class="btn btn-primary" id="boton-Dentener" onclick="finSimulacion()" style="position: absolute; right: 0px; display:none"> Detener </button>
                         </div>
                 </div>
             </div>
