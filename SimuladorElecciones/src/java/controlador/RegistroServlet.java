@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controlador;
 
 import java.io.IOException;
@@ -8,18 +13,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.Usuario;
 import modelo.UsuarioDAO;
 import modelo.UsuarioDAOImpl;
+import utils.Usuario;
 
 /**
- * Clase encargada del registro de nuevos usuarios en el sistema.
- * 
+ *
  * @author Vicente
  */
-@WebServlet(name = "RegistroServlet", urlPatterns = {"/RegistroServlet"})
+@WebServlet(name = "RegistroServlet", urlPatterns = {"/registrate"})
 public class RegistroServlet extends HttpServlet {
 
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
