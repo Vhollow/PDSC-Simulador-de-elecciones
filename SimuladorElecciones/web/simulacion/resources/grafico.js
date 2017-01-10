@@ -1,3 +1,7 @@
+function hexToR(h) {return parseInt(h.substring(0,2),16)}
+function hexToG(h) {return parseInt(h.substring(2,4),16)}
+function hexToB(h) {return parseInt(h.substring(4,6),16)}
+
 /*
  * Dibuja el grafico de sectores con los escaños de cada candidatura en la
  * circunscripcion dada
@@ -35,8 +39,14 @@ function dibujaGraficoPequeño(circunscripcion, candidaturas, votosCircunscripci
             .startAngle(ultimoAngulo)
             .endAngle(anguloFinal);
 
+        var rgbColor = d3.rgb(
+                hexToR(datos[j].candidatura.color),
+                hexToG(datos[j].candidatura.color),
+                hexToB(datos[j].candidatura.color)
+        );
+
         groupArcos.append("path")
-            .style("fill", datos[j].candidatura.color)
+            .style("fill", rgbColor)
             .attr("d", arco);
     
         ultimoAngulo = anguloFinal;
@@ -105,8 +115,14 @@ function dibujaGraficoGrande(indice, circunscripciones, candidaturas, votosCircu
             .startAngle(ultimoAngulo)
             .endAngle(anguloFinal);
 
+        var rgbColor = d3.rgb(
+                hexToR(datos[j].candidatura.color),
+                hexToG(datos[j].candidatura.color),
+                hexToB(datos[j].candidatura.color)
+        );
+
         groupArcos.append("path")
-            .style("fill", datos[j].candidatura.color)
+            .style("fill", rgbColor)
             .attr("d", arco);
     
         ultimoAngulo = anguloFinal;
