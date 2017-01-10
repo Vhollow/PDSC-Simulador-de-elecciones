@@ -46,7 +46,6 @@ public class UsuarioServlet extends HttpServlet {
                         
             // 3. Pasamos los datos obtenidos de la base de datos a la página
             // del usuario de la vista
-            request.setAttribute("usuarioActual", usuarioActual);
             request.setAttribute("eleccionesUsuario", eleccionesUsuario);
             
             String url = "/usuario/usuario.jsp";

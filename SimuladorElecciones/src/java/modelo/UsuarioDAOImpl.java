@@ -68,21 +68,20 @@ public class UsuarioDAOImpl implements UsuarioDAO {
      * @inheritDoc
      */
     @Override
-    public Usuario selectUsuario(String correoElectronico, String clave) {
+    public Usuario selectUsuario(int id) {
         
         ConexionPool pool = ConexionPool.getInstancia();
         Connection conexion = pool.getConnection();
         
         String consultaString = "SELECT * "
                 + "FROM Usuario "
-                + "WHERE correo_electronico=? AND clave=?";
+                + "WHERE id=?";
         
         Usuario usuario = null;
         
         try {            
             PreparedStatement consulta = conexion.prepareStatement(consultaString);
-            consulta.setString(1, correoElectronico);
-            consulta.setString(2, clave);
+            consulta.setInt(1, id);
             
             ResultSet resultado = consulta.executeQuery();
             
@@ -90,7 +89,49 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario = new Usuario(
                         resultado.getInt("id"),
                         resultado.getString("nombre"),
-                        resultado.getString("correo_electronico")
+                        resultado.getString("correo_electronico"),
+                        resultado.getString("clave")
+                );
+            }
+            
+            resultado.close();
+            consulta.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        pool.freeConnection(conexion);
+        
+        return usuario;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Usuario selectUsuario(String correoElectronico) {
+        
+        ConexionPool pool = ConexionPool.getInstancia();
+        Connection conexion = pool.getConnection();
+        
+        String consultaString = "SELECT * "
+                + "FROM Usuario "
+                + "WHERE correo_electronico=?";
+        
+        Usuario usuario = null;
+        
+        try {            
+            PreparedStatement consulta = conexion.prepareStatement(consultaString);
+            consulta.setString(1, correoElectronico);
+            
+            ResultSet resultado = consulta.executeQuery();
+            
+            if( resultado.next() ) {
+                usuario = new Usuario(
+                        resultado.getInt("id"),
+                        resultado.getString("nombre"),
+                        resultado.getString("correo_electronico"),
+                        resultado.getString("clave")
                 );
             }
             

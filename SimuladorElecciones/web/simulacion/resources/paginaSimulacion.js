@@ -1,7 +1,7 @@
 /* VARIABLES */
 var propMinRepresentacion   = 0,
     circunscripciones       = [],
-    votos  = [],
+    votos                   = [],
     candidaturas            = [],
     indiceSimulacion        = 0;
 
@@ -12,7 +12,7 @@ function actualizaPropMinRepresentacion(elemento) {
 }
 
 
-function actualizaTablaCircunscripcion(){
+function actualizaTablaCircunscripcion() {
     
     var tabla = document.getElementById("tabla-circunscripciones-body");
     while(tabla.hasChildNodes()){
@@ -78,7 +78,7 @@ function actualizaTablaCircunscripcion(){
 }
 
 
-function actualizaTablaVotos(){
+function actualizaTablaVotos() {
     // Header
     var head = document.createElement("thead");
     var row = document.createElement("tr");
@@ -131,7 +131,7 @@ function actualizaTablaVotos(){
 }
 
 
-function nuevaCircunscripcion(){
+function nuevaCircunscripcion() {
     var formSimulacion = document.getElementById("form-simulacion");
     
     var circunscripcion = {
@@ -161,7 +161,7 @@ function nuevaCircunscripcion(){
 }
 
 
-function nuevaCandidatura(){
+function nuevaCandidatura() {
     var formSimulacion = document.getElementById("form-simulacion");
     
     var candidatura = {
@@ -213,6 +213,9 @@ function doSave() {
     formSimulacion.appendChild(almacen);
     
     // Añadimos los hidden al div
+    var inputTipoEleccion = formSimulacion.elements["input-tipo-eleccion"];
+    addHidden(almacen, "hidden-tipo-eleccion", inputTipoEleccion.value);
+    
     addHidden(almacen, "hidden-numero-candidaturas", candidaturas.length);
     for (var i in candidaturas) {
         addHidden(almacen, "hidden-candidatura-nombre-corto" + i, candidaturas[i].nombreCorto);
@@ -226,7 +229,6 @@ function doSave() {
     }
 
     // El resto de datos ya estan en los inputs
-
     return true;
 }
 
@@ -240,6 +242,8 @@ function doLoad() {
     var formSimulacion = document.getElementById("form-simulacion");
     
     // Actualizamos los datos del Javascript
+    var tipoEleccion = formSimulacion.elements["hidden-tipo-eleccion"].value;
+    
     propMinRepresentacion = formSimulacion.elements["hidden-prop-min-representacion"].value;
     
     var numeroCircunscripciones = formSimulacion.elements["hidden-numero-circunscripciones"].value;
@@ -273,6 +277,7 @@ function doLoad() {
     }
     
     // Actualizamos la vista
+    formSimulacion.elements["input-tipo-eleccion"].value = tipoEleccion;
     formSimulacion.elements["input-prop-min-representacion"].value = propMinRepresentacion * 100;
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
@@ -283,8 +288,7 @@ function doLoad() {
 /*
  * Funciones para controlar el flujo de la simulación: iniciar, avanzar ...
  */
-
-function inicioSimulacion(){
+function inicioSimulacion() {
     document.getElementById("boton-inicio").style.display = "none";
     document.getElementById("boton-avance").style.display = "block";
     document.getElementById("boton-avance").disabled = "false";
@@ -296,7 +300,7 @@ function inicioSimulacion(){
     dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
-function avanzarSimulacion(){
+function avanzarSimulacion() {
     indiceSimulacion++;
     document.getElementById("boton-retroceso").disabled = "false";
     if(indiceSimulacion === circunscripciones.length-1){
@@ -306,23 +310,23 @@ function avanzarSimulacion(){
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
-function retrocederSimulacion(){
+function retrocederSimulacion() {
     indiceSimulacion--;
     document.getElementById("boton-avance").disabled = "false";
     if(indiceSimulacion === 0){
        document.getElementById("boton-retroceso").disabled = "true";
     }
+    dibujarGraficoPequeño(circunscripciones[indiceSimulacion], candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+}
+
+function avanzarFinSimulacion() {
+    indiceSimulacion = circunscripciones.length - 1;
     dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
-function avanzarFinSimulacion(){
-    indiceSimulacion=circunscripciones.length-1;
-    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
-    dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
-}
-
-function finalizarSimulacion (){
+function finalizarSimulacion() {
     document.getElementById("boton-inicio").style.display = "block";
     document.getElementById("boton-avance").style.display = "none";
     document.getElementById("boton-retroceso").style.display = "none";

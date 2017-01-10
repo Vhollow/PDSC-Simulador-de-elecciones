@@ -50,23 +50,32 @@ public class IndexServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Obtenemos la información de la peticion
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        Usuario usuarioActual = usuarioDAO.selectUsuario(
-                request.getParameter("correoElectronico"),
-                request.getParameter("clave")
-        );
+        boolean error = true;
         
-        if (usuarioActual != null) {
-            // 2. Iniciamos los datos de la sesion
-            HttpSession session = request.getSession();
-            session.setAttribute("usuarioActual", usuarioActual);
-            
-            // 3. Vamos a la pagina de usuario
-            String url = "/usuario";
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-            dispatcher.forward(request, response);
-        } else {
+        // 1. Obtenemos la información de la peticion
+        String correoElectronico = request.getParameter("correoElectronico");
+        String clave = request.getParameter("clave");
+        
+        if (correoElectronico != null && clave != null) {
+            UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+            Usuario usuarioActual = usuarioDAO.selectUsuario(correoElectronico);
+        
+            if (usuarioActual != null && usuarioActual.getClave().equals(clave)) {
+
+                // 2. Iniciamos los datos de la sesion
+                HttpSession session = request.getSession();
+                session.setAttribute("usuarioActual", usuarioActual);
+
+                // 3. Vamos a la pagina de usuario
+                String url = "/usuario";
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+                dispatcher.forward(request, response);
+                
+                error = false;
+            }
+        }
+        
+        if (error) {
             String url = "/index.jsp";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
