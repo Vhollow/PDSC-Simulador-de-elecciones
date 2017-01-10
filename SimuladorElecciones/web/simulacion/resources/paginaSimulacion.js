@@ -8,7 +8,6 @@ var propMinRepresentacion   = 0,
 /* FUNCIONES */
 function actualizaPropMinRepresentacion(elemento) {
     propMinRepresentacion = elemento.value / 100;
-    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 
@@ -33,7 +32,6 @@ function actualizaTablaCircunscripcion() {
         input_vn.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_vn.onchange = function(){
             circunscripciones[this.getAttribute("indiceCircunscripcion")].votoNulo = this.value;
-            dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
         };
 
         var col1 = document.createElement("td");
@@ -47,7 +45,6 @@ function actualizaTablaCircunscripcion() {
         input_vb.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_vb.onchange = function(){
             circunscripciones[this.getAttribute("indiceCircunscripcion")].votoEnBlanco = this.value;
-            dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
         };
 
         var col2 = document.createElement("td");
@@ -61,7 +58,6 @@ function actualizaTablaCircunscripcion() {
         input_nr.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_nr.onchange = function(){
             circunscripciones[this.getAttribute("indiceCircunscripcion")].numeroRepresentantes = this.value;
-            dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
         };
 
         var col3 = document.createElement("td");
@@ -109,7 +105,6 @@ function actualizaTablaVotos() {
             input_v.setAttribute("indiceCandidatura", j);
             input_v.onchange = function(){
                 votos[this.getAttribute("indiceCircunscripcion")][this.getAttribute("indiceCandidatura")] = this.value;
-                dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
             };
             
             var td  = document.createElement("td");
@@ -154,7 +149,6 @@ function nuevaCircunscripcion() {
 
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
-    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
     
     // Reset del texto por defecto en los botones para añadir una circunscripcion
     formSimulacion.elements["input-circunscripcion-nombre"].value = "";
@@ -183,7 +177,6 @@ function nuevaCandidatura() {
     document.getElementById("cuadrados-candidaturas").appendChild(div);
 
     actualizaTablaVotos();
-    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
     
     // Reset del texto por defecto en los botones para añadir una candidatura
     formSimulacion.elements["input-candidatura-nombre"].value = "";
@@ -283,7 +276,6 @@ function doLoad() {
     formSimulacion.elements["input-prop-min-representacion"].value = propMinRepresentacion * 100;
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
-    dibujaGrafico(circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 
@@ -296,19 +288,19 @@ function inicioSimulacion() {
     document.getElementById("boton-avance").disabled = "false";
     document.getElementById("boton-retroceso").style.display = "block";
     document.getElementById("boton-retroceso").disabled = "true";
-    document.getElementById("boton-avance-Fin").style.display = "block";
-    document.getElementById("boton-Detener").style.display = "block";
-    dibujarGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
+    document.getElementById("boton-avance-fin").style.display = "block";
+    document.getElementById("boton-detener").style.display = "block";
+    dibujaGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
     dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 function avanzarSimulacion() {
     indiceSimulacion++;
     document.getElementById("boton-retroceso").disabled = "false";
-    if(indiceSimulacion === circunscripciones.length-1){
+    if(indiceSimulacion === circunscripciones.length - 1){
        document.getElementById("boton-avance").disabled = "true";
     }
-    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
@@ -318,13 +310,13 @@ function retrocederSimulacion() {
     if(indiceSimulacion === 0){
        document.getElementById("boton-retroceso").disabled = "true";
     }
-    dibujarGraficoPequeño(circunscripciones[indiceSimulacion], candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoPequeño(circunscripciones[indiceSimulacion], candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 function avanzarFinSimulacion() {
     indiceSimulacion = circunscripciones.length - 1;
-    dibujarGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
+    dibujaGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
@@ -332,8 +324,8 @@ function finalizarSimulacion() {
     document.getElementById("boton-inicio").style.display = "block";
     document.getElementById("boton-avance").style.display = "none";
     document.getElementById("boton-retroceso").style.display = "none";
-    document.getElementById("boton-avance-Fin").style.display = "none";
-    document.getElementById("boton-Detener").style.display = "none";
+    document.getElementById("boton-avance-fin").style.display = "none";
+    document.getElementById("boton-detener").style.display = "none";
     document.getElementById("chars1").style.display = "none";
     document.getElementById("chars2").style.display = "none";
 }

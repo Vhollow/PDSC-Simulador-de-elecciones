@@ -45,7 +45,7 @@ function dibujaGrafico(circunscripciones, candidaturas, votosCircunscripciones, 
     
 }
 
-function dibujarGraficoPequeño(circunscripcion, candidaturas, votosCircunscripcion, propMinRepresentacion){
+function dibujaGraficoPequeño(circunscripcion, candidaturas, votosCircunscripcion, propMinRepresentacion) {
     
     var datos = calculaEscaños(circunscripcion, candidaturas, votosCircunscripcion, propMinRepresentacion);
     
@@ -78,7 +78,7 @@ function dibujarGraficoPequeño(circunscripcion, candidaturas, votosCircunscripc
     }
 }
 
-function dibujarGraficoGrande(indice, circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion){
+function dibujaGraficoGrande(indice, circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion) {
     
     var contenedor = document.getElementById("charts2");
     while(contenedor.hasChildNodes()){
@@ -94,8 +94,13 @@ function dibujarGraficoGrande(indice, circunscripciones, candidaturas, votosCirc
     
     for(var i = 0 ; i <= indice ; i++){
         var datosTemp = calculaEscaños(circunscripciones[i], candidaturas, votosCircunscripciones[i], propMinRepresentacion);
-        for(var j = 1 ; j <= datosTemp.length ; j++){
-            datos[j] += datosTemp[j];
+        
+        if (i === 0) {
+            datos = datosTemp;
+        } else {
+            for(var j = 1 ; j <= datosTemp.length ; j++){
+                datos[j].numeroEscaños += datosTemp[j].numeroEscaños;
+            }
         }
     }
     

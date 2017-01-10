@@ -176,7 +176,8 @@ public class SimulacionServlet extends HttpServlet {
             dispatcher.forward(request, response);
 
         } catch(Exception e) {
-            
+            // Pagina para simulacion
+            response.sendRedirect("./simulacion");
         }
     }
 
