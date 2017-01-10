@@ -1,6 +1,6 @@
-function hexToR(h) {return parseInt(h.substring(0,2),16)}
-function hexToG(h) {return parseInt(h.substring(2,4),16)}
-function hexToB(h) {return parseInt(h.substring(4,6),16)}
+function hexToR(h) { return parseInt(h.substring(0,2),16); }
+function hexToG(h) { return parseInt(h.substring(2,4),16); }
+function hexToB(h) { return parseInt(h.substring(4,6),16); }
 
 /*
  * Dibuja el grafico de sectores con los escaños de cada candidatura en la
@@ -59,9 +59,9 @@ function dibujaGraficoPequeño(circunscripcion, candidaturas, votosCircunscripci
  */
 function dibujaGraficoGrande(indice, circunscripciones, candidaturas, votosCircunscripciones, propMinRepresentacion) {
 
-    var numRepresentantes = 0;
+    var numeroRepresentantes = 0;
     for(var i = 0; i <= indice; i++){
-        numRepresentantes += circunscripciones[i].numeroRepresentantes;
+        numeroRepresentantes += circunscripciones[i].numeroRepresentantes;
     }
     
     var datos = new Array(candidaturas.length);
@@ -107,8 +107,8 @@ function dibujaGraficoGrande(indice, circunscripciones, candidaturas, votosCircu
 
     var ultimoAngulo = -Math.PI/2;
     for (var j in datos) {
-        var anguloFinal = ultimoAngulo + datos[j].numeroEscaños * Math.PI / numRepresentantes;
-
+        var anguloFinal = ultimoAngulo + datos[j].numeroEscaños * Math.PI / numeroRepresentantes;
+        
         var arco = d3.svg.arc()
             .outerRadius(radioExterior)
             .innerRadius(radioInterior)

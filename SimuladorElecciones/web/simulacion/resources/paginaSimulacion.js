@@ -7,7 +7,7 @@ var propMinRepresentacion   = 0,
 
 /* FUNCIONES */
 function actualizaPropMinRepresentacion(elemento) {
-    propMinRepresentacion = elemento.value / 100;
+    propMinRepresentacion = parseInt(elemento.value) / 100;
 }
 
 
@@ -31,7 +31,7 @@ function actualizaTablaCircunscripcion() {
         input_vn.class = "form-control";
         input_vn.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_vn.onchange = function(){
-            circunscripciones[this.getAttribute("indiceCircunscripcion")].votoNulo = this.value;
+            circunscripciones[this.getAttribute("indiceCircunscripcion")].votoNulo = parseInt(this.value);
         };
 
         var col1 = document.createElement("td");
@@ -44,7 +44,7 @@ function actualizaTablaCircunscripcion() {
         input_vb.class = "form-control";
         input_vb.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_vb.onchange = function(){
-            circunscripciones[this.getAttribute("indiceCircunscripcion")].votoEnBlanco = this.value;
+            circunscripciones[this.getAttribute("indiceCircunscripcion")].votoEnBlanco = parseInt(this.value);
         };
 
         var col2 = document.createElement("td");
@@ -57,7 +57,7 @@ function actualizaTablaCircunscripcion() {
         input_nr.class = "form-control";
         input_nr.setAttribute("indiceCircunscripcion", indiceCircunscripcion);
         input_nr.onchange = function(){
-            circunscripciones[this.getAttribute("indiceCircunscripcion")].numeroRepresentantes = this.value;
+            circunscripciones[this.getAttribute("indiceCircunscripcion")].numeroRepresentantes = parseInt(this.value);
         };
 
         var col3 = document.createElement("td");
@@ -104,7 +104,7 @@ function actualizaTablaVotos() {
             input_v.setAttribute("indiceCircunscripcion", i);
             input_v.setAttribute("indiceCandidatura", j);
             input_v.onchange = function(){
-                votos[this.getAttribute("indiceCircunscripcion")][this.getAttribute("indiceCandidatura")] = this.value;
+                votos[this.getAttribute("indiceCircunscripcion")][this.getAttribute("indiceCandidatura")] = parseInt(this.value);
             };
             
             var td  = document.createElement("td");
@@ -244,9 +244,9 @@ function doLoad() {
     for (var i = 0; i < numeroCircunscripciones; i++) {
         var circunscripcion = {
             nombre: formSimulacion.elements["hidden-circunscripcion-nombre" + i].value,
-            numeroRepresentantes: formSimulacion.elements["hidden-circunscripcion-numero-representantes" + i].value,
-            votoNulo: formSimulacion.elements["hidden-circunscripcion-voto-nulo" + i].value,
-            votoEnBlanco: formSimulacion.elements["hidden-circunscripcion-voto-en-blanco" + i].value
+            numeroRepresentantes: parseInt(formSimulacion.elements["hidden-circunscripcion-numero-representantes" + i].value),
+            votoNulo: parseInt(formSimulacion.elements["hidden-circunscripcion-voto-nulo" + i].value),
+            votoEnBlanco: parseInt(formSimulacion.elements["hidden-circunscripcion-voto-en-blanco" + i].value)
         };
         circunscripciones[i] = circunscripcion;
     }
@@ -285,31 +285,45 @@ function doLoad() {
 function inicioSimulacion() {
     document.getElementById("boton-inicio").style.display = "none";
     document.getElementById("boton-avance").style.display = "block";
-    document.getElementById("boton-avance").disabled = "false";
+    document.getElementById("boton-avance").disabled = false;
     document.getElementById("boton-retroceso").style.display = "block";
-    document.getElementById("boton-retroceso").disabled = "true";
+    document.getElementById("boton-retroceso").disabled = true;
     document.getElementById("boton-avance-fin").style.display = "block";
+    document.getElementById("boton-avance-fin").disabled = false;
     document.getElementById("boton-detener").style.display = "block";
+    document.getElementById("charts1").style.display = "initial";
+    document.getElementById("charts2").style.display = "initial";
+    
+    if (circunscripciones.length === 1) {
+        document.getElementById("boton-avance").disabled = true;
+        document.getElementById("boton-avance-fin").disabled = true;
+    }
+    
     dibujaGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
     dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 function avanzarSimulacion() {
     indiceSimulacion++;
-    document.getElementById("boton-retroceso").disabled = "false";
-    if(indiceSimulacion === circunscripciones.length - 1){
-       document.getElementById("boton-avance").disabled = "true";
+    document.getElementById("boton-retroceso").disabled = false;
+    
+    if (indiceSimulacion === circunscripciones.length - 1) {
+       document.getElementById("boton-avance").disabled = true;
+       document.getElementById("boton-avance-fin").disabled = true;
     }
+    
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 function retrocederSimulacion() {
     indiceSimulacion--;
-    document.getElementById("boton-avance").disabled = "false";
-    if(indiceSimulacion === 0){
-       document.getElementById("boton-retroceso").disabled = "true";
+    document.getElementById("boton-avance").disabled = false;
+    
+    if (indiceSimulacion === 0) {
+       document.getElementById("boton-retroceso").disabled = true;
     }
+    
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion], candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
@@ -326,6 +340,6 @@ function finalizarSimulacion() {
     document.getElementById("boton-retroceso").style.display = "none";
     document.getElementById("boton-avance-fin").style.display = "none";
     document.getElementById("boton-detener").style.display = "none";
-    document.getElementById("chars1").style.display = "none";
-    document.getElementById("chars2").style.display = "none";
+    document.getElementById("charts1").style.display = "none";
+    document.getElementById("charts2").style.display = "none";
 }
