@@ -7,7 +7,6 @@ package utils;
  */
 public enum TipoEleccion {
     
-    Otro(0),
     CongresoDiputados(1),
     Autonomicas(2),
     Municipales(3),
@@ -24,4 +23,26 @@ public enum TipoEleccion {
     public int getValor() {
         return valor;
     }
+    
+    /**
+     * Transforma un entero al tipo Eleccion
+     * @param num el entero que queremos transformar (de 1 a 4)
+     * @return  el enum o null en caso de no poder transformarlo
+     */
+    public static TipoEleccion numToTipoEleccion(int num) {
+        TipoEleccion ret = null;
+        
+        if (num == CongresoDiputados.valor) {
+            ret = CongresoDiputados;
+        } else if (num == Autonomicas.valor) {
+            ret = Autonomicas;
+        } else if (num == Municipales.valor) {
+            ret = Municipales;
+        } else if (num == ParlamentoEuropeo.valor) {
+            ret = ParlamentoEuropeo;
+        }
+        
+        return ret;
+    }
+    
 }

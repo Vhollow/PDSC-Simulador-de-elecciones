@@ -38,9 +38,10 @@ public class TestDAOs {
         if(idUsuario2 < 0) { return false; }
 
         // Select de Usuario
-        Usuario usuarioSelected = usuarioDAO.selectUsuario(usuario1.getCorreoElectronico(), usuario1.getClave());
+        Usuario usuarioSelected = usuarioDAO.selectUsuario(usuario1.getCorreoElectronico());
         if((usuarioSelected.getId() != idUsuario1)
             || !usuarioSelected.getNombre().equals(usuario1.getNombre())
+            || !usuarioSelected.getClave().equals(usuario1.getClave())
             || !usuarioSelected.getCorreoElectronico().equals(usuario1.getCorreoElectronico())
         ) { return false; }
 

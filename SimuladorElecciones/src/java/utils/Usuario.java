@@ -44,11 +44,13 @@ public class Usuario {
      * @param id el ID del Usuario
      * @param nombre el Nombre de Usuario
      * @param correoElectronico el correo eletrónico del Usuario
+     * @param clave la clave del Usuario
      */
-    public Usuario (int id, String nombre, String correoElectronico) {
+    public Usuario (int id, String nombre, String correoElectronico, String clave) {
         this.id = id;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
+        this.clave = clave;
     }
     
 

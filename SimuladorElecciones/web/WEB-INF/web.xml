@@ -6,7 +6,6 @@
             30
         </session-timeout>
     </session-config>
-    
     <!-- Servlets -->
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
@@ -15,7 +14,7 @@
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
-        <url-pattern></url-pattern>
+        <url-pattern/>
     </servlet-mapping>
     <servlet>
         <servlet-name>TestSimuladorDBServlet</servlet-name>
@@ -40,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>SimulacionServlet</servlet-name>
         <url-pattern>/simulacion</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RegistroServlet</servlet-name>
+        <servlet-class>controlador.RegistroServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegistroServlet</servlet-name>
+        <url-pattern>/registro</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -8,6 +8,7 @@
 <%@page import="utils.Circunscripcion"%>
 <%@page import="java.util.List"%>
 <%@page import="utils.Eleccion"%>
+<%@page import="utils.TipoEleccion"%>
 <%@page import="utils.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -37,7 +38,15 @@
 	<script type="text/javascript" src="./simulacion/resources/grafico.js"></script>
         <script type="text/javascript" src="./simulacion/resources/jscolor.js"></script>
     </head>
-    <body class="container-fluid" onload="doLoad();">
+    <%
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        Eleccion eleccion = (Eleccion) request.getAttribute("eleccion");
+    %>
+    <body class="container-fluid"
+        <%if (eleccion!=null) { %>
+        onload="doLoad();"
+        <% } %>
+        >
         <form id="form-simulacion" action="simulacion" method="post" onsubmit="return doSave();" class="row">
             <!-- Columna de configuración -->
             <div class="col-md-4" style="background-color: #ddf">
@@ -69,11 +78,10 @@
                         <label for="tipo" class="col-sm-2 control-label">Tipo</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="input-tipo-eleccion">
-                                <option>-</option>
-                                <option>Congreso Diputados</option>
-                                <option>Autonomicas</option>
-                                <option>Municipales</option>
-                                <option>Parlamento Europeo</option>
+                                <option value="1" selected="selected">Congreso Diputados</option>
+                                <option value="2">Autonomicas</option>
+                                <option value="3">Municipales</option>
+                                <option value="4">Parlamento Europeo</option>
                             </select>
                         </div>
                     </div>
@@ -108,7 +116,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="n_rep" class="col-sm-4">Numero de representantes</label>
+                        <label for="n_rep" class="col-sm-4">Número de representantes</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="n_rep" placeholder="ej:1000">
                         </div>
@@ -193,34 +201,32 @@
                 <div class="sep">
                     <p class="titulo"> Simulación </p>
                     <div class="clearflx"></div>
-                        <!-- Aquí aparecen los gráficos de la simulación -->
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-4" id="charts1"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8 col-md-offset-4" id="charts2"></div>
-                            </div>
-                            <button class="btn btn-primary" id="boton-inicio" onclick="inicioSimulacion()"> Iniciar </button>
-                            <button class="btn btn-primary" id="boton-retroceso" onclick="retrocederSimulacion()" style="display:none"> < Anterior </button>
-                            <button class="btn btn-primary" id="boton-avance" onclick="avanzarSimulacion()" style="display:none"> Siguiente > </button>
-                            <button class="btn btn-primary" id="boton-avance-Fin" onclick="avanzarFinSimulacion()" style="display:none"> Fin >> </button>
-                            
-                            <button class="btn btn-primary" id="boton-Dentener" onclick="finSimulacion()" style="position: absolute; right: 0px; display:none"> Detener </button>
+                    <!-- Aquí aparecen los gráficos de la simulación -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4" id="charts1"></div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-4" id="charts2"></div>
+                        </div>
+                        <button class="btn btn-primary" id="boton-inicio" type="button" onclick="inicioSimulacion()"> Iniciar </button>
+                        <button class="btn btn-primary" id="boton-retroceso" type="button" onclick="retrocederSimulacion()" style="display:none"> < Anterior </button>
+                        <button class="btn btn-primary" id="boton-avance" type="button" onclick="avanzarSimulacion()" style="display:none"> Siguiente > </button>
+                        <button class="btn btn-primary" id="boton-avance-fin" type="button" onclick="avanzarFinSimulacion()" style="display:none"> Fin >> </button>
+                        <button class="btn btn-primary" id="boton-detener" type="button" onclick="finSimulacion()" style="position: absolute; right: 0px; display:none"> Detener </button>
+                    </div>
                 </div>
             </div>
             
             <%
-                Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
                 if (usuarioActual != null) {
             %>
             <input type="submit" id="boton-submit" value="Almacenar datos"/>
                 <%
-                    Eleccion eleccion = (Eleccion) request.getAttribute("eleccion");
                     if (eleccion != null) {
                 %>
             <div id="almacen" >
+                <input type="hidden" name="hidden-tipo-eleccion" value="<%=eleccion.getTipoEleccion().getValor()%>"/>
                 <%
                         List<Circunscripcion> circunscripciones = (List<Circunscripcion>) request.getAttribute("circunscripciones");
                 %>
