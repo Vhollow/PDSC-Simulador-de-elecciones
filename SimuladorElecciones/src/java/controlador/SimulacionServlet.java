@@ -36,21 +36,6 @@ import utils.Usuario;
 @WebServlet(name = "SimulacionServlet", urlPatterns = {"/SimulacionServlet"})
 public class SimulacionServlet extends HttpServlet {
 
-    private TipoEleccion parseTipoEleccion(String nombreTipo) {
-        if (nombreTipo.equals("Autonomicas")) {
-            return TipoEleccion.Autonomicas;
-        } else if (nombreTipo.equals("Congreso Diputados")) {
-            return TipoEleccion.CongresoDiputados;
-        } else if (nombreTipo.equals("Municipales")) {
-            return TipoEleccion.Municipales;
-        } else if (nombreTipo.equals("Parlamento Europeo")) {
-            return TipoEleccion.ParlamentoEuropeo;
-        } else {
-            return null;
-        }
-    }
-    
-    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -105,7 +90,7 @@ public class SimulacionServlet extends HttpServlet {
         }
         
         // Pagina para simulacion
-        String url = "/Simulacion/simulacion.jsp";
+        String url = "/simulacion/simulacion.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
@@ -121,7 +106,7 @@ public class SimulacionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         // 1. Obtenemos el Usuario de la sesión actual
         HttpSession session = request.getSession();
         Usuario usuarioActual = (Usuario)session.getAttribute("usuarioActual");
@@ -134,10 +119,12 @@ public class SimulacionServlet extends HttpServlet {
             VotoDAO votoDAO = new VotoDAOImpl();
             
             // Insert de la nueva Eleccion
-            Eleccion eleccion = new Eleccion(
-                    new Date(),
-                    parseTipoEleccion(request.getParameter("input-tipo-eleccion"))
+            Date fecha = new Date();
+            String strTipoEleccion = request.getParameter("hidden-tipo-eleccion");
+            TipoEleccion tipoEleccion = TipoEleccion.numToTipoEleccion(
+                Integer.parseInt(request.getParameter("hidden-tipo-eleccion"))
             );
+            Eleccion eleccion = new Eleccion(fecha, tipoEleccion);
             int idEleccion = eleccionDAO.insertEleccion(eleccion);
             
             // Insert del par UsuarioEleccion
@@ -185,6 +172,10 @@ public class SimulacionServlet extends HttpServlet {
                 }
             }
             
+            // Pagina de usuario
+            String url = "/usuario";
+            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+            dispatcher.forward(request, response);
         }
     }
 

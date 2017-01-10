@@ -91,7 +91,7 @@ public class EleccionDAOImpl implements EleccionDAO {
                 eleccion = new Eleccion(
                         resultado.getInt("id"),
                         resultado.getDate("fecha"),
-                        idToTipoEleccion(resultado.getInt("tipo_eleccion"))
+                        TipoEleccion.numToTipoEleccion(resultado.getInt("tipo_eleccion"))
                 );
             }
             
@@ -133,7 +133,7 @@ public class EleccionDAOImpl implements EleccionDAO {
                     new Eleccion(
                         resultado.getInt("id"),
                         resultado.getDate("fecha"),
-                        idToTipoEleccion(resultado.getInt("tipo_eleccion"))
+                        TipoEleccion.numToTipoEleccion(resultado.getInt("tipo_eleccion"))
                     )
                 );
             }
@@ -158,28 +158,6 @@ public class EleccionDAOImpl implements EleccionDAO {
      */
     private java.sql.Date utilDateToSQLDate(java.util.Date date) {
         return new java.sql.Date( date.getTime() );
-    }
-    
-    /**
-     * Transforma la fecha especificada al tipo java.sql.Date
-     * 
-     * @param   date la fecha de tipo java.util.Date que queremos transformar
-     * @return  la fecha transformada a java.sql.Date
-     */
-    private TipoEleccion idToTipoEleccion(int id) {
-        TipoEleccion ret = TipoEleccion.Otro;
-        
-        if (id == TipoEleccion.CongresoDiputados.getValor()) {
-            ret = TipoEleccion.CongresoDiputados;
-        } else if (id == TipoEleccion.Autonomicas.getValor()) {
-            ret = TipoEleccion.Autonomicas;
-        } else if (id == TipoEleccion.Municipales.getValor()) {
-            ret = TipoEleccion.Municipales;
-        } else if (id == TipoEleccion.ParlamentoEuropeo.getValor()) {
-            ret = TipoEleccion.ParlamentoEuropeo;
-        }
-        
-        return ret;
     }
     
 }

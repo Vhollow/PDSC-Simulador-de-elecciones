@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="utils.Usuario"%>
 <%@page import="utils.Eleccion"%>
 <!DOCTYPE html>
 <html>
@@ -28,7 +27,6 @@
     </head>
     <body style="background-image: url('./img/fondo-elec.jpg')">
         <%
-            Usuario usuarioActual = (Usuario)request.getAttribute("usuarioActual");
             List<Eleccion> eleccionesUsuario = (List<Eleccion>)request.getAttribute("eleccionesUsuario");
         %>
         <div class="container-fluid">
@@ -42,7 +40,9 @@
                         for (Eleccion eleccionActual : eleccionesUsuario) {
                     %>
                     <div class="col-md-10 sep rect-simul">
-                        <p class="titulo"><%= eleccionActual.getTipoEleccion() %>   <%= eleccionActual.getFecha() %></p>
+                        <a href="./simulacion?id=<%=eleccionActual.getId()%>" class="titulo">
+                            <%=eleccionActual.getTipoEleccion()%>   <%=eleccionActual.getFecha()%>
+                        </a>
                     </div>
                     <%
                         }
