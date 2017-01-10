@@ -48,12 +48,4 @@
         <servlet-name>RegistroServlet</servlet-name>
         <url-pattern>/registrate</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>RegistrarServlet</servlet-name>
-        <servlet-class>controlador.RegistrarServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegistrarServlet</servlet-name>
-        <url-pattern>/registrate/registrar</url-pattern>
-    </servlet-mapping>
 </web-app>
