@@ -17,18 +17,18 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" >
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
 
-        <link rel="stylesheet" href="../mycss.css">
+        <link rel="stylesheet" href="mycss.css">
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
     </head>
-    <body style="background-image: url('../img/fondo-elec.jpg')">
+    <body style="background-image: url('./img/fondo-elec.jpg')">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 rect-central-fino text-center">
                     <p class="titulo-grande sep">Registro</p>
-                    <form  class="interior" name="login" action="Login" method="POST">
+                    <form  class="interior" name="login" action="registrar" method="POST">
                         <b>
                             Nombre de usuario:<br>
                             <input type="text" class="sep" name="usuario"  maxlength="50"><br>

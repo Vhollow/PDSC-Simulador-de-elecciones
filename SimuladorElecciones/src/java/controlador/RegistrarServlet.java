@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import java.io.IOException;
@@ -12,13 +7,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import utils.Usuario;
+import modelo.UsuarioDAO;
+import modelo.UsuarioDAOImpl;
 
 /**
- *
+ * Clase encargada del registro de nuevos usuarios en el sistema.
+ * 
  * @author Vicente
  */
-@WebServlet(name = "RegistroServlet", urlPatterns = {"/registrate"})
-public class RegistroServlet extends HttpServlet {
+@WebServlet(name = "RegistroServlet", urlPatterns = {"/registrate/registrar"})
+public class RegistrarServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,9 +31,33 @@ public class RegistroServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "/Registro/registro.jsp";
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+        
+        /* Generamos un nuevo usuario con los datos pasados por la petición*/
+        String nombre = (String)request.getAttribute("nombre");
+        String correo = (String)request.getAttribute("correo");
+        String clave = (String)request.getAttribute("clave");
+        Usuario newUser = new Usuario(nombre,correo,clave);
+        
+        /* Insertamos el nuevo usuario en la base de datos */
+        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+    
+        try{
+            
+            usuarioDAO.insertUsuario(newUser);
+            
+        }catch(Exception e){
+            String url = "/registro/registro.jsp";
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
+        }
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("usuarioActual", newUser);
+            
+        // 3. Vamos a la pagina de usuario
+        String url = "/usuario";
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
