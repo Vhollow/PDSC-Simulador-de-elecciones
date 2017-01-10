@@ -285,20 +285,26 @@ function doLoad() {
 function inicioSimulacion() {
     document.getElementById("boton-inicio").style.display = "none";
     document.getElementById("boton-avance").style.display = "block";
-    document.getElementById("boton-avance").disabled = "false";
+    document.getElementById("boton-avance").disabled = false;
     document.getElementById("boton-retroceso").style.display = "block";
-    document.getElementById("boton-retroceso").disabled = "true";
+    document.getElementById("boton-retroceso").disabled = true;
     document.getElementById("boton-avance-fin").style.display = "block";
+    document.getElementById("boton-avance-fin").disabled = false;
     document.getElementById("boton-detener").style.display = "block";
+    if(circunscripciones.length === 1){
+        document.getElementById("boton-avance").disabled = true;
+        document.getElementById("boton-avance-fin").disabled = true;
+    }
     dibujaGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
     dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
 }
 
 function avanzarSimulacion() {
     indiceSimulacion++;
-    document.getElementById("boton-retroceso").disabled = "false";
+    document.getElementById("boton-retroceso").disabled = false;
     if(indiceSimulacion === circunscripciones.length - 1){
-       document.getElementById("boton-avance").disabled = "true";
+       document.getElementById("boton-avance").disabled = true;
+       document.getElementById("boton-avance-fin").disabled = true;
     }
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
@@ -306,9 +312,9 @@ function avanzarSimulacion() {
 
 function retrocederSimulacion() {
     indiceSimulacion--;
-    document.getElementById("boton-avance").disabled = "false";
+    document.getElementById("boton-avance").disabled = false;
     if(indiceSimulacion === 0){
-       document.getElementById("boton-retroceso").disabled = "true";
+       document.getElementById("boton-retroceso").disabled = true;
     }
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion], candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
