@@ -39,7 +39,7 @@
                             <input type="password" class="sep" name="clave" maxlength="50"><br>
                             <input class="btn btn-lg btn-primary sep" type="submit" value="Login" name="enviar"/>
                         </form>
-                        <p>¿No tienes una cuenta? <a href="./registrate">Registrate</a></p>
+                        <p>¿No tienes una cuenta? <a href="./registro">Registrate</a></p>
                     </div>
                 </div>
             </div>

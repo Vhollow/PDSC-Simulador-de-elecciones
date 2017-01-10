@@ -24,8 +24,6 @@ import utils.Usuario;
 @WebServlet(name = "RegistroServlet", urlPatterns = {"/registrate"})
 public class RegistroServlet extends HttpServlet {
 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -37,9 +35,11 @@ public class RegistroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "/Registro/registro.jsp";
+        
+        // 3. Vamos a la pagina de registro
+        String url = "/registro/registro.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-            dispatcher.forward(request, response);
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -53,32 +53,32 @@ public class RegistroServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         /* Generamos un nuevo usuario con los datos pasados por la petición*/
-        String nombre = (String)request.getAttribute("nombre");
-        String correo = (String)request.getAttribute("correo");
-        String clave = (String)request.getAttribute("clave");
-        Usuario newUser = new Usuario(nombre,correo,clave);
+        String nombre = request.getParameter("nombre");
+        String correo = request.getParameter("correo-electronico");
+        String clave = request.getParameter("clave");
+        Usuario nuevoUsuario = new Usuario(nombre, correo, clave);
         
         /* Insertamos el nuevo usuario en la base de datos */
         UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
     
         try{
-            
-            usuarioDAO.insertUsuario(newUser);
-            
-        }catch(Exception e){
+            int idUsuario = usuarioDAO.insertUsuario(nuevoUsuario);
+            nuevoUsuario = usuarioDAO.selectUsuario(idUsuario);
+        
+            HttpSession session = request.getSession();
+            session.setAttribute("usuarioActual", nuevoUsuario);
+
+            // 3. Vamos a la pagina de usuario
+            String url = "/usuario";
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+            dispatcher.forward(request, response);
+        } catch(Exception e) {
             String url = "/registro/registro.jsp";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
         }
-        
-        HttpSession session = request.getSession();
-        session.setAttribute("usuarioActual", newUser);
-            
-        // 3. Vamos a la pagina de usuario
-        String url = "/usuario";
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-        dispatcher.forward(request, response);
     }
 
     /**

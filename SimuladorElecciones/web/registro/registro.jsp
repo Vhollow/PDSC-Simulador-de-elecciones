@@ -28,17 +28,17 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 rect-central-fino text-center">
                     <p class="titulo-grande sep">Registro</p>
-                    <form  class="interior" name="login" action="registrate" method="POST">
+                    <form  class="interior" name="login" action="./registro" method="POST">
                         <b>
                             Nombre de usuario:<br>
-                            <input type="text" class="sep" name="usuario"  maxlength="50"><br>
+                            <input type="text" class="sep" name="nombre"  maxlength="50"><br>
                             Correo electrónico:<br>
-                            <input type="text" class="sep" name="correo"  maxlength="50"><br>
+                            <input type="text" class="sep" name="correo-electronico"  maxlength="50"><br>
                             Contraseña:<br>
-                            <input type="password" class="sep" name="contrasena" maxlength="50"><br>
+                            <input type="password" class="sep" name="clave" maxlength="50"><br>
                             Repetir contraseña:<br>
-                            <input type="password" class="sep" name="repcontrasena" maxlength="50"><br>
-                            <input class="btn btn-lg btn-primary sep" type="submit" value="Registrarse"  name="enviar" />
+                            <input type="password" class="sep" name="repclave" maxlength="50"><br>
+                            <input class="btn btn-lg btn-primary sep" type="submit" value="Registrarse"  name="enviar"/>
                         </b>
                     </form>
                 </div>

@@ -46,6 +46,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>RegistroServlet</servlet-name>
-        <url-pattern>/registrate</url-pattern>
+        <url-pattern>/registro</url-pattern>
     </servlet-mapping>
 </web-app>
