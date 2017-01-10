@@ -8,6 +8,7 @@
 <%@page import="utils.Circunscripcion"%>
 <%@page import="java.util.List"%>
 <%@page import="utils.Eleccion"%>
+<%@page import="utils.TipoEleccion"%>
 <%@page import="utils.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

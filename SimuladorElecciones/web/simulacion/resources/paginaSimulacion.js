@@ -247,6 +247,7 @@ function doLoad() {
     propMinRepresentacion = formSimulacion.elements["hidden-prop-min-representacion"].value;
     
     var numeroCircunscripciones = formSimulacion.elements["hidden-numero-circunscripciones"].value;
+    circunscripciones = new Array(numeroCircunscripciones);
     for (var i = 0; i < numeroCircunscripciones; i++) {
         var circunscripcion = {
             nombre: formSimulacion.elements["hidden-circunscripcion-nombre" + i].value,
@@ -254,17 +255,18 @@ function doLoad() {
             votoNulo: formSimulacion.elements["hidden-circunscripcion-voto-nulo" + i].value,
             votoEnBlanco: formSimulacion.elements["hidden-circunscripcion-voto-en-blanco" + i].value
         };
-        circunscripciones.push(circunscripcion);
+        circunscripciones[i] = circunscripcion;
     }
     
     var numeroCandidaturas = formSimulacion.elements["hidden-numero-candidaturas"].value;
+    candidaturas = new Array(numeroCandidaturas);
     for (var i = 0; i < numeroCandidaturas; i++) {
         var candidatura = {
             nombreCorto: formSimulacion.elements["hidden-candidatura-nombre-corto" + i].value,
             nombreLargo: formSimulacion.elements["hidden-candidatura-nombre-largo" + i].value,
             color: formSimulacion.elements["hidden-candidatura-color" + i].value
         };
-        candidaturas.push(candidatura);
+        candidaturas[i] = candidatura;
     }
 
     votos = new Array(numeroCircunscripciones);

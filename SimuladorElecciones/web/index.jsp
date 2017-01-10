@@ -40,6 +40,9 @@
                             <input class="btn btn-lg btn-primary sep" type="submit" value="Login" name="enviar"/>
                         </form>
                     </div>
+                    <div class="text-center">
+                        <input class="btn btn-lg btn-primary sep" type="button" onclick="location.href='./registro'" name="registrarse" value="Registrarse"/>
+                    </div>
                 </div>
             </div>
         </div>

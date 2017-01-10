@@ -41,4 +41,12 @@
         <servlet-name>SimulacionServlet</servlet-name>
         <url-pattern>/simulacion</url-pattern>
     </servlet-mapping>
+        <servlet>
+        <servlet-name>RegistroServlet</servlet-name>
+        <servlet-class>controlador.RegistroServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegistroServlet</servlet-name>
+        <url-pattern>/registro</url-pattern>
+    </servlet-mapping>
 </web-app>
