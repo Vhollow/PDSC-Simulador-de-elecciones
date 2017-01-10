@@ -257,7 +257,7 @@ function doLoad() {
         var candidatura = {
             nombreCorto: formSimulacion.elements["hidden-candidatura-nombre-corto" + i].value,
             nombreLargo: formSimulacion.elements["hidden-candidatura-nombre-largo" + i].value,
-            color: formSimulacion.elements["hidden-candidatura-color" + i].value
+            color: parseInt(formSimulacion.elements["hidden-candidatura-color" + i].value).toString(16)
         };
         candidaturas[i] = candidatura;
     }
