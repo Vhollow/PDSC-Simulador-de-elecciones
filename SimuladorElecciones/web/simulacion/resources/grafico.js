@@ -25,6 +25,13 @@ function dibujaGraficoPequeño(circunscripcion, candidaturas, votosCircunscripci
     var svg = divPequeño.append("svg")
         .attr("width", dimensionesDivPequeño.width)
         .attr("height", dimensionesDivPequeño.width/2);
+        
+    svg.append("text")
+        .attr("transform", "translate(" + centro.x + ", " + centro.y + ")")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "30px")
+        .attr("fill", "black")
+        .text(circunscripcion.nombre);
 
     var groupArcos = svg.append("g")
         .attr("transform", "translate(" + centro.x + ", " + centro.y + ")");
@@ -101,6 +108,13 @@ function dibujaGraficoGrande(indice, circunscripciones, candidaturas, votosCircu
     var svg = divGrande.append("svg")
         .attr("width", dimensionesDivGrande.width)
         .attr("height", dimensionesDivGrande.width/2);
+
+    svg.append("text")
+        .attr("transform", "translate(" + centro.x + ", " + centro.y + ")")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "30px")
+        .attr("fill", "black")
+        .text("Total");
 
     var groupArcos = svg.append("g")
         .attr("transform", "translate(" + centro.x + ", " + centro.y + ")");

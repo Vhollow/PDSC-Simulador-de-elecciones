@@ -181,6 +181,7 @@ function nuevaCandidatura() {
     // Reset del texto por defecto en los botones para añadir una candidatura
     formSimulacion.elements["input-candidatura-nombre"].value = "";
     formSimulacion.elements["input-candidatura-color"].value = "FFFFFF";
+    formSimulacion.elements["input-candidatura-color"].style = "background-color: #FFFFFF";
 }
 
 
@@ -304,6 +305,7 @@ function inicioSimulacion() {
     
     dibujaGraficoPequeño(circunscripciones[0],candidaturas, votos[0], propMinRepresentacion);
     dibujaGraficoGrande(0, circunscripciones, candidaturas, votos, propMinRepresentacion);
+    actualizarTablaResultados();
 }
 
 function avanzarSimulacion() {
@@ -317,11 +319,13 @@ function avanzarSimulacion() {
     
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+    actualizarTablaResultados();
 }
 
 function retrocederSimulacion() {
     indiceSimulacion--;
     document.getElementById("boton-avance").disabled = false;
+    document.getElementById("boton-avance-fin").disabled = false;
     
     if (indiceSimulacion === 0) {
        document.getElementById("boton-retroceso").disabled = true;
@@ -329,12 +333,17 @@ function retrocederSimulacion() {
     
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion], candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+    actualizarTablaResultados();
 }
 
 function avanzarFinSimulacion() {
     indiceSimulacion = circunscripciones.length - 1;
+    document.getElementById("boton-retroceso").disabled = false;
+    document.getElementById("boton-avance").disabled = true;
+    document.getElementById("boton-avance-fin").disabled = true;
     dibujaGraficoPequeño(circunscripciones[indiceSimulacion],candidaturas, votos[indiceSimulacion], propMinRepresentacion);
     dibujaGraficoGrande(indiceSimulacion, circunscripciones, candidaturas, votos, propMinRepresentacion);
+    actualizarTablaResultados();
 }
 
 function finalizarSimulacion() {
@@ -345,4 +354,56 @@ function finalizarSimulacion() {
     document.getElementById("boton-detener").style.display = "none";
     document.getElementById("charts1").style.display = "none";
     document.getElementById("charts2").style.display = "none";
+    document.getElementById("tabla-resultados").style.display = "none";
+}
+
+function actualizarTablaResultados(){
+    var datos = new Array(candidaturas.length);
+    for (var i = 0; i < candidaturas.length; i++) {
+        datos[i] = { candidatura: candidaturas[i], numeroEscaños: 0 };
+    }
+    
+    for(var i = 0 ; i <= indiceSimulacion; i++){
+        // Calculamos los escaños en la circunscripcion actual
+        var datosTemp = calculaEscaños(circunscripciones[i], candidaturas, votos[i], propMinRepresentacion);
+        
+        // Añadimos los escaños de la circunscripcion a su respectiva candidatura
+        for (var j = 0; j < datos.length; j++) {
+            for (var k = 0; k < datosTemp.length; k++) {
+                if (datos[j].candidatura === datosTemp[k].candidatura) {
+                    datos[j].numeroEscaños += datosTemp[k].numeroEscaños;
+                    k = datos.length;
+                }
+            }
+        }
+    }
+    
+    // Header
+    var head = document.createElement("thead");
+    var row = document.createElement("tr");
+    for (var j = 0 ; j < candidaturas.length ; j++){
+        var th = document.createElement("th");
+        th.innerHTML = candidaturas[j].nombreCorto;
+        th.style = "background-color: #" + candidaturas[j].color;
+        row.appendChild(th);
+    }
+    head.appendChild(row);
+    
+    // Body    
+    var body = document.createElement("tbody");
+    row = document.createElement("tr");
+    for(var j in datos){
+        var td = document.createElement("td");
+        td.innerHTML = datos[j].numeroEscaños;
+        row.appendChild(td);
+    }
+    body.appendChild(row);
+    
+    // Table
+    var tabla = document.getElementById("tabla-resultados");
+    while(tabla.hasChildNodes()){
+        tabla.removeChild(tabla.firstChild);	
+    }
+    tabla.appendChild(head);
+    tabla.appendChild(body);
 }

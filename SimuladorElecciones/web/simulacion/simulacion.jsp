@@ -55,7 +55,7 @@
                 <p class="titulo">Cargar archivo</p>
                 <div class="form-horizontal col-md-10">
                     <div class="form-group">
-                        <select class="form-control">
+                        <select class="form-control" disabled>
                             <option>-</option>
                             <option>Elecciones España junio 2016</option>
                             <option>2</option>
@@ -209,6 +209,10 @@
                         <div class="row">
                             <div class="col-md-8 col-md-offset-4" id="charts2"></div>
                         </div>
+                        <div class="row" style="text-align: center">
+                            <table class="table table-bordered table-responsive" id="tabla-resultados"></table>
+                        </div>
+                        
                         <button class="btn btn-primary" id="boton-inicio" type="button" onclick="inicioSimulacion()"> Iniciar </button>
                         <button class="btn btn-primary" id="boton-retroceso" type="button" onclick="retrocederSimulacion()" style="display:none"> < Anterior </button>
                         <button class="btn btn-primary" id="boton-avance" type="button" onclick="avanzarSimulacion()" style="display:none"> Siguiente > </button>
