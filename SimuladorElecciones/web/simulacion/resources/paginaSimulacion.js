@@ -181,6 +181,7 @@ function nuevaCandidatura() {
     // Reset del texto por defecto en los botones para añadir una candidatura
     formSimulacion.elements["input-candidatura-nombre"].value = "";
     formSimulacion.elements["input-candidatura-color"].value = "FFFFFF";
+    formSimulacion.elements["input-candidatura-color"].style = "background-color: #FFFFFF";
 }
 
 
