@@ -220,7 +220,7 @@ function doSave() {
     for (var i in candidaturas) {
         addHidden(almacen, "hidden-circunscripcion-nombre" + i, circunscripciones[i].nombre);
     }
-
+    
     // El resto de datos ya estan en los inputs
     return true;
 }
@@ -276,6 +276,9 @@ function doLoad() {
     formSimulacion.elements["input-prop-min-representacion"].value = propMinRepresentacion * 100;
     actualizaTablaCircunscripcion();
     actualizaTablaVotos();
+    var divAlmacen = document.getElementById("almacen");
+    divAlmacen.outerHTML = "";
+    delete divAlmacen;
 }
 
 
